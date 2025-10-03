@@ -1,4 +1,5 @@
 import winston from 'winston';
+import { ILogger, ILoggerFactory } from '../interfaces';
 
 const logLevel = process.env.LOG_LEVEL || 'info';
 
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
   logger.debug('Logging initialized');
 }
 
-export class Logger {
+export class Logger implements ILogger {
   private context: string;
 
   constructor(context: string) {
@@ -37,12 +38,19 @@ export class Logger {
     logger.info(message, { context: this.context, ...meta });
   }
 
-  error(message: string, error?: Error, meta?: any): void {
-    logger.error(message, { 
-      context: this.context, 
-      error: error?.stack || error,
-      ...meta 
-    });
+  error(message: string, meta?: any): void {
+    if (meta instanceof Error) {
+      logger.error(message, { 
+        context: this.context, 
+        error: meta.message,
+        stack: meta.stack
+      });
+    } else {
+      logger.error(message, { 
+        context: this.context, 
+        ...meta 
+      });
+    }
   }
 
   warn(message: string, meta?: any): void {
@@ -53,14 +61,23 @@ export class Logger {
     logger.debug(message, { context: this.context, ...meta });
   }
 
-  verbose(message: string, meta?: any): void {
-    logger.verbose(message, { context: this.context, ...meta });
+  child(context: object): ILogger {
+    const childContextName = `${this.context}:${JSON.stringify(context)}`;
+    return new Logger(childContextName);
+  }
+}
+
+export class LoggerFactory implements ILoggerFactory {
+  createLogger(context?: object): ILogger {
+    const contextName = context ? JSON.stringify(context) : 'default';
+    return new Logger(contextName);
   }
 }
 
 export const rootLogger = logger;
+export const loggerFactory = new LoggerFactory();
+export const defaultLogger = new Logger('main');
 
-// Legacy functions for backward compatibility
 export const logInfo = (message: string, context?: Record<string, unknown>) => {
     logger.info(message, { context });
 };

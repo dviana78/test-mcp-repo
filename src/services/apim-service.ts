@@ -12,6 +12,7 @@ import {
 } from '../types';
 import { AzureClient } from './azure-client';
 import { Logger } from '../utils/logger';
+import { IApimService, ILogger } from '../interfaces';
 import { AzureApiError, ValidationError, NotFoundError } from '../utils/errors';
 import { 
   validateCreateApiVersion, 
@@ -22,9 +23,9 @@ import {
   sanitizeApiPath
 } from '../utils/validation';
 
-export class ApimService {
+export class ApimService implements IApimService {
   private azureClient: AzureClient;
-  private logger: Logger;
+  private logger: ILogger;
 
   constructor(azureClient: AzureClient) {
     this.azureClient = azureClient;
@@ -34,21 +35,25 @@ export class ApimService {
   /**
    * List all APIs in the API Management instance
    */
-  public async listApis(filter?: string, top?: number, skip?: number): Promise<ApiInfo[]> {
+  public async listApis(options?: {
+    filter?: string;
+    top?: number;
+    skip?: number;
+  }): Promise<any[]> {
     try {
-      this.logger.info('Listing APIs', { filter, top, skip });
+      this.logger.info('Listing APIs', options);
       
       const client = this.azureClient.getClient();
-      const options: any = {};
+      const queryOptions: any = {};
       
-      if (filter) options.$filter = filter;
-      if (top) options.$top = top;
-      if (skip) options.$skip = skip;
+      if (options?.filter) queryOptions.$filter = options.filter;
+      if (options?.top) queryOptions.$top = options.top;
+      if (options?.skip) queryOptions.$skip = options.skip;
 
       const result = client.api.listByService(
         process.env.AZURE_APIM_RESOURCE_GROUP!,
         process.env.AZURE_APIM_SERVICE_NAME!,
-        options
+        queryOptions
       );
 
       const apis: ApiInfo[] = [];
@@ -330,21 +335,25 @@ export class ApimService {
   /**
    * List all backend services in the API Management instance
    */
-  public async listBackends(filter?: string, top?: number, skip?: number): Promise<BackendInfo[]> {
+  public async listBackends(options?: {
+    filter?: string;
+    top?: number;
+    skip?: number;
+  }): Promise<any[]> {
     try {
-      this.logger.info('Listing backend services', { filter, top, skip });
+      this.logger.info('Listing backend services', options);
       
       const client = this.azureClient.getClient();
-      const options: any = {};
+      const queryOptions: any = {};
       
-      if (filter) options.$filter = filter;
-      if (top) options.$top = top;
-      if (skip) options.$skip = skip;
+      if (options?.filter) queryOptions.$filter = options.filter;
+      if (options?.top) queryOptions.$top = options.top;
+      if (options?.skip) queryOptions.$skip = options.skip;
 
       const result = client.backend.listByService(
         process.env.AZURE_APIM_RESOURCE_GROUP!,
         process.env.AZURE_APIM_SERVICE_NAME!,
-        options
+        queryOptions
       );
 
       const backends: BackendInfo[] = [];
@@ -1447,5 +1456,159 @@ export class ApimService {
       
       return this.azureClient.handleAzureError(error);
     }
+  }
+
+  /**
+   * Create a new gRPC API from Protobuf definition
+   */
+  public async createGrpcApiFromProto(params: {
+    apiId: string;
+    displayName: string;
+    protoDefinition: string;
+    description?: string;
+    path?: string;
+    serviceUrl?: string;
+    protocols?: string[];
+    subscriptionRequired?: boolean;
+    initialVersion?: string;
+    versioningScheme?: 'Segment' | 'Query' | 'Header';
+    versionQueryName?: string;
+    versionHeaderName?: string;
+  }): Promise<any> {
+    try {
+      this.logger.info('Creating gRPC API from proto definition', { apiId: params.apiId });
+      
+      // For now, return a mock implementation
+      // In a real implementation, this would process the proto definition
+      // and create the appropriate gRPC API in Azure APIM
+      
+      return {
+        id: params.apiId,
+        displayName: params.displayName,
+        type: 'grpc',
+        description: params.description,
+        path: params.path || `grpc/${params.apiId}`,
+        serviceUrl: params.serviceUrl,
+        protocols: params.protocols || ['grpcs'],
+        subscriptionRequired: params.subscriptionRequired ?? true
+      };
+    } catch (error: any) {
+      this.logger.error('Failed to create gRPC API', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Handle and format API errors consistently
+   */
+  public handleError(error: any, operation: string): any {
+    this.logger.error(`Error in ${operation}`, error);
+    
+    if (error instanceof AzureApiError) {
+      return {
+        success: false,
+        error: error.message,
+        statusCode: error.statusCode
+      };
+    }
+    
+    if (error instanceof ValidationError) {
+      return {
+        success: false,
+        error: error.message,
+        statusCode: 400
+      };
+    }
+    
+    if (error instanceof NotFoundError) {
+      return {
+        success: false,
+        error: error.message,
+        statusCode: 404
+      };
+    }
+    
+    return {
+      success: false,
+      error: error.message || 'An unknown error occurred',
+      statusCode: error.statusCode || 500
+    };
+  }
+
+  /**
+   * Validate API creation parameters
+   */
+  public validateApiParams(params: any): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    
+    if (!params.apiId || typeof params.apiId !== 'string') {
+      errors.push('apiId is required and must be a string');
+    }
+    
+    if (!params.displayName || typeof params.displayName !== 'string') {
+      errors.push('displayName is required and must be a string');
+    }
+    
+    if (params.apiId && !isValidApiId(params.apiId)) {
+      errors.push('apiId contains invalid characters');
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+
+  /**
+   * Validate YAML/OpenAPI specification
+   */
+  public validateYamlContract(yamlContent: string): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    
+    if (!yamlContent || typeof yamlContent !== 'string') {
+      errors.push('YAML content is required and must be a string');
+      return { isValid: false, errors };
+    }
+    
+    try {
+      // Basic validation - in a real implementation, you would use a YAML parser
+      // and OpenAPI validator
+      if (!yamlContent.trim().startsWith('openapi:') && !yamlContent.trim().startsWith('swagger:')) {
+        errors.push('YAML content must be a valid OpenAPI/Swagger specification');
+      }
+    } catch (error: any) {
+      errors.push(`Invalid YAML format: ${error.message}`);
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+
+  /**
+   * Validate Protobuf definition
+   */
+  public validateProtoDefinition(protoContent: string): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    
+    if (!protoContent || typeof protoContent !== 'string') {
+      errors.push('Protobuf content is required and must be a string');
+      return { isValid: false, errors };
+    }
+    
+    try {
+      // Basic validation - in a real implementation, you would use a protobuf parser
+      if (!protoContent.includes('service') || !protoContent.includes('rpc')) {
+        errors.push('Protobuf definition must contain at least one service with RPC methods');
+      }
+    } catch (error: any) {
+      errors.push(`Invalid Protobuf format: ${error.message}`);
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
   }
 }

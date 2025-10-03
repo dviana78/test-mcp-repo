@@ -597,7 +597,11 @@ export class ToolsHandler {
   }
 
   private async handleListApis(args: any): Promise<McpToolResponse> {
-    const apis = await this.apimService.listApis(args.filter, args.top, args.skip);
+    const apis = await this.apimService.listApis({
+      filter: args.filter,
+      top: args.top,
+      skip: args.skip
+    });
     
     return {
       content: [{
@@ -817,7 +821,11 @@ export class ToolsHandler {
   }
 
   private async handleListBackends(args: any): Promise<McpToolResponse> {
-    const backends = await this.apimService.listBackends(args.filter, args.top, args.skip);
+    const backends = await this.apimService.listBackends({
+      filter: args.filter,
+      top: args.top,
+      skip: args.skip
+    });
     
     return {
       content: [{
