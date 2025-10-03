@@ -6,7 +6,7 @@ const readline = require('readline');
 
 console.log('🚀 Testing Azure APIM MCP Server...\n');
 
-// Iniciar el servidor MCP
+// Iniciar el server MCP
 const server = spawn('node', ['dist/index.js'], {
   stdio: ['pipe', 'pipe', 'pipe']
 });
@@ -26,7 +26,7 @@ function sendMessage(method, params = {}) {
   console.log('📤 Sent:', JSON.stringify(message, null, 2));
 }
 
-// Escuchar respuestas del servidor
+// Escuchar respuestas del server
 server.stdout.on('data', (data) => {
   const response = data.toString().trim();
   if (response) {

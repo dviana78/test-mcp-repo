@@ -1,4 +1,4 @@
-#!/usr/bin/env Node
+#!/usr/bin/env node
 
 /**
  * Test directo para listar APIs usando MCP Server
@@ -7,10 +7,10 @@
 const { spawn } = require('child_process');
 const readline = require('readline');
 
-console.log('🔍 Testing herramienta list_apis...\n');
+console.log('🔍 Probando herramienta list_apis...\n');
 
-// Crear server MCP
-const server = spawn('Node', ['dist/index.js'], {
+// Crear servidor MCP
+const server = spawn('node', ['dist/index.js'], {
   stdio: ['pipe', 'pipe', 'pipe']
 });
 
@@ -26,7 +26,7 @@ function sendRequest(id, method, params = {}) {
   };
   
   const message = JSON.stringify(request) + '\n';
-  console.log(`📤 Sending: ${method}`);
+  console.log(`📤 Enviando: ${method}`);
   server.stdin.write(message);
 }
 
@@ -69,33 +69,33 @@ server.stdout.on('data', (data) => {
           } else if (response.result.serverInfo) {
             console.log('✅ Server initialized correctly');
           }
-        } else if (response.Error) {
-          console.log(`❌ Error: ${response.Error.message}`);
-          console.log(`   Código: ${response.Error.code}`);
+        } else if (response.error) {
+          console.log(`❌ Error: ${response.error.message}`);
+          console.log(`   Código: ${response.error.code}`);
         }
         
         responseReceived = true;
       } catch (e) {
-        // Not valid JSON, probablemente es log del server
+        // No es JSON válido, probablemente es log del servidor
       }
     }
   }
 });
 
-// Escuchar stderr (logs de Error)
+// Escuchar stderr (logs de error)
 server.stderr.on('data', (data) => {
-  const Error = data.toString();
-  if (Error.includes('Error:')) {
-    console.log(`⚠️  Server error: ${Error.trim()}`);
+  const error = data.toString();
+  if (error.includes('error:')) {
+    console.log(`⚠️  Error del servidor: ${error.trim()}`);
   }
 });
 
 server.on('close', (code) => {
-  console.log(`\n🔚 server cerrado con código: ${code}`);
+  console.log(`\n🔚 Servidor cerrado con código: ${code}`);
 });
 
 // Secuencia de prueba
-console.log('1. Inicializando server MCP...');
+console.log('1. Inicializando servidor MCP...');
 setTimeout(() => {
   sendRequest(1, 'initialize', {
     protocolVersion: '2024-11-05',
@@ -123,7 +123,7 @@ setTimeout(() => {
 // Timeout de seguridad
 setTimeout(() => {
   if (!responseReceived) {
-    console.log('\n⏰ Timeout - No se recibió respuesta');
+    console.log('\n⏰ Timeout - no se recibió respuesta');
   }
   server.kill('SIGTERM');
 }, 15000);

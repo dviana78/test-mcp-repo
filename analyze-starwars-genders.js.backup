@@ -1,0 +1,176 @@
+const https = require('https');
+
+console.log('⚧️ Análisis de Géneros en Star Wars');
+console.log('===================================');
+
+async function getAllCharacters() {
+    const allCharacters = [];
+    let currentPage = 1;
+    let hasNextPage = true;
+
+    while (hasNextPage) {
+        console.log(`📡 Obteniendo página ${currentPage}...`);
+        
+        try {
+            const characters = await getCharactersPage(currentPage);
+            
+            if (characters && characters.results) {
+                allCharacters.push(...characters.results);
+                console.log(`✅ Página ${currentPage}: ${characters.results.length} personajes`);
+                
+                hasNextPage = !!characters.next;
+                currentPage++;
+                
+                // Límite de seguridad
+                if (currentPage > 20) {
+                    console.log('⚠️ Límite de páginas alcanzado');
+                    break;
+                }
+            } else {
+                hasNextPage = false;
+            }
+        } catch (error) {
+            console.log(`❌ Error en página ${currentPage}:`, error.message);
+            hasNextPage = false;
+        }
+    }
+
+    return allCharacters;
+}
+
+function getCharactersPage(page) {
+    return new Promise((resolve, reject) => {
+        const options = {
+            hostname: 'swapi.dev',
+            port: 443,
+            path: `/api/people/?page=${page}`,
+            method: 'GET',
+            headers: {
+                'User-Agent': 'StarWars Gender Analysis'
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let data = '';
+            
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            
+            res.on('end', () => {
+                try {
+                    const result = JSON.parse(data);
+                    resolve(result);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        });
+
+        req.on('error', (error) => {
+            reject(error);
+        });
+
+        req.end();
+    });
+}
+
+function analyzeGenders(characters) {
+    const genderStats = {
+        male: [],
+        female: [],
+        'n/a': [],  // Droides y otros
+        hermaphrodite: [],
+        none: [],
+        unknown: []
+    };
+
+    characters.forEach(character => {
+        const gender = character.gender?.toLowerCase() || 'unknown';
+        
+        if (genderStats[gender]) {
+            genderStats[gender].push(character);
+        } else {
+            genderStats.unknown.push(character);
+        }
+    });
+
+    return genderStats;
+}
+
+function displayResults(genderStats, totalCharacters) {
+    console.log('\n📊 Resultados del Análisis de Géneros:');
+    console.log('======================================');
+    
+    console.log(`👥 Total de personajes analizados: ${totalCharacters}`);
+    console.log('');
+
+    // Estadísticas principales
+    const maleCount = genderStats.male.length;
+    const femaleCount = genderStats.female.length;
+    const naCount = genderStats['n/a'].length;
+    const otherCount = genderStats.hermaphrodite.length + genderStats.none.length + genderStats.unknown.length;
+
+    console.log(`👨 Personajes masculinos: ${maleCount} (${((maleCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`👩 Personajes femeninos: ${femaleCount} (${((femaleCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`🤖 Droides/N/A: ${naCount} (${((naCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`❓ Otros/Desconocidos: ${otherCount} (${((otherCount/totalCharacters)*100).toFixed(1)}%)`);
+
+    console.log('\n👨 Personajes Masculinos:');
+    console.log('=========================');
+    genderStats.male.forEach((char, index) => {
+        console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
+    });
+
+    console.log('\n👩 Personajes Femeninos:');
+    console.log('========================');
+    genderStats.female.forEach((char, index) => {
+        console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
+    });
+
+    console.log('\n🤖 Droides y Otros (N/A):');
+    console.log('=========================');
+    genderStats['n/a'].forEach((char, index) => {
+        console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
+    });
+
+    if (genderStats.hermaphrodite.length > 0) {
+        console.log('\n⚧️ Hermafroditas:');
+        console.log('=================');
+        genderStats.hermaphrodite.forEach((char, index) => {
+            console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
+        });
+    }
+
+    if (genderStats.none.length > 0 || genderStats.unknown.length > 0) {
+        console.log('\n❓ Género Desconocido/Ninguno:');
+        console.log('==============================');
+        [...genderStats.none, ...genderStats.unknown].forEach((char, index) => {
+            console.log(`${index + 1}. ${char.name} (${char.birth_year}) - Género: ${char.gender}`);
+        });
+    }
+
+    console.log('\n📈 Resumen Estadístico:');
+    console.log('=======================');
+    console.log(`• La saga tiene una proporción de ${maleCount}:${femaleCount} entre personajes masculinos y femeninos`);
+    console.log(`• Los droides representan el ${((naCount/totalCharacters)*100).toFixed(1)}% de los personajes`);
+    console.log(`• Hay ${maleCount > femaleCount ? 'más' : 'menos'} personajes masculinos que femeninos`);
+    console.log(`• Diferencia: ${Math.abs(maleCount - femaleCount)} personajes`);
+}
+
+async function main() {
+    try {
+        console.log('🚀 Iniciando análisis completo...\n');
+        
+        const allCharacters = await getAllCharacters();
+        console.log(`\n✅ Total de personajes obtenidos: ${allCharacters.length}`);
+        
+        const genderStats = analyzeGenders(allCharacters);
+        displayResults(genderStats, allCharacters.length);
+        
+    } catch (error) {
+        console.error('❌ Error en el análisis:', error.message);
+    }
+}
+
+main();

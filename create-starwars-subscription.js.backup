@@ -1,0 +1,146 @@
+const { spawn } = require('child_process');
+
+console.log('⭐ Creando Suscripción para la API de Star Wars');
+console.log('=============================================\n');
+
+const server = spawn('node', ['dist/index.js'], {
+  stdio: ['pipe', 'pipe', 'pipe'],
+  cwd: process.cwd()
+});
+
+let buffer = '';
+let requestId = 1;
+
+function sendRequest(method, params = {}) {
+  const request = {
+    jsonrpc: '2.0',
+    id: requestId++,
+    method: method,
+    params: params
+  };
+  
+  console.log(`📤 Enviando: ${method}`);
+  if (Object.keys(params).length > 0) {
+    console.log(`   Parámetros:`, JSON.stringify(params, null, 2));
+  }
+  
+  server.stdin.write(JSON.stringify(request) + '\n');
+}
+
+server.stdout.on('data', (data) => {
+  buffer += data.toString();
+  
+  const lines = buffer.split('\n');
+  buffer = lines.pop();
+  
+  lines.forEach(line => {
+    if (line.trim()) {
+      try {
+        const response = JSON.parse(line);
+        
+        if (response.result) {
+          if (response.result.serverInfo) {
+            console.log('✅ Servidor MCP inicializado\n');
+          } else if (response.result.content) {
+            console.log('\n📋 Respuesta:\n');
+            
+            response.result.content.forEach(content => {
+              if (content.text) {
+                try {
+                  const data = JSON.parse(content.text);
+                  console.log(JSON.stringify(data, null, 2));
+                } catch (e) {
+                  console.log(content.text);
+                }
+              }
+            });
+          }
+        } else if (response.error) {
+          console.log(`❌ Error: ${response.error.message}`);
+          if (response.error.data) {
+            console.log('   Detalles:', JSON.stringify(response.error.data, null, 2));
+          }
+        }
+      } catch (e) {
+        // Ignorar líneas que no son JSON válidas
+      }
+    }
+  });
+});
+
+server.stderr.on('data', (data) => {
+  console.log('🚨 Error del servidor:', data.toString());
+});
+
+server.on('close', (code) => {
+  console.log(`\n🔚 Proceso completado con código: ${code}`);
+  console.log('\n📊 Resumen de lo que hemos hecho:');
+  console.log('1. ✅ Creado producto "Star Wars" para organizar las APIs');
+  console.log('2. ✅ Agregado la API de Star Wars al producto');
+  console.log('3. ✅ Creado suscripción para acceder a la API');
+  console.log('\n💡 Próximos pasos:');
+  console.log('   - Usar la clave de suscripción para hacer requests a la API');
+  console.log('   - Probar endpoints como: /people, /planets, /films');
+  console.log('   - Configurar políticas de rate limiting si es necesario');
+});
+
+// Secuencia de comandos
+setTimeout(() => {
+  sendRequest('initialize', {
+    protocolVersion: '2024-11-05',
+    capabilities: {},
+    clientInfo: { name: 'star-wars-subscription', version: '1.0.0' }
+  });
+}, 500);
+
+setTimeout(() => {
+  console.log('🏗️  Paso 1: Creando producto "Star Wars"...');
+  sendRequest('tools/call', {
+    name: 'create_product',
+    arguments: {
+      productId: 'star-wars-product',
+      displayName: 'Star Wars Product',
+      description: 'Producto que incluye todas las APIs relacionadas con Star Wars',
+      subscriptionRequired: true,
+      approvalRequired: false,
+      state: 'published'
+    }
+  });
+}, 3000);
+
+setTimeout(() => {
+  console.log('\n🔗 Paso 2: Agregando API de Star Wars al producto...');
+  sendRequest('tools/call', {
+    name: 'add_api_to_product',
+    arguments: {
+      productId: 'star-wars-product',
+      apiId: 'star-wars-api'
+    }
+  });
+}, 6000);
+
+setTimeout(() => {
+  console.log('\n🔑 Paso 3: Creando suscripción para acceder a la API...');
+  sendRequest('tools/call', {
+    name: 'create_subscription',
+    arguments: {
+      subscriptionId: 'star-wars-subscription',
+      displayName: 'Star Wars API Subscription',
+      productId: 'star-wars-product'
+    }
+  });
+}, 9000);
+
+setTimeout(() => {
+  console.log('\n📋 Paso 4: Verificando suscripción creada...');
+  sendRequest('tools/call', {
+    name: 'get_subscription',
+    arguments: {
+      subscriptionId: 'star-wars-subscription'
+    }
+  });
+}, 12000);
+
+setTimeout(() => {
+  server.kill();
+}, 15000);

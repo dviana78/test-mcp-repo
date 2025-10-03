@@ -3,9 +3,9 @@
 // Script para probar la conexión a Azure APIM y listar APIs
 const { spawn } = require('child_process');
 
-console.log('🔍 Probando conexión a Azure APIM...\n');
+console.log('🔍 Testing conexión a Azure APIM...\n');
 
-// Iniciar el servidor MCP
+// Iniciar el server MCP
 const server = spawn('node', ['dist/index.js'], {
   stdio: ['pipe', 'pipe', 'pipe'],
   env: process.env
@@ -24,14 +24,14 @@ function sendMessage(method, params = {}) {
   };
   
   server.stdin.write(JSON.stringify(message) + '\n');
-  console.log('📤 Enviando:', method);
+  console.log('📤 Sending:', method);
 }
 
-// Escuchar respuestas del servidor
+// Escuchar respuestas del server
 server.stdout.on('data', (data) => {
   const response = data.toString().trim();
   if (response) {
-    // Filtrar logs del servidor
+    // Filtrar logs del server
     if (response.includes('"jsonrpc"')) {
       try {
         const parsed = JSON.parse(response);
@@ -48,7 +48,7 @@ server.stdout.on('data', (data) => {
             });
           }
           
-          // Cerrar el servidor después de obtener resultado
+          // Cerrar el server después de obtener resultado
           setTimeout(() => {
             server.kill('SIGTERM');
           }, 1000);
@@ -73,12 +73,12 @@ server.stdout.on('data', (data) => {
 server.stderr.on('data', (data) => {
   const error = data.toString();
   if (error.includes('error:')) {
-    console.log('⚠️  Error del servidor:', error);
+    console.log('⚠️  Error del server:', error);
   }
 });
 
 server.on('close', (code) => {
-  console.log(`\n🔚 Proceso terminado con código ${code}`);
+  console.log(`\n🔚 Process finished con código ${code}`);
   if (code !== 0) {
     console.log('\n❌ Error de conexión. Verifica:');
     console.log('   - Credenciales de Azure en .env');
@@ -90,7 +90,7 @@ server.on('close', (code) => {
 
 // Secuencia de inicialización
 setTimeout(() => {
-  console.log('1️⃣ Inicializando servidor MCP...');
+  console.log('1️⃣ Inicializando server MCP...');
   sendMessage('initialize', {
     protocolVersion: '2024-11-05',
     capabilities: {},
@@ -109,6 +109,6 @@ process.on('SIGINT', () => {
 });
 
 setTimeout(() => {
-  console.log('\n⏰ Timeout - cerrando servidor...');
+  console.log('\n⏰ Timeout - cerrando server...');
   server.kill('SIGTERM');
 }, 15000);

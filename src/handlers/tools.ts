@@ -338,6 +338,178 @@ export class ToolsHandler {
           },
           required: ['apiId', 'displayName', 'protoDefinition']
         }
+      },
+      {
+        name: 'list_products',
+        description: 'List all products in Azure API Management',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            filter: {
+              type: 'string',
+              description: 'OData filter expression to filter products'
+            },
+            top: {
+              type: 'number',
+              description: 'Maximum number of products to return',
+              minimum: 1,
+              maximum: 1000
+            },
+            skip: {
+              type: 'number',
+              description: 'Number of products to skip',
+              minimum: 0
+            }
+          }
+        }
+      },
+      {
+        name: 'get_product',
+        description: 'Get details of a specific product by ID',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            productId: {
+              type: 'string',
+              description: 'The ID of the product to retrieve'
+            }
+          },
+          required: ['productId']
+        }
+      },
+      {
+        name: 'create_product',
+        description: 'Create a new product in Azure API Management',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            productId: {
+              type: 'string',
+              description: 'The ID for the new product'
+            },
+            displayName: {
+              type: 'string',
+              description: 'Display name for the product'
+            },
+            description: {
+              type: 'string',
+              description: 'Description of the product'
+            },
+            subscriptionRequired: {
+              type: 'boolean',
+              description: 'Whether subscription is required for this product',
+              default: true
+            },
+            approvalRequired: {
+              type: 'boolean',
+              description: 'Whether approval is required for subscriptions',
+              default: false
+            },
+            state: {
+              type: 'string',
+              enum: ['published', 'notPublished'],
+              description: 'Product state',
+              default: 'published'
+            }
+          },
+          required: ['productId', 'displayName']
+        }
+      },
+      {
+        name: 'add_api_to_product',
+        description: 'Add an API to a product',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            productId: {
+              type: 'string',
+              description: 'The ID of the product'
+            },
+            apiId: {
+              type: 'string',
+              description: 'The ID of the API to add to the product'
+            }
+          },
+          required: ['productId', 'apiId']
+        }
+      },
+      {
+        name: 'list_subscriptions',
+        description: 'List all subscriptions in Azure API Management',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            filter: {
+              type: 'string',
+              description: 'OData filter expression to filter subscriptions'
+            },
+            top: {
+              type: 'number',
+              description: 'Maximum number of subscriptions to return',
+              minimum: 1,
+              maximum: 1000
+            },
+            skip: {
+              type: 'number',
+              description: 'Number of subscriptions to skip',
+              minimum: 0
+            }
+          }
+        }
+      },
+      {
+        name: 'create_subscription',
+        description: 'Create a new subscription for a product',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            subscriptionId: {
+              type: 'string',
+              description: 'The ID for the new subscription'
+            },
+            displayName: {
+              type: 'string',
+              description: 'Display name for the subscription'
+            },
+            productId: {
+              type: 'string',
+              description: 'The ID of the product to subscribe to'
+            },
+            userId: {
+              type: 'string',
+              description: 'The ID of the user (optional, defaults to admin)'
+            },
+            primaryKey: {
+              type: 'string',
+              description: 'Primary subscription key (optional, auto-generated if not provided)'
+            },
+            secondaryKey: {
+              type: 'string',
+              description: 'Secondary subscription key (optional, auto-generated if not provided)'
+            },
+            state: {
+              type: 'string',
+              enum: ['active', 'suspended', 'submitted', 'rejected', 'cancelled', 'expired'],
+              description: 'Subscription state',
+              default: 'active'
+            }
+          },
+          required: ['subscriptionId', 'displayName', 'productId']
+        }
+      },
+      {
+        name: 'get_subscription',
+        description: 'Get details of a specific subscription by ID',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            subscriptionId: {
+              type: 'string',
+              description: 'The ID of the subscription to retrieve'
+            }
+          },
+          required: ['subscriptionId']
+        }
       }
     ];
   }
@@ -385,6 +557,27 @@ export class ToolsHandler {
         
         case 'create_grpc_api_from_proto':
           return await this.handleCreateGrpcApiFromProto(request.arguments);
+        
+        case 'list_products':
+          return await this.handleListProducts(request.arguments);
+        
+        case 'get_product':
+          return await this.handleGetProduct(request.arguments);
+        
+        case 'create_product':
+          return await this.handleCreateProduct(request.arguments);
+        
+        case 'add_api_to_product':
+          return await this.handleAddApiToProduct(request.arguments);
+        
+        case 'list_subscriptions':
+          return await this.handleListSubscriptions(request.arguments);
+        
+        case 'create_subscription':
+          return await this.handleCreateSubscription(request.arguments);
+        
+        case 'get_subscription':
+          return await this.handleGetSubscription(request.arguments);
         
         default:
           throw new ValidationError(`Unknown tool: ${request.name}`);
@@ -750,5 +943,162 @@ export class ToolsHandler {
     } catch (error: any) {
       throw new Error(`Failed to create gRPC API from Protobuf: ${error.message}`);
     }
+  }
+
+  private async handleListProducts(args: any): Promise<McpToolResponse> {
+    const products = await this.apimService.listProducts(args.filter, args.top, args.skip);
+    
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Found ${products.length} products`,
+          products: products
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleGetProduct(args: any): Promise<McpToolResponse> {
+    if (!args.productId) {
+      throw new ValidationError('productId is required');
+    }
+
+    const product = await this.apimService.getProduct(args.productId);
+    
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Product details for ${args.productId}`,
+          product: product
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleCreateProduct(args: any): Promise<McpToolResponse> {
+    const requiredFields = ['productId', 'displayName'];
+    for (const field of requiredFields) {
+      if (!args[field]) {
+        throw new ValidationError(`${field} is required`);
+      }
+    }
+
+    const product = await this.apimService.createProduct({
+      productId: args.productId,
+      displayName: args.displayName,
+      description: args.description,
+      subscriptionRequired: args.subscriptionRequired !== false,
+      approvalRequired: args.approvalRequired || false,
+      state: args.state || 'published'
+    });
+
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Product ${args.displayName} created successfully`,
+          product: {
+            id: product.id,
+            name: product.name,
+            displayName: product.displayName,
+            description: product.description,
+            subscriptionRequired: product.subscriptionRequired,
+            approvalRequired: product.approvalRequired,
+            state: product.state
+          }
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleAddApiToProduct(args: any): Promise<McpToolResponse> {
+    const requiredFields = ['productId', 'apiId'];
+    for (const field of requiredFields) {
+      if (!args[field]) {
+        throw new ValidationError(`${field} is required`);
+      }
+    }
+
+    await this.apimService.addApiToProduct(args.productId, args.apiId);
+
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `API ${args.apiId} added to product ${args.productId} successfully`
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleListSubscriptions(args: any): Promise<McpToolResponse> {
+    const subscriptions = await this.apimService.listSubscriptions(args.filter, args.top, args.skip);
+    
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Found ${subscriptions.length} subscriptions`,
+          subscriptions: subscriptions
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleCreateSubscription(args: any): Promise<McpToolResponse> {
+    const requiredFields = ['subscriptionId', 'displayName', 'productId'];
+    for (const field of requiredFields) {
+      if (!args[field]) {
+        throw new ValidationError(`${field} is required`);
+      }
+    }
+
+    const subscription = await this.apimService.createSubscription({
+      subscriptionId: args.subscriptionId,
+      displayName: args.displayName,
+      productId: args.productId,
+      userId: args.userId,
+      primaryKey: args.primaryKey,
+      secondaryKey: args.secondaryKey,
+      state: args.state || 'active'
+    });
+
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Subscription ${args.displayName} created successfully`,
+          subscription: {
+            id: subscription.id,
+            name: subscription.name,
+            displayName: subscription.displayName,
+            productId: args.productId,
+            state: subscription.state,
+            primaryKey: subscription.primaryKey,
+            secondaryKey: subscription.secondaryKey
+          }
+        }, null, 2)
+      }]
+    };
+  }
+
+  private async handleGetSubscription(args: any): Promise<McpToolResponse> {
+    if (!args.subscriptionId) {
+      throw new ValidationError('subscriptionId is required');
+    }
+
+    const subscription = await this.apimService.getSubscription(args.subscriptionId);
+    
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          message: `Subscription details for ${args.subscriptionId}`,
+          subscription: subscription
+        }, null, 2)
+      }]
+    };
   }
 }

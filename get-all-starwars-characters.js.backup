@@ -1,0 +1,153 @@
+const https = require('https');
+
+console.log('👥 Lista Completa de Personajes de Star Wars');
+console.log('============================================\n');
+
+// Configuración de la API
+const APIM_BASE_URL = 'apim-dviana78-dev.azure-api.net';
+const API_PATH = '/swapi/v1/people';
+const SUBSCRIPTION_KEY = 'd5fde29d155f4f0194e259d07818ec61'; // Clave obtenida de la suscripción
+
+function makeRequest(path, page = 1) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: APIM_BASE_URL,
+      port: 443,
+      path: `${path}?page=${page}`,
+      method: 'GET',
+      headers: {
+        'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY,
+        'User-Agent': 'Star-Wars-Client/1.0'
+      }
+    };
+
+    console.log(`📡 Consultando página ${page}: https://${APIM_BASE_URL}${path}?page=${page}`);
+    
+    const req = https.request(options, (res) => {
+      let data = '';
+      
+      console.log(`📊 Status: ${res.statusCode}`);
+      
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      
+      res.on('end', () => {
+        try {
+          if (res.statusCode === 200) {
+            const result = JSON.parse(data);
+            resolve(result);
+          } else {
+            console.log(`❌ Error HTTP ${res.statusCode}:`);
+            console.log(data);
+            reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+          }
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
+}
+
+async function getAllCharacters() {
+  let allCharacters = [];
+  let currentPage = 1;
+  let hasNextPage = true;
+  
+  try {
+    console.log('🚀 Iniciando consulta a la API de Star Wars...\n');
+    
+    while (hasNextPage && currentPage <= 10) { // Límite de seguridad
+      const response = await makeRequest(API_PATH, currentPage);
+      
+      if (response.results && Array.isArray(response.results)) {
+        allCharacters = allCharacters.concat(response.results);
+        console.log(`✅ Página ${currentPage}: ${response.results.length} personajes encontrados`);
+        console.log(`📊 Total hasta ahora: ${allCharacters.length} personajes`);
+        
+        // Verificar si hay más páginas
+        hasNextPage = !!response.next;
+        console.log(`🔄 ¿Hay más páginas? ${hasNextPage ? 'Sí' : 'No'}`);
+        
+        if (response.count) {
+          console.log(`🎯 Total esperado: ${response.count} personajes\n`);
+        }
+        
+        currentPage++;
+      } else {
+        console.log('❌ No se encontraron resultados en la respuesta');
+        hasNextPage = false;
+      }
+      
+      // Pausa entre requests para ser respetuoso con la API
+      if (hasNextPage) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+    
+    console.log(`\n🎉 ¡Consulta completada!`);
+    console.log(`📋 Total de personajes obtenidos: ${allCharacters.length}\n`);
+    console.log('=' * 60);
+    console.log('🌟 LISTA COMPLETA DE PERSONAJES DE STAR WARS 🌟');
+    console.log('=' * 60);
+    
+    allCharacters.forEach((character, index) => {
+      console.log(`\n${index + 1}. 👤 ${character.name}`);
+      console.log(`   📏 Altura: ${character.height === 'unknown' ? 'Desconocida' : character.height + ' cm'}`);
+      console.log(`   ⚖️  Peso: ${character.mass === 'unknown' ? 'Desconocido' : character.mass + ' kg'}`);
+      console.log(`   🎨 Cabello: ${character.hair_color === 'unknown' ? 'Desconocido' : character.hair_color}`);
+      console.log(`   👁️  Ojos: ${character.eye_color === 'unknown' ? 'Desconocidos' : character.eye_color}`);
+      console.log(`   🌌 Piel: ${character.skin_color === 'unknown' ? 'Desconocida' : character.skin_color}`);
+      console.log(`   🎂 Nacimiento: ${character.birth_year === 'unknown' ? 'Desconocido' : character.birth_year}`);
+      console.log(`   ⚧️  Género: ${character.gender === 'unknown' ? 'Desconocido' : character.gender}`);
+      
+      // Extraer ID del planeta desde la URL
+      if (character.homeworld) {
+        const planetId = character.homeworld.split('/').filter(x => x).pop();
+        console.log(`   🌍 Planeta: ID ${planetId}`);
+      }
+      
+      // Películas en las que aparece
+      if (character.films && character.films.length > 0) {
+        console.log(`   🎬 Películas: ${character.films.length} apariciones`);
+      }
+    });
+    
+    console.log(`\n${'=' * 60}`);
+    console.log(`📊 ESTADÍSTICAS:`);
+    console.log(`   Total personajes: ${allCharacters.length}`);
+    
+    // Estadísticas adicionales
+    const genders = {};
+    const species = {};
+    allCharacters.forEach(char => {
+      genders[char.gender] = (genders[char.gender] || 0) + 1;
+    });
+    
+    console.log(`   Por género:`);
+    Object.entries(genders).forEach(([gender, count]) => {
+      console.log(`     ${gender}: ${count}`);
+    });
+    
+  } catch (error) {
+    console.log('\n❌ Error al obtener personajes:', error.message);
+    
+    if (error.message.includes('401')) {
+      console.log('🔑 Error de autenticación. Verifica la clave de suscripción.');
+    } else if (error.message.includes('403')) {
+      console.log('🚫 Acceso denegado. Verifica los permisos de la suscripción.');
+    } else if (error.message.includes('404')) {
+      console.log('🔍 Endpoint no encontrado. Verifica la URL de la API.');
+    }
+  }
+}
+
+// Ejecutar la consulta
+getAllCharacters();

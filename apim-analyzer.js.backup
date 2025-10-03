@@ -1,15 +1,15 @@
-#!/usr/bin/env Node
+#!/usr/bin/env node
 
 /**
- * Test completo de Azure APIM - Verify service y APIs
+ * Test completo de Azure APIM - Verificar servicio y APIs
  */
 
 const { spawn } = require('child_process');
 
-console.log('🔍 Complete Azure APIM Analysis');
+console.log('🔍 Análisis completo de Azure APIM');
 console.log('==================================\n');
 
-const server = spawn('Node', ['dist/index.js'], {
+const server = spawn('node', ['dist/index.js'], {
   stdio: ['pipe', 'pipe', 'pipe']
 });
 
@@ -37,15 +37,15 @@ server.stdout.on('data', (data) => {
         const response = JSON.parse(line);
         handleResponse(response);
       } catch (e) {
-        // Ignore lines that are not JSON válido
+        // Ignorar líneas que no son JSON válido
       }
     }
   }
 });
 
 function handleResponse(response) {
-  if (response.Error) {
-    console.log(`❌ Error (ID ${response.id}): ${response.Error.message}`);
+  if (response.error) {
+    console.log(`❌ Error (ID ${response.id}): ${response.error.message}`);
     return;
   }
 
@@ -92,7 +92,7 @@ function handleResponse(response) {
                 });
               } else {
                 console.log('📭 No APIs found in this APIM instance');
-                console.log('   This is Normal for a new Azure APIM instance');
+                console.log('   This is normal for a new Azure APIM instance');
               }
             } catch (e) {
               console.log(`   Respuesta: ${content.text}`);
@@ -105,13 +105,13 @@ function handleResponse(response) {
       break;
       
     case 5: // service info
-      console.log('\n🏢 Information del service APIM:');
+      console.log('\n🏢 Información del servicio APIM:');
       if (response.result.contents && response.result.contents.length > 0) {
         response.result.contents.forEach(content => {
           if (content.text) {
             try {
               const serviceInfo = JSON.parse(content.text);
-              console.log(`   service: ${serviceInfo.name || 'N/A'}`);
+              console.log(`   Servicio: ${serviceInfo.name || 'N/A'}`);
               console.log(`   Grupo de recursos: ${serviceInfo.resourceGroup || 'N/A'}`);
               console.log(`   Ubicación: ${serviceInfo.location || 'N/A'}`);
               console.log(`   Tier: ${serviceInfo.sku || 'N/A'}`);
@@ -167,7 +167,7 @@ setTimeout(() => {
 }, 5000);
 
 setTimeout(() => {
-  console.log('5️⃣ Getting info del service...');
+  console.log('5️⃣ Obteniendo info del servicio...');
   sendRequest('resources/read', {
     uri: 'apim://service/info'
   });

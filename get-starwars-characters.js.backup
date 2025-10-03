@@ -1,0 +1,107 @@
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
+
+console.log('🌟 Obteniendo Personajes de Star Wars');
+console.log('=====================================');
+
+async function getStarWarsCharacters() {
+    console.log('🔍 Método 1: Acceso directo al backend original...');
+    
+    try {
+        // Usar curl para obtener datos directamente del backend
+        const { stdout, stderr } = await execPromise('curl -s https://swapi.dev/api/people/');
+        
+        if (stderr) {
+            console.log('⚠️ Error con curl:', stderr);
+            return;
+        }
+
+        const data = JSON.parse(stdout);
+        console.log(`✅ Éxito! Encontrados ${data.count} personajes`);
+        console.log('\n👥 Personajes de Star Wars:');
+        console.log('===========================');
+        
+        // Mostrar los primeros personajes
+        data.results.forEach((character, index) => {
+            console.log(`${index + 1}. ${character.name}`);
+            console.log(`   🏠 Planeta: ${character.homeworld.split('/').slice(-2, -1)[0] || 'Desconocido'}`);
+            console.log(`   👁️ Color de ojos: ${character.eye_color}`);
+            console.log(`   🎭 Género: ${character.gender}`);
+            console.log('');
+        });
+
+        // Si hay más páginas, obtener algunos personajes adicionales
+        if (data.next) {
+            console.log('📄 Obteniendo más personajes...');
+            const { stdout: page2 } = await execPromise('curl -s https://swapi.dev/api/people/?page=2');
+            const data2 = JSON.parse(page2);
+            
+            console.log('\n👥 Más personajes:');
+            console.log('==================');
+            data2.results.slice(0, 5).forEach((character, index) => {
+                console.log(`${index + 11}. ${character.name}`);
+                console.log(`   🏠 Planeta: ${character.homeworld.split('/').slice(-2, -1)[0] || 'Desconocido'}`);
+                console.log(`   👁️ Color de ojos: ${character.eye_color}`);
+                console.log(`   � Género: ${character.gender}`);
+                console.log('');
+            });
+        }
+
+        console.log('💡 Nota sobre APIM:');
+        console.log('===================');
+        console.log('La API de Star Wars está funcionando perfectamente en el backend original.');
+        console.log('El problema está en la configuración de Azure APIM que necesita ajustes.');
+        console.log('Para solucionarlo, se necesita:');
+        console.log('1. Verificar la configuración del Service URL');
+        console.log('2. Configurar las políticas de rewrite de URL');
+        console.log('3. Asegurar que los endpoints estén mapeados correctamente');
+
+    } catch (error) {
+        console.log('❌ Error obteniendo personajes:', error.message);
+        console.log('🔄 Intentando método alternativo...');
+        
+        // Método alternativo usando Node.js
+        const https = require('https');
+        
+        return new Promise((resolve, reject) => {
+            const options = {
+                hostname: 'swapi.dev',
+                port: 443,
+                path: '/api/people/',
+                method: 'GET'
+            };
+
+            const req = https.request(options, (res) => {
+                let data = '';
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+                
+                res.on('end', () => {
+                    try {
+                        const jsonData = JSON.parse(data);
+                        console.log(`✅ Método alternativo exitoso! ${jsonData.count} personajes`);
+                        
+                        console.log('\n� Personajes de Star Wars:');
+                        console.log('===========================');
+                        jsonData.results.forEach((character, index) => {
+                            console.log(`${index + 1}. ${character.name}`);
+                            console.log(`   🎬 Apariciones: ${character.films.length} películas`);
+                            console.log(`   📏 Altura: ${character.height} cm`);
+                            console.log('');
+                        });
+                        resolve();
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            });
+
+            req.on('error', reject);
+            req.end();
+        });
+    }
+}
+
+getStarWarsCharacters().catch(console.error);
