@@ -17,7 +17,16 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
     "clean": "rimraf dist",
-    "prebuild": "npm run clean"
+    "prebuild": "npm run clean",
+    "starwars:characters": "node scripts/starwars/get-starwars-characters.js",
+    "starwars:planets": "node scripts/starwars/get-starwars-planets.js",
+    "starwars:genders": "node scripts/starwars/analyze-starwars-genders.js",
+    "starwars:subscription": "node scripts/starwars/create-starwars-subscription.js",
+    "apim:analyze": "node scripts/apim/apim-analyzer.js",
+    "apim:test": "node scripts/apim/test-apim-apis.js",
+    "tools:list": "node scripts/tools/list-tools.js",
+    "tools:detailed": "node scripts/tools/list-tools-detailed.js",
+    "organize": "node organize-repository.js"
   },
   "keywords": ["mcp", "azure", "apim", "api-management", "typescript"],
   "author": "dviana78",
