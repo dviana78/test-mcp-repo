@@ -101,59 +101,59 @@ npm run build
 ### Step 4: Restart VS Code
 After adding the configuration, restart VS Code completely.
 
-### Paso 5: Verificar la Conexión
-1. Abre el Command Palette (`Ctrl + Shift + P`)
-2. Busca comandos relacionados con MCP
-3. O usa GitHub Copilot con `@azure-apim`
+### Step 5: Verify Connection
+1. Open the Command Palette (`Ctrl + Shift + P`)
+2. Search for MCP-related commands
+3. Or use GitHub Copilot with `@azure-apim`
 
-## 🧪 Verificar que Funciona
+## 🧪 Verify It Works
 
-### Método 1: Command Palette
+### Method 1: Command Palette
 1. `Ctrl + Shift + P`
-2. Busca "MCP" o "Model Context Protocol"
-3. Deberías ver tu servidor listado
+2. Search for "MCP" or "Model Context Protocol"
+3. You should see your server listed
 
-### Método 2: GitHub Copilot Chat
-En el chat de Copilot, prueba:
+### Method 2: GitHub Copilot Chat
+In Copilot chat, try:
 ```
 @azure-apim list all APIs
 ```
 
-### Método 3: Logs de VS Code
+### Method 3: VS Code Logs
 1. `View > Output`
-2. Selecciona "MCP" o "GitHub Copilot" en el dropdown
-3. Busca mensajes relacionados con tu servidor
+2. Select "MCP" or "GitHub Copilot" in the dropdown
+3. Look for messages related to your server
 
 ## 🐛 Troubleshooting
 
-### Problema: Servidor no aparece
-**Solución**: 
-- Verifica que el path al `dist/index.js` sea correcto
-- Asegúrate de que el proyecto esté compilado (`npm run build`)
-- Reinicia VS Code completamente
+### Problem: Server doesn't appear
+**Solution**: 
+- Verify that the path to `dist/index.js` is correct
+- Make sure the project is compiled (`npm run build`)
+- Restart VS Code completely
 
-### Problema: Error de permisos
-**Solución**:
-- Verifica variables de entorno de Azure
-- Ejecuta VS Code como administrador si es necesario
+### Problem: Permission error
+**Solution**:
+- Verify Azure environment variables
+- Run VS Code as administrator if necessary
 
-### Problema: No se conecta a Azure
-**Solución**:
-- Verifica credenciales de Azure
-- Prueba el servidor independientemente con `node test-stdio-server.js`
+### Problem: Doesn't connect to Azure
+**Solution**:
+- Verify Azure credentials
+- Test the server independently with `node test-stdio-server.js`
 
-## 📱 Comandos Disponibles una vez Configurado
+## 📱 Available Commands Once Configured
 
-Una vez que el MCP Server esté funcionando en VS Code, podrás usar:
+Once the MCP Server is running in VS Code, you'll be able to use:
 
-- `@azure-apim list APIs` - Lista todas las APIs
-- `@azure-apim get API swagger-petstore` - Obtiene detalles de una API
-- `@azure-apim create version for star-wars-api` - Crea nueva versión
-- `@azure-apim list revisions for star-wars-api` - Lista revisiones
+- `@azure-apim list APIs` - List all APIs
+- `@azure-apim get API swagger-petstore` - Get API details
+- `@azure-apim create version for star-wars-api` - Create new version
+- `@azure-apim list revisions for star-wars-api` - List revisions
 
-## ✅ Confirmación Final
+## ✅ Final Confirmation
 
-Tu MCP Server estará correctamente configurado cuando:
-1. No haya errores en los logs de VS Code
-2. GitHub Copilot reconozca el prefijo `@azure-apim`
-3. Puedas ejecutar comandos y recibir respuestas de Azure APIM
+Your MCP Server will be correctly configured when:
+1. There are no errors in VS Code logs
+2. GitHub Copilot recognizes the `@azure-apim` prefix
+3. You can execute commands and receive responses from Azure APIM

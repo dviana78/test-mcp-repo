@@ -65,9 +65,9 @@ server.stdout.on('data', (data) => {
               }
             });
           } else if (response.result.tools) {
-            console.log('✅ Herramientas disponibles:', response.result.tools.length);
+            console.log('✅ Available tools:', response.result.tools.length);
           } else if (response.result.serverInfo) {
-            console.log('✅ Servidor inicializado correctamente');
+            console.log('✅ Server initialized correctly');
           }
         } else if (response.error) {
           console.log(`❌ Error: ${response.error.message}`);
@@ -108,12 +108,12 @@ setTimeout(() => {
 }, 1000);
 
 setTimeout(() => {
-  console.log('\n2. Solicitando herramientas disponibles...');
+  console.log('\n2. Requesting available tools...');
   sendRequest(2, 'tools/list');
 }, 3000);
 
 setTimeout(() => {
-  console.log('\n3. Ejecutando list_apis...');
+  console.log('\n3. Executing list_apis...');
   sendRequest(3, 'tools/call', {
     name: 'list_apis',
     arguments: {}

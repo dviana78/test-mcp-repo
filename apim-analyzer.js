@@ -53,12 +53,12 @@ function handleResponse(response) {
 
   switch (response.id) {
     case 1: // initialize
-      console.log('✅ Servidor MCP inicializado correctamente');
-      console.log(`   Servidor: ${response.result.serverInfo.name} v${response.result.serverInfo.version}`);
+      console.log('✅ MCP Server initialized correctly');
+      console.log(`   Server: ${response.result.serverInfo.name} v${response.result.serverInfo.version}`);
       break;
       
     case 2: // tools/list
-      console.log(`\n📋 Herramientas disponibles: ${response.result.tools.length}`);
+      console.log(`\n📋 Available tools: ${response.result.tools.length}`);
       response.result.tools.forEach(tool => {
         console.log(`   • ${tool.name} - ${tool.description}`);
       });
@@ -84,15 +84,15 @@ function handleResponse(response) {
                   console.log(`\n${index + 1}. 📋 ${api.displayName || api.name}`);
                   console.log(`   🆔 ID: ${api.id}`);
                   console.log(`   📍 Path: ${api.path}`);
-                  console.log(`   🌐 Protocolos: ${api.protocols?.join(', ') || 'N/A'}`);
+                  console.log(`   🌐 Protocols: ${api.protocols?.join(', ') || 'N/A'}`);
                   console.log(`   🔗 Service URL: ${api.serviceUrl || 'N/A'}`);
-                  console.log(`   📄 Descripción: ${api.description || 'N/A'}`);
-                  console.log(`   🟢 Estado: ${api.isOnline ? 'Online' : 'Offline'}`);
-                  console.log(`   🔐 Suscripción: ${api.subscriptionRequired ? 'Requerida' : 'No requerida'}`);
+                  console.log(`   📄 Description: ${api.description || 'N/A'}`);
+                  console.log(`   🟢 Status: ${api.isOnline ? 'Online' : 'Offline'}`);
+                  console.log(`   🔐 Subscription: ${api.subscriptionRequired ? 'Required' : 'Not required'}`);
                 });
               } else {
-                console.log('📭 No se encontraron APIs en esta instancia de APIM');
-                console.log('   Esto es normal para una instancia nueva de Azure APIM');
+                console.log('📭 No APIs found in this APIM instance');
+                console.log('   This is normal for a new Azure APIM instance');
               }
             } catch (e) {
               console.log(`   Respuesta: ${content.text}`);
@@ -127,15 +127,15 @@ function handleResponse(response) {
 
 server.on('close', (code) => {
   console.log('\n=====================================');
-  console.log('✅ Análisis completado');
-  console.log('\n💡 Próximos pasos:');
-  console.log('   1. Si no tienes APIs, puedes crear una usando el Azure Portal');
-  console.log('   2. Importar APIs existentes desde OpenAPI/Swagger');
-  console.log('   3. Usar las herramientas MCP para gestionar APIs');
-  console.log('\n🛠️  Herramientas MCP disponibles:');
-  console.log('   • create_api_version - Crear versiones de API');
-  console.log('   • create_api_revision - Crear revisiones de API');
-  console.log('   • get_api - Obtener detalles de API específica');
+  console.log('✅ Analysis completed');
+  console.log('\n💡 Next steps:');
+  console.log('   1. If you don\'t have APIs, you can create one using the Azure Portal');
+  console.log('   2. Import existing APIs from OpenAPI/Swagger');
+  console.log('   3. Use MCP tools to manage APIs');
+  console.log('\n🛠️  Available MCP tools:');
+  console.log('   • create_api_version - Create API versions');
+  console.log('   • create_api_revision - Create API revisions');
+  console.log('   • get_api - Get specific API details');
 });
 
 // Secuencia de pruebas
@@ -149,12 +149,12 @@ setTimeout(() => {
 }, 500);
 
 setTimeout(() => {
-  console.log('2️⃣ Obteniendo herramientas...');
+  console.log('2️⃣ Getting tools...');
   sendRequest('tools/list');
 }, 2000);
 
 setTimeout(() => {
-  console.log('3️⃣ Obteniendo recursos...');
+  console.log('3️⃣ Getting resources...');
   sendRequest('resources/list');
 }, 3500);
 

@@ -136,7 +136,7 @@ export interface BackendInfo {
 }
 
 // Legacy interfaces for backward compatibility
-interface AzureResource {
+export interface AzureResource {
     id: string;
     name: string;
     type: string;
@@ -144,17 +144,15 @@ interface AzureResource {
     properties: Record<string, any>;
 }
 
-interface AzureApiManagement {
+export interface AzureApiManagement {
     resourceGroup: string;
     serviceName: string;
     apiVersion: string;
     subscriptionId: string;
 }
 
-interface AzureCredentials {
+export interface AzureCredentials {
     tenantId: string;
     clientId: string;
     clientSecret: string;
 }
-
-export { AzureResource, AzureApiManagement, AzureCredentials };
