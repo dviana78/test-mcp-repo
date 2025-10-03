@@ -1,10 +1,10 @@
-# 🚀 Guía: Añadir MCP Server tipo STDIO a VS Code
+# 🚀 Guide: Adding STDIO-type MCP Server to VS Code
 
-## 📋 Configuraciones Necesarias
+## 📋 Required Configurations
 
-### 1️⃣ **Configuración Local del Workspace** (Ya completada ✅)
+### 1️⃣ **Local Workspace Configuration** (Already completed ✅)
 
-**Archivo**: `.vscode/mcp.json`
+**File**: `.vscode/mcp.json`
 ```json
 {
   "mcpServers": {
@@ -22,15 +22,15 @@
 }
 ```
 
-### 2️⃣ **Configuración Global de VS Code**
+### 2️⃣ **Global VS Code Configuration**
 
-Para que VS Code reconozca tu MCP Server globalmente, necesitas añadirlo a tu configuración de usuario:
+For VS Code to recognize your MCP Server globally, you need to add it to your user configuration:
 
-#### **Opción A: A través de la interfaz de VS Code**
-1. Abre VS Code
-2. Presiona `Ctrl + Shift + P` (Cmd + Shift + P en Mac)
-3. Busca "Preferences: Open User Settings (JSON)"
-4. Añade esta configuración:
+#### **Option A: Through VS Code interface**
+1. Open VS Code
+2. Press `Ctrl + Shift + P` (Cmd + Shift + P on Mac)
+3. Search for "Preferences: Open User Settings (JSON)"
+4. Add this configuration:
 
 ```json
 {
@@ -49,12 +49,12 @@ Para que VS Code reconozca tu MCP Server globalmente, necesitas añadirlo a tu c
 }
 ```
 
-#### **Opción B: Archivo de configuración directo**
-**Ubicación**: `%APPDATA%\Code\User\settings.json` (Windows)
+#### **Option B: Direct configuration file**
+**Location**: `%APPDATA%\Code\User\settings.json` (Windows)
 
-### 3️⃣ **Para GitHub Copilot Específicamente**
+### 3️⃣ **For GitHub Copilot Specifically**
 
-Si quieres que GitHub Copilot use tu MCP Server, añade esta configuración:
+If you want GitHub Copilot to use your MCP Server, add this configuration:
 
 ```json
 {
@@ -73,33 +73,33 @@ Si quieres que GitHub Copilot use tu MCP Server, añade esta configuración:
 }
 ```
 
-## 🔧 Pasos para Configurar
+## 🔧 Setup Steps
 
-### Paso 1: Instalar Extensiones Necesarias
+### Step 1: Install Required Extensions
 ```bash
-# En VS Code, instala estas extensiones:
-# - GitHub Copilot (si no la tienes)
-# - MCP Extension (si está disponible)
+# In VS Code, install these extensions:
+# - GitHub Copilot (if you don't have it)
+# - MCP Extension (if available)
 ```
 
-### Paso 2: Configurar Variables de Entorno
-Asegúrate de que estas variables estén configuradas en tu sistema:
+### Step 2: Configure Environment Variables
+Make sure these variables are configured in your system:
 ```env
-AZURE_SUBSCRIPTION_ID=tu-subscription-id
-AZURE_RESOURCE_GROUP=tu-resource-group
-AZURE_APIM_SERVICE_NAME=tu-apim-service
-AZURE_CLIENT_ID=tu-client-id
-AZURE_CLIENT_SECRET=tu-client-secret
-AZURE_TENANT_ID=tu-tenant-id
+AZURE_SUBSCRIPTION_ID=your-subscription-id
+AZURE_RESOURCE_GROUP=your-resource-group
+AZURE_APIM_SERVICE_NAME=your-apim-service
+AZURE_CLIENT_ID=your-client-id
+AZURE_CLIENT_SECRET=your-client-secret
+AZURE_TENANT_ID=your-tenant-id
 ```
 
-### Paso 3: Construir el Proyecto
+### Step 3: Build the Project
 ```bash
 npm run build
 ```
 
-### Paso 4: Reiniciar VS Code
-Después de añadir la configuración, reinicia VS Code completamente.
+### Step 4: Restart VS Code
+After adding the configuration, restart VS Code completely.
 
 ### Paso 5: Verificar la Conexión
 1. Abre el Command Palette (`Ctrl + Shift + P`)

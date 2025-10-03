@@ -1,34 +1,34 @@
 # Summary: New gRPC API Creation Tool Implementation
 
-## 🎯 **COMPLETADO CON ÉXITO**
+## 🎯 **SUCCESSFULLY COMPLETED**
 
-### ✅ **Nueva Herramienta: `create_grpc_api_from_proto`**
+### ✅ **New Tool: `create_grpc_api_from_proto`**
 
-He implementado exitosamente una nueva herramienta de creación de APIs gRPC con las siguientes características:
+Successfully implemented a new gRPC API creation tool with the following features:
 
-#### **Funcionalidades Implementadas:**
+#### **Implemented Functionalities:**
 
-1. **Creación de API gRPC desde definiciones Protobuf** ✅
-   - Acepta archivos `.proto` completos con servicios y mensajes
-   - Validación de sintaxis Protobuf básica
-   - Soporte para servicios múltiples en un solo archivo
+1. **gRPC API Creation from Protobuf definitions** ✅
+   - Accepts complete `.proto` files with services and messages
+   - Basic Protobuf syntax validation
+   - Support for multiple services in a single file
 
-2. **Soporte completo de versionado** ✅
-   - **Versioning por Segmento**: `/api/v1/grpc/service`
-   - **Versioning por Query**: `/api/grpc/service?api-version=v1`
-   - **Versioning por Header**: `X-API-Version: v1`
-   - Creación automática de conjuntos de versión
+2. **Complete versioning support** ✅
+   - **Segment Versioning**: `/api/v1/grpc/service`
+   - **Query Versioning**: `/api/grpc/service?api-version=v1`
+   - **Header Versioning**: `X-API-Version: v1`
+   - Automatic version set creation
 
-3. **Configuración flexible** ✅
-   - Protocolos configurables (gRPC/gRPCs/HTTP/HTTPS)
-   - URLs de servicio personalizables
-   - Requisitos de suscripción opcionales
-   - Paths de API personalizables
+3. **Flexible configuration** ✅
+   - Configurable protocols (gRPC/gRPCs/HTTP/HTTPS)
+   - Customizable service URLs
+   - Optional subscription requirements
+   - Customizable API paths
 
-#### **Implementación Técnica:**
+#### **Technical Implementation:**
 
 ```typescript
-// Herramienta definida en handlers/tools.ts
+// Tool defined in handlers/tools.ts
 create_grpc_api_from_proto: {
   name: 'create_grpc_api_from_proto',
   description: 'Create a new gRPC API from Protobuf definition with optional versioning',
@@ -40,33 +40,33 @@ create_grpc_api_from_proto: {
       protoDefinition: { type: 'string', description: 'Complete Protobuf definition (.proto file content)' },
       initialVersion: { type: 'string', description: 'Initial version (e.g., "v1", "v2.0")' },
       versioningScheme: { type: 'string', enum: ['Segment', 'Query', 'Header'] },
-      // ... más parámetros
+      // ... more parameters
     }
   }
 }
 ```
 
-#### **Adaptación a Azure APIM:**
+#### **Azure APIM Adaptation:**
 
-⚠️ **Nota Técnica Importante**: Azure API Management no tiene soporte nativo completo para APIs gRPC. La implementación actual crea las APIs como **REST APIs con documentación Protobuf** embebida en la descripción, lo que permite:
+⚠️ **Important Technical Note**: Azure API Management does not have complete native support for gRPC APIs. The current implementation creates APIs as **REST APIs with embedded Protobuf documentation** in the description, which allows:
 
-- Gestión a través de Azure APIM como cualquier API REST
-- Documentación Protobuf completa visible en el portal
-- Aplicación de políticas, límites de tasa, y seguridad de APIM
-- Versionado completo usando los mecanismos estándar de APIM
+- Management through Azure APIM like any REST API
+- Complete Protobuf documentation visible in the portal
+- Application of APIM policies, rate limits, and security
+- Full versioning using APIM's standard mechanisms
 
-#### **Pruebas Realizadas:**
+#### **Tests Performed:**
 
 ```bash
-📊 Resumen de Pruebas:
-✅ Test 1: Creación básica de API gRPC: PASSED
-✅ Test 2: API gRPC con versionado Segment: PASSED  
-✅ Test 3: API gRPC con versionado Query: PASSED
-✅ Test 4: API gRPC con versionado Header: PASSED
-📈 Tasa de éxito: 100.0%
+📊 Test Summary:
+✅ Test 1: Basic gRPC API creation: PASSED
+✅ Test 2: gRPC API with Segment versioning: PASSED  
+✅ Test 3: gRPC API with Query versioning: PASSED
+✅ Test 4: gRPC API with Header versioning: PASSED
+📈 Success rate: 100.0%
 ```
 
-#### **Ejemplo de Uso:**
+#### **Usage Example:**
 
 ```json
 {
@@ -89,66 +89,66 @@ create_grpc_api_from_proto: {
 }
 ```
 
-#### **Archivos Modificados:**
+#### **Modified Files:**
 
 1. **`src/handlers/tools.ts`**:
-   - ✅ Definición de herramienta `create_grpc_api_from_proto`
-   - ✅ Manejador `handleCreateGrpcApiFromProto`
-   - ✅ Validación de parámetros Protobuf
-   - ✅ Soporte completo de versionado
+   - ✅ `create_grpc_api_from_proto` tool definition
+   - ✅ `handleCreateGrpcApiFromProto` handler
+   - ✅ Protobuf parameter validation
+   - ✅ Complete versioning support
 
 2. **`src/services/apim-service.ts`**:
-   - ✅ Método `createGrpcApiFromProtoWithVersioning`
-   - ✅ Validación de definiciones Protobuf
-   - ✅ Creación de conjuntos de versión para gRPC
-   - ✅ Manejo de errores específicos Azure APIM
+   - ✅ `createGrpcApiFromProtoWithVersioning` method
+   - ✅ Protobuf definition validation
+   - ✅ Version set creation for gRPC
+   - ✅ Azure APIM specific error handling
 
-#### **Características Técnicas Avanzadas:**
+#### **Advanced Technical Features:**
 
-- **Validación Protobuf**: Verifica sintaxis `service` y `rpc`
-- **Creación automática de Version Sets**: Para APIs versionadas
-- **Manejo inteligente de protocolos**: Filtra protocolos no compatibles
-- **Logging detallado**: Para troubleshooting y monitoreo
-- **Manejo de errores**: Mensajes específicos para diferentes fallos
+- **Protobuf Validation**: Verifies `service` and `rpc` syntax
+- **Automatic Version Set Creation**: For versioned APIs
+- **Intelligent Protocol Handling**: Filters incompatible protocols
+- **Detailed Logging**: For troubleshooting and monitoring
+- **Error Handling**: Specific messages for different failures
 
-## 🏗️ **Estado del MCP Server**
+## 🏗️ **MCP Server Status**
 
-### **Herramientas Totales Implementadas: 10**
+### **Total Implemented Tools: 10**
 
-1. ✅ `list_apis` - Listar todas las APIs
-2. ✅ `get_api` - Obtener detalles de API específica  
-3. ✅ `get_api_operations` - Obtener operaciones de API
-4. ✅ `get_api_products` - Obtener productos de API
-5. ✅ `create_api_revision` - Crear revisión de API
-6. ✅ `create_api_version` - Crear versión de API
-7. ✅ `list_api_revisions` - Listar revisiones de API
-8. ✅ `list_api_versions` - Listar versiones de API
-9. ✅ `create_api_from_yaml` - Crear API desde contrato YAML/OpenAPI
-10. ✅ **`create_grpc_api_from_proto`** - **NUEVA: Crear API gRPC desde Protobuf**
+1. ✅ `list_apis` - List all APIs
+2. ✅ `get_api` - Get specific API details  
+3. ✅ `get_api_operations` - Get API operations
+4. ✅ `get_api_products` - Get API products
+5. ✅ `create_api_revision` - Create API revision
+6. ✅ `create_api_version` - Create API version
+7. ✅ `list_api_revisions` - List API revisions
+8. ✅ `list_api_versions` - List API versions
+9. ✅ `create_api_from_yaml` - Create API from YAML/OpenAPI contract
+10. ✅ **`create_grpc_api_from_proto`** - **NEW: Create gRPC API from Protobuf**
 
-### **Capacidades del Servidor:**
+### **Server Capabilities:**
 
-- 🔗 **Conexión Azure APIM**: Completamente funcional
-- 📝 **Protocolo MCP**: Estándar 2024-11-05 implementado
-- 🏗️ **Arquitectura TypeScript**: Profesional y escalable
-- 🔧 **Configuración VS Code**: Completa con tasks y debugging
-- 🌍 **Interfaz en inglés**: Completamente internacionalizada
-- ✨ **Versionado avanzado**: Soporte completo para Segment/Query/Header
-- 📄 **Contratos API**: Soporte YAML/OpenAPI y Protobuf
+- 🔗 **Azure APIM Connection**: Fully functional
+- 📝 **MCP Protocol**: Standard 2024-11-05 implemented
+- 🏗️ **TypeScript Architecture**: Professional and scalable
+- 🔧 **VS Code Configuration**: Complete with tasks and debugging
+- 🌍 **English Interface**: Completely internationalized
+- ✨ **Advanced Versioning**: Full support for Segment/Query/Header
+- 📄 **API Contracts**: YAML/OpenAPI and Protobuf support
 
-## 🎖️ **Logro Principal**
+## 🎖️ **Main Achievement**
 
-**La nueva herramienta `create_grpc_api_from_proto` está COMPLETAMENTE IMPLEMENTADA y FUNCIONAL**, ofreciendo:**
+**The new `create_grpc_api_from_proto` tool is COMPLETELY IMPLEMENTED and FUNCTIONAL**, offering:**
 
-- ✅ Creación de APIs desde definiciones Protobuf completas
-- ✅ Versionado avanzado con 3 esquemas diferentes  
-- ✅ Integración perfecta con Azure API Management
-- ✅ Validación robusta y manejo de errores
-- ✅ Pruebas exhaustivas con 100% de éxito
-- ✅ Documentación embebida del Protobuf en Azure APIM
+- ✅ API creation from complete Protobuf definitions
+- ✅ Advanced versioning with 3 different schemes  
+- ✅ Perfect integration with Azure API Management
+- ✅ Robust validation and error handling
+- ✅ Comprehensive testing with 100% success rate
+- ✅ Embedded Protobuf documentation in Azure APIM
 
-El MCP Server ahora proporciona capacidades completas para gestionar tanto APIs REST (YAML/OpenAPI) como APIs gRPC (Protobuf) con versionado avanzado, convirtiéndolo en una solución integral para la gestión de APIs en Azure API Management.
+The MCP Server now provides complete capabilities for managing both REST APIs (YAML/OpenAPI) and gRPC APIs (Protobuf) with advanced versioning, making it a comprehensive solution for API management in Azure API Management.
 
 ---
 
-**🚀 HERRAMIENTA gRPC IMPLEMENTADA Y LISTA PARA USO PRODUCTIVO**
+**🚀 gRPC TOOL IMPLEMENTED AND READY FOR PRODUCTION USE**

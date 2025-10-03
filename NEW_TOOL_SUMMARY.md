@@ -1,45 +1,45 @@
-# 🛠️ Nueva Herramienta: create_api_from_yaml
+# 🛠️ New Tool: create_api_from_yaml
 
-## ✅ **Herramienta Implementada Exitosamente**
+## ✅ **Tool Successfully Implemented**
 
-### 📋 **Descripción**
-Nueva herramienta MCP para crear APIs en Azure APIM proporcionando un contrato YAML/OpenAPI.
+### 📋 **Description**
+New MCP tool to create APIs in Azure APIM by providing a YAML/OpenAPI contract.
 
-### 🎯 **Funcionalidad**
-- **Nombre**: `create_api_from_yaml`
-- **Propósito**: Crear una nueva API en Azure APIM usando un contrato YAML/OpenAPI
-- **Estado**: ✅ **FUNCIONANDO**
-
----
-
-## 📝 **Parámetros**
-
-### **Requeridos** ✅
-- `apiId` (string): ID único para la nueva API
-- `displayName` (string): Nombre descriptivo de la API  
-- `yamlContract` (string): Contrato YAML/OpenAPI completo
-
-### **Opcionales** 📋
-- `description` (string): Descripción de la API
-- `path` (string): Ruta de la API (ej: "myapi/v1")
-- `serviceUrl` (string): URL del servicio backend
-- `protocols` (array): Protocolos soportados ["http", "https"]
-- `subscriptionRequired` (boolean): Si requiere suscripción (default: true)
+### 🎯 **Functionality**
+- **Name**: `create_api_from_yaml`
+- **Purpose**: Create a new API in Azure APIM using a YAML/OpenAPI contract
+- **Status**: ✅ **WORKING**
 
 ---
 
-## 🧪 **Prueba Exitosa**
+## 📝 **Parameters**
 
-### **API Creada de Prueba**: 
+### **Required** ✅
+- `apiId` (string): Unique ID for the new API
+- `displayName` (string): Descriptive name of the API  
+- `yamlContract` (string): Complete YAML/OpenAPI contract
+
+### **Optional** 📋
+- `description` (string): API description
+- `path` (string): API path (e.g., "myapi/v1")
+- `serviceUrl` (string): Backend service URL
+- `protocols` (array): Supported protocols ["http", "https"]
+- `subscriptionRequired` (boolean): Whether subscription is required (default: true)
+
+---
+
+## 🧪 **Successful Test**
+
+### **Test API Created**: 
 - **🆔 ID**: `weather-api-test`
-- **🏷️ Nombre**: Weather API Test
-- **📝 Descripción**: Sample weather API created from YAML contract for testing
-- **📍 Ruta**: `weather/v1`
+- **🏷️ Name**: Weather API Test
+- **📝 Description**: Sample weather API created from YAML contract for testing
+- **📍 Path**: `weather/v1`
 - **🌐 Service URL**: https://api.weather-sample.com/v1
-- **🔒 Protocolo**: HTTPS
-- **🔑 Suscripción**: Requerida
+- **🔒 Protocol**: HTTPS
+- **🔑 Subscription**: Required
 
-### **Contrato YAML Usado**:
+### **YAML Contract Used**:
 ```yaml
 openapi: 3.0.0
 info:
@@ -52,44 +52,44 @@ paths:
   /weather:
     get:
       summary: Get current weather
-      # ... más endpoints
+      # ... more endpoints
   /forecast:
     get:
       summary: Get weather forecast
-      # ... más endpoints
+      # ... more endpoints
 ```
 
 ---
 
-## 💻 **Uso desde MCP**
+## 💻 **Usage from MCP**
 
-### **Formato de Llamada**:
+### **Call Format**:
 ```json
 {
   "name": "create_api_from_yaml",
   "arguments": {
-    "apiId": "mi-nueva-api",
-    "displayName": "Mi Nueva API",
-    "description": "Descripción de mi API",
+    "apiId": "my-new-api",
+    "displayName": "My New API",
+    "description": "My API description",
     "path": "api/v1",
-    "serviceUrl": "https://backend.miapi.com",
-    "yamlContract": "openapi: 3.0.0\ninfo:\n  title: Mi API...",
+    "serviceUrl": "https://backend.myapi.com",
+    "yamlContract": "openapi: 3.0.0\ninfo:\n  title: My API...",
     "protocols": ["https"],
     "subscriptionRequired": true
   }
 }
 ```
 
-### **Respuesta Exitosa**:
+### **Successful Response**:
 ```json
 {
-  "message": "API Mi Nueva API created successfully from YAML contract",
+  "message": "API My New API created successfully from YAML contract",
   "api": {
-    "id": "mi-nueva-api",
-    "displayName": "Mi Nueva API",
+    "id": "my-new-api",
+    "displayName": "My New API",
     "path": "api/v1",
     "protocols": ["https"],
-    "serviceUrl": "https://backend.miapi.com",
+    "serviceUrl": "https://backend.myapi.com",
     "subscriptionRequired": true
   }
 }
@@ -97,31 +97,31 @@ paths:
 
 ---
 
-## 🔧 **Características Técnicas**
+## 🔧 **Technical Features**
 
-### **Validaciones Implementadas** ✅
-- ✅ Validación de apiId (formato correcto)
-- ✅ Validación de parámetros requeridos
-- ✅ Validación de contrato YAML no vacío
-- ✅ Sanitización de rutas de API
-- ✅ Manejo de errores Azure específicos
+### **Implemented Validations** ✅
+- ✅ apiId validation (correct format)
+- ✅ Required parameter validation
+- ✅ Non-empty YAML contract validation
+- ✅ API path sanitization
+- ✅ Azure-specific error handling
 
-### **Manejo de Errores** ⚠️
-- **400**: Contrato YAML inválido o configuración incorrecta
-- **409**: API con el mismo ID ya existe
-- **Validación**: Parámetros faltantes o incorrectos
+### **Error Handling** ⚠️
+- **400**: Invalid YAML contract or incorrect configuration
+- **409**: API with the same ID already exists
+- **Validation**: Missing or incorrect parameters
 
-### **Integración Azure** 🌐
-- ✅ Usa Azure SDK v9.1.0
-- ✅ Método `beginCreateOrUpdateAndWait` para operaciones asíncronas
-- ✅ Formato `openapi+json-yaml` para contratos
-- ✅ Configuración completa de API en Azure APIM
+### **Azure Integration** 🌐
+- ✅ Uses Azure SDK v9.1.0
+- ✅ `beginCreateOrUpdateAndWait` method for async operations
+- ✅ `openapi+json-yaml` format for contracts
+- ✅ Complete API configuration in Azure APIM
 
 ---
 
-## 📊 **Estado del Proyecto**
+## 📊 **Project Status**
 
-### **Herramientas Totales**: 9
+### **Total Tools**: 9
 1. `list_apis` ✅
 2. `get_api` ✅
 3. `create_api_version` ✅
@@ -130,27 +130,27 @@ paths:
 6. `list_api_revisions` ✅
 7. `get_api_operations` ✅
 8. `get_api_products` ✅
-9. **`create_api_from_yaml` ✅ NUEVA**
+9. **`create_api_from_yaml` ✅ NEW**
 
-### **APIs en Azure APIM**: 6 total
-- Star Wars API (4 variantes)
+### **APIs in Azure APIM**: 6 total
+- Star Wars API (4 variants)
 - Swagger Petstore (1)
-- **Weather API Test (1) - CREADA CON NUEVA HERRAMIENTA**
+- **Weather API Test (1) - CREATED WITH NEW TOOL**
 
 ---
 
-## 🚀 **Próximos Pasos**
+## 🚀 **Next Steps**
 
-### **Para Usar la Herramienta**:
-1. Prepara tu contrato YAML/OpenAPI
-2. Define los parámetros de la API
-3. Llama a `create_api_from_yaml` desde GitHub Copilot
-4. Verifica la API creada con `list_apis`
+### **To Use the Tool**:
+1. Prepare your YAML/OpenAPI contract
+2. Define the API parameters
+3. Call `create_api_from_yaml` from GitHub Copilot
+4. Verify the created API with `list_apis`
 
-### **Ejemplo de Uso en GitHub Copilot**:
+### **Usage Example in GitHub Copilot**:
 ```
-@azure-apim crear una API llamada "User Management API" con el contrato YAML:
-[pegar tu contrato YAML aquí]
+@azure-apim create an API called "User Management API" with the YAML contract:
+[paste your YAML contract here]
 ```
 
-**🎯 La nueva herramienta está lista para uso en producción!**
+**🎯 The new tool is ready for production use!**

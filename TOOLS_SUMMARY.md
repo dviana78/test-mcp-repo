@@ -1,156 +1,156 @@
-# 🔧 **Herramientas Disponibles en tu MCP Server**
+# 🔧 **Available Tools in your MCP Server**
 
-## 📊 **Resumen General**
-**Total de Tools: 10 herramientas**
+## 📊 **General Summary**
+**Total Tools: 10 tools**
 
 ---
 
-## 🌐 **1. HERRAMIENTAS DE GESTIÓN DE APIs REST**
+## 🌐 **1. REST API MANAGEMENT TOOLS**
 
-### 🔍 **Tools de Consulta**
+### 🔍 **Query Tools**
 
 #### 1. **`list_apis`**
-- **Descripción**: Lista todas las APIs en Azure API Management
-- **Parámetros**:
-  - `filter` (opcional): Expresión de filtro OData
-  - `top` (opcional): Máximo número de APIs a devolver (1-1000)
-  - `skip` (opcional): Número de APIs a omitir
-- **Uso**: Obtener listado completo o filtrado de APIs
+- **Description**: List all APIs in Azure API Management
+- **Parameters**:
+  - `filter` (optional): OData filter expression
+  - `top` (optional): Maximum number of APIs to return (1-1000)
+  - `skip` (optional): Number of APIs to skip
+- **Usage**: Get complete or filtered list of APIs
 
 #### 2. **`get_api`**
-- **Descripción**: Obtiene detalles de una API específica por ID
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API a consultar
-- **Uso**: Información detallada de una API específica
+- **Description**: Get details of a specific API by ID
+- **Parameters**:
+  - `apiId` (required): ID of the API to query
+- **Usage**: Detailed information about a specific API
 
 #### 3. **`get_api_operations`**
-- **Descripción**: Obtiene todas las operaciones de una API específica
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API
-- **Uso**: Ver endpoints y métodos de una API
+- **Description**: Get all operations of a specific API
+- **Parameters**:
+  - `apiId` (required): API ID
+- **Usage**: View endpoints and methods of an API
 
 #### 4. **`get_api_products`**
-- **Descripción**: Obtiene todos los productos que incluyen una API específica
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API
-- **Uso**: Ver en qué productos está incluida una API
+- **Description**: Get all products that include a specific API
+- **Parameters**:
+  - `apiId` (required): API ID
+- **Usage**: See which products include an API
 
 ---
 
-## 🏗️ **2. HERRAMIENTAS DE CREACIÓN DE APIs**
+## 🏗️ **2. API CREATION TOOLS**
 
 #### 5. **`create_api_from_yaml`** ⭐
-- **Descripción**: Crear una nueva API desde un contrato YAML/OpenAPI con versionado opcional
-- **Parámetros**:
-  - `apiId` (requerido): ID para la nueva API
-  - `displayName` (requerido): Nombre para mostrar
-  - `yamlContract` (requerido): Contenido del contrato YAML/OpenAPI
-  - `description` (opcional): Descripción de la API
-  - `path` (opcional): Path de la API
-  - `serviceUrl` (opcional): URL del servicio backend
-  - `protocols` (opcional): Protocolos soportados [http, https]
-  - `subscriptionRequired` (opcional): Si requiere suscripción (default: true)
-  - **Versionado**:
-    - `initialVersion` (opcional): Versión inicial (ej: "v1", "1.0")
-    - `versioningScheme` (opcional): Esquema de versionado [Segment, Query, Header]
-    - `versionQueryName` (opcional): Nombre del parámetro query (default: "version")
-    - `versionHeaderName` (opcional): Nombre del header (default: "Api-Version")
-- **Estado**: ✅ Completamente funcional
+- **Description**: Create a new API from a YAML/OpenAPI contract with optional versioning
+- **Parameters**:
+  - `apiId` (required): ID for the new API
+  - `displayName` (required): Display name
+  - `yamlContract` (required): YAML/OpenAPI contract content
+  - `description` (optional): API description
+  - `path` (optional): API path
+  - `serviceUrl` (optional): Backend service URL
+  - `protocols` (optional): Supported protocols [http, https]
+  - `subscriptionRequired` (optional): Whether subscription is required (default: true)
+  - **Versioning**:
+    - `initialVersion` (optional): Initial version (e.g., "v1", "1.0")
+    - `versioningScheme` (optional): Versioning scheme [Segment, Query, Header]
+    - `versionQueryName` (optional): Query parameter name (default: "version")
+    - `versionHeaderName` (optional): Header name (default: "Api-Version")
+- **Status**: ✅ Fully functional
 
 #### 6. **`create_grpc_api_from_proto`** ⭐🆕
-- **Descripción**: Crear una nueva API gRPC desde definición Protobuf con versionado opcional
-- **Parámetros**:
-  - `apiId` (requerido): ID para la nueva API gRPC
-  - `displayName` (requerido): Nombre para mostrar
-  - `protoDefinition` (requerido): Contenido del archivo .proto
-  - `description` (opcional): Descripción de la API gRPC
-  - `path` (opcional): Path de la API gRPC
-  - `serviceUrl` (opcional): URL del servicio gRPC backend
-  - `protocols` (opcional): Protocolos soportados [http, https, grpc, grpcs]
-  - `subscriptionRequired` (opcional): Si requiere suscripción (default: true)
-  - **Versionado**:
-    - `initialVersion` (opcional): Versión inicial (ej: "v1", "1.0")
-    - `versioningScheme` (opcional): Esquema de versionado [Segment, Query, Header]
-    - `versionQueryName` (opcional): Nombre del parámetro query (default: "version")
-    - `versionHeaderName` (opcional): Nombre del header (default: "Api-Version")
-- **Estado**: ✅ Recién implementada y probada
+- **Description**: Create a new gRPC API from Protobuf definition with optional versioning
+- **Parameters**:
+  - `apiId` (required): ID for the new gRPC API
+  - `displayName` (required): Display name
+  - `protoDefinition` (required): .proto file content
+  - `description` (optional): gRPC API description
+  - `path` (optional): gRPC API path
+  - `serviceUrl` (optional): gRPC backend service URL
+  - `protocols` (optional): Supported protocols [http, https, grpc, grpcs]
+  - `subscriptionRequired` (optional): Whether subscription is required (default: true)
+  - **Versioning**:
+    - `initialVersion` (optional): Initial version (e.g., "v1", "1.0")
+    - `versioningScheme` (optional): Versioning scheme [Segment, Query, Header]
+    - `versionQueryName` (optional): Query parameter name (default: "version")
+    - `versionHeaderName` (optional): Header name (default: "Api-Version")
+- **Status**: ✅ Recently implemented and tested
 
 ---
 
-## 📦 **3. HERRAMIENTAS DE VERSIONADO**
+## 📦 **3. VERSIONING TOOLS**
 
 #### 7. **`create_api_version`**
-- **Descripción**: Crear una nueva versión de una API existente
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API fuente
-  - `versionId` (requerido): Identificador de versión (ej: "v2", "2.0")
-  - `displayName` (requerido): Nombre para mostrar de la versión
-  - `description` (opcional): Descripción de la versión
-  - `sourceApiId` (opcional): ID de API fuente si es diferente
-  - `versioningScheme` (opcional): Esquema de versionado [Segment, Query, Header]
-  - `versionQueryName` (opcional): Nombre del parámetro query
-  - `versionHeaderName` (opcional): Nombre del header
-- **Uso**: Crear nuevas versiones de APIs existentes
+- **Description**: Create a new version of an existing API
+- **Parameters**:
+  - `apiId` (required): Source API ID
+  - `versionId` (required): Version identifier (e.g., "v2", "2.0")
+  - `displayName` (required): Version display name
+  - `description` (optional): Version description
+  - `sourceApiId` (optional): Source API ID if different
+  - `versioningScheme` (optional): Versioning scheme [Segment, Query, Header]
+  - `versionQueryName` (optional): Query parameter name
+  - `versionHeaderName` (optional): Header name
+- **Usage**: Create new versions of existing APIs
 
 #### 8. **`list_api_versions`**
-- **Descripción**: Lista todas las versiones de una API específica
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API
-- **Uso**: Ver todas las versiones disponibles de una API
+- **Description**: List all versions of a specific API
+- **Parameters**:
+  - `apiId` (required): API ID
+- **Usage**: View all available versions of an API
 
 ---
 
-## 🔄 **4. HERRAMIENTAS DE REVISIONES**
+## 🔄 **4. REVISION TOOLS**
 
 #### 9. **`create_api_revision`**
-- **Descripción**: Crear una nueva revisión de una API existente
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API
-  - `apiRevision` (opcional): Número de revisión (auto-generado si no se proporciona)
-  - `description` (opcional): Descripción de los cambios
-  - `sourceApiRevision` (opcional): Revisión fuente a copiar
-- **Uso**: Crear revisiones para cambios en APIs
+- **Description**: Create a new revision of an existing API
+- **Parameters**:
+  - `apiId` (required): API ID
+  - `apiRevision` (optional): Revision number (auto-generated if not provided)
+  - `description` (optional): Description of changes
+  - `sourceApiRevision` (optional): Source revision to copy from
+- **Usage**: Create revisions for API changes
 
 #### 10. **`list_api_revisions`**
-- **Descripción**: Lista todas las revisiones de una API específica
-- **Parámetros**:
-  - `apiId` (requerido): ID de la API
-- **Uso**: Ver historial de revisiones de una API
+- **Description**: List all revisions of a specific API
+- **Parameters**:
+  - `apiId` (required): API ID
+- **Usage**: View revision history of an API
 
 ---
 
-## 📊 **Resumen por Categorías**
+## 📊 **Summary by Categories**
 
-| Categoría | Cantidad | Herramientas |
-|-----------|----------|-------------|
-| **🔍 Consulta de APIs** | 4 | `list_apis`, `get_api`, `get_api_operations`, `get_api_products` |
-| **🏗️ Creación de APIs** | 2 | `create_api_from_yaml`, `create_grpc_api_from_proto` |
-| **📦 Gestión de Versiones** | 2 | `create_api_version`, `list_api_versions` |
-| **🔄 Gestión de Revisiones** | 2 | `create_api_revision`, `list_api_revisions` |
-| **📈 Total** | **10** | **Herramientas completas y funcionales** |
-
----
-
-## 🌟 **Características Destacadas**
-
-### ✅ **Funcionalidades Avanzadas**
-- **Versionado completo**: Soporte para 3 esquemas (Segment, Query, Header)
-- **Múltiples formatos**: YAML/OpenAPI y Protobuf/gRPC
-- **Gestión completa**: Consulta, creación, versionado y revisiones
-- **Integración Azure APIM**: Conexión directa y funcional
-- **Validación robusta**: Manejo de errores y validación de parámetros
-
-### 🆕 **Últimas Incorporaciones**
-- **`create_grpc_api_from_proto`**: Nueva herramienta para APIs gRPC
-- **Versionado avanzado**: Implementado en herramientas de creación
-- **Soporte Protobuf**: Validación y procesamiento de archivos .proto
-
-### 🔗 **Estado de Integración**
-- ✅ **MCP Protocol**: Estándar 2024-11-05 implementado
-- ✅ **Azure APIM**: Conexión activa y funcional
-- ✅ **TypeScript**: Arquitectura profesional compilada
-- ✅ **VS Code**: Configuración completa con tasks
+| Category | Count | Tools |
+|----------|-------|-------|
+| **🔍 API Query** | 4 | `list_apis`, `get_api`, `get_api_operations`, `get_api_products` |
+| **🏗️ API Creation** | 2 | `create_api_from_yaml`, `create_grpc_api_from_proto` |
+| **📦 Version Management** | 2 | `create_api_version`, `list_api_versions` |
+| **🔄 Revision Management** | 2 | `create_api_revision`, `list_api_revisions` |
+| **📈 Total** | **10** | **Complete and functional tools** |
 
 ---
 
-**🎯 Tu MCP Server tiene un conjunto completo y profesional de herramientas para gestionar APIs tanto REST como gRPC en Azure API Management, con capacidades avanzadas de versionado y revisiones.**
+## 🌟 **Highlighted Features**
+
+### ✅ **Advanced Functionalities**
+- **Complete versioning**: Support for 3 schemes (Segment, Query, Header)
+- **Multiple formats**: YAML/OpenAPI and Protobuf/gRPC
+- **Complete management**: Query, creation, versioning and revisions
+- **Azure APIM integration**: Direct and functional connection
+- **Robust validation**: Error handling and parameter validation
+
+### 🆕 **Latest Additions**
+- **`create_grpc_api_from_proto`**: New tool for gRPC APIs
+- **Advanced versioning**: Implemented in creation tools
+- **Protobuf support**: Validation and processing of .proto files
+
+### 🔗 **Integration Status**
+- ✅ **MCP Protocol**: Standard 2024-11-05 implemented
+- ✅ **Azure APIM**: Active and functional connection
+- ✅ **TypeScript**: Professional compiled architecture
+- ✅ **VS Code**: Complete configuration with tasks
+
+---
+
+**🎯 Your MCP Server has a complete and professional set of tools for managing both REST and gRPC APIs in Azure API Management, with advanced versioning and revision capabilities.**

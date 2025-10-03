@@ -1,57 +1,57 @@
-# 🚀 Herramienta Mejorada: create_api_from_yaml con Versionado
+# 🚀 Enhanced Tool: create_api_from_yaml with Versioning
 
-## ✅ **Funcionalidad de Versionado Implementada Exitosamente**
+## ✅ **Versioning Functionality Successfully Implemented**
 
-### 🎯 **Nuevas Características**
-- **✅ Especificación de versión inicial** (ej: v1, v2, 1.0)
-- **✅ Creación automática de Version Sets** en Azure APIM
-- **✅ Soporte para 3 esquemas de versionado**: Segment, Query, Header
-- **✅ Configuración automática de rutas** para versioning por Segment
-- **✅ Compatibilidad hacia atrás** con APIs sin versión
+### 🎯 **New Features**
+- **✅ Initial version specification** (e.g., v1, v2, 1.0)
+- **✅ Automatic Version Sets creation** in Azure APIM
+- **✅ Support for 3 versioning schemes**: Segment, Query, Header
+- **✅ Automatic path configuration** for Segment versioning
+- **✅ Backward compatibility** with non-versioned APIs
 
 ---
 
-## 📝 **Nuevos Parámetros Añadidos**
+## 📝 **New Parameters Added**
 
-### **Parámetros de Versionado** 🆕
-- `initialVersion` (string): Versión inicial de la API (ej: "v1", "2.0")
-- `versioningScheme` (enum): Esquema de versionado
-  - `"Segment"` (default): Versión en la URL (api/v1/users)
-  - `"Query"`: Versión como parámetro (?version=v1)
-  - `"Header"`: Versión en header HTTP
-- `versionQueryName` (string): Nombre del parámetro query (default: "version")
-- `versionHeaderName` (string): Nombre del header (default: "Api-Version")
+### **Versioning Parameters** 🆕
+- `initialVersion` (string): Initial API version (e.g., "v1", "2.0")
+- `versioningScheme` (enum): Versioning scheme
+  - `"Segment"` (default): Version in URL (api/v1/users)
+  - `"Query"`: Version as parameter (?version=v1)
+  - `"Header"`: Version in HTTP header
+- `versionQueryName` (string): Query parameter name (default: "version")
+- `versionHeaderName` (string): Header name (default: "Api-Version")
 
-### **Parámetros Existentes** ✅
-- `apiId`, `displayName`, `yamlContract` (requeridos)
+### **Existing Parameters** ✅
+- `apiId`, `displayName`, `yamlContract` (required)
 - `description`, `path`, `serviceUrl`, `protocols`, `subscriptionRequired`
 
 ---
 
-## 🧪 **Prueba Exitosa**
+## 🧪 **Successful Test**
 
-### **API Versionada Creada**:
+### **Versioned API Created**:
 - **🆔 ID**: `user-mgmt-api-v1`
-- **🏷️ Nombre**: User Management API
-- **📝 Descripción**: Full-featured user management API with CRUD operations
-- **📍 Ruta**: `usermgmt/v1` (automáticamente versionada)
-- **🔢 Versión**: v1
-- **🔄 Esquema**: Segment
+- **🏷️ Name**: User Management API
+- **📝 Description**: Full-featured user management API with CRUD operations
+- **📍 Path**: `usermgmt/v1` (automatically versioned)
+- **🔢 Version**: v1
+- **🔄 Scheme**: Segment
 - **🌐 Service URL**: https://api.usermanagement.com
-- **🔒 Protocolo**: HTTPS
+- **🔒 Protocol**: HTTPS
 
-### **Contrato YAML Completo**:
-Contrato OpenAPI 3.0 completo con:
+### **Complete YAML Contract**:
+Complete OpenAPI 3.0 contract with:
 - **5 endpoints**: GET/POST /users, GET/PUT/DELETE /users/{userId}
-- **Esquemas definidos**: User, CreateUserRequest, UpdateUserRequest
-- **Responses completas**: 200, 201, 400, 404, 409, 204
-- **Validaciones**: Required fields, formats, constraints
+- **Defined schemas**: User, CreateUserRequest, UpdateUserRequest
+- **Complete responses**: 200, 201, 400, 404, 409, 204
+- **Validations**: Required fields, formats, constraints
 
 ---
 
-## 💻 **Ejemplos de Uso**
+## 💻 **Usage Examples**
 
-### **1. API con Versión Inicial v1 (Segment)**
+### **1. API with Initial Version v1 (Segment)**
 ```json
 {
   "name": "create_api_from_yaml",
@@ -65,9 +65,9 @@ Contrato OpenAPI 3.0 completo con:
   }
 }
 ```
-**Resultado**: Ruta automática `orders/v1/`
+**Result**: Automatic path `orders/v1/`
 
-### **2. API con Versión por Query Parameter**
+### **2. API with Query Parameter Version**
 ```json
 {
   "name": "create_api_from_yaml",
@@ -81,9 +81,9 @@ Contrato OpenAPI 3.0 completo con:
   }
 }
 ```
-**Resultado**: Acceso con `?ver=2.0`
+**Result**: Access with `?ver=2.0`
 
-### **3. API con Versión por Header**
+### **3. API with Header Version**
 ```json
 {
   "name": "create_api_from_yaml",
@@ -97,9 +97,9 @@ Contrato OpenAPI 3.0 completo con:
   }
 }
 ```
-**Resultado**: Acceso con header `X-API-Version: v3`
+**Result**: Access with header `X-API-Version: v3`
 
-### **4. API Sin Versión (Comportamiento Original)**
+### **4. API Without Version (Original Behavior)**
 ```json
 {
   "name": "create_api_from_yaml", 
@@ -110,79 +110,79 @@ Contrato OpenAPI 3.0 completo con:
   }
 }
 ```
-**Resultado**: API sin versionado
+**Result**: API without versioning
 
 ---
 
-## 🔧 **Funcionalidades Técnicas**
+## 🔧 **Technical Functionalities**
 
 ### **Azure APIM Integration** 🌐
-- ✅ Creación automática de **API Version Sets**
-- ✅ Configuración de **versioning schemes** nativos
-- ✅ Manejo de errores específicos de Azure
-- ✅ Validación de contratos OpenAPI
+- ✅ Automatic **API Version Sets** creation
+- ✅ Native **versioning schemes** configuration
+- ✅ Azure-specific error handling
+- ✅ OpenAPI contract validation
 
-### **Validaciones y Seguridad** 🔒
-- ✅ Validación de formato de `apiId`
-- ✅ Verificación de contenido YAML no vacío
-- ✅ Sanitización automática de rutas
-- ✅ Manejo de conflictos (API ya existente)
-- ✅ Logs detallados para troubleshooting
+### **Validations and Security** 🔒
+- ✅ `apiId` format validation
+- ✅ Non-empty YAML content verification
+- ✅ Automatic path sanitization
+- ✅ Conflict handling (API already exists)
+- ✅ Detailed logs for troubleshooting
 
-### **Compatibilidad** 🔄
-- ✅ **Backward compatible**: APIs existentes siguen funcionando
-- ✅ **Forward compatible**: Preparado para futuras versiones
-- ✅ **Flexible**: Todos los parámetros de versioning son opcionales
+### **Compatibility** 🔄
+- ✅ **Backward compatible**: Existing APIs continue working
+- ✅ **Forward compatible**: Ready for future versions
+- ✅ **Flexible**: All versioning parameters are optional
 
 ---
 
-## 📊 **Estado Actual del Proyecto**
+## 📊 **Current Project Status**
 
-### **APIs Totales**: 7
-1. Star Wars API (4 variantes)
+### **Total APIs**: 7
+1. Star Wars API (4 variants)
 2. Swagger Petstore (1)
-3. Weather API Test (1) - Creada anteriormente
-4. **User Management API v1 (1) - NUEVA CON VERSIONADO** ✨
+3. Weather API Test (1) - Created previously
+4. **User Management API v1 (1) - NEW WITH VERSIONING** ✨
 
-### **Herramientas MCP**: 9 completas
-Todas funcionando perfectamente con la herramienta `create_api_from_yaml` ahora mejorada.
-
----
-
-## 🚀 **Casos de Uso Recomendados**
-
-### **Para APIs Nuevas** ⭐
-```
-Usar initialVersion: "v1" con versioningScheme: "Segment"
-→ Permite fácil evolución futura
-```
-
-### **Para Migraciones** 🔄
-```
-Crear versión nueva del contrato existente
-→ Mantener compatibilidad con clientes existentes
-```
-
-### **Para Microservicios** 🏗️
-```
-Usar Header versioning para flexibilidad
-→ Permite versionado independiente por servicio
-```
+### **MCP Tools**: 9 complete
+All working perfectly with the now enhanced `create_api_from_yaml` tool.
 
 ---
 
-## 🎯 **Próximos Pasos Sugeridos**
+## 🚀 **Recommended Use Cases**
 
-1. **Probar con GitHub Copilot**:
+### **For New APIs** ⭐
+```
+Use initialVersion: "v1" with versioningScheme: "Segment"
+→ Allows easy future evolution
+```
+
+### **For Migrations** 🔄
+```
+Create new version of existing contract
+→ Maintain compatibility with existing clients
+```
+
+### **For Microservices** 🏗️
+```
+Use Header versioning for flexibility
+→ Allows independent versioning per service
+```
+
+---
+
+## 🎯 **Suggested Next Steps**
+
+1. **Test with GitHub Copilot**:
    ```
-   @azure-apim crear una API versionada "Inventory API" versión v1 con este contrato:
-   [pegar contrato YAML]
+   @azure-apim create a versioned API "Inventory API" version v1 with this contract:
+   [paste YAML contract]
    ```
 
-2. **Crear versiones adicionales**:
-   - Usar `create_api_version` para crear v2, v3, etc.
+2. **Create additional versions**:
+   - Use `create_api_version` to create v2, v3, etc.
 
-3. **Gestionar revisiones**:
-   - Usar `create_api_revision` para cambios menores
+3. **Manage revisions**:
+   - Use `create_api_revision` for minor changes
 
-**🎉 La herramienta está completamente lista para crear APIs versionadas desde contratos YAML!**
+**🎉 The tool is completely ready to create versioned APIs from YAML contracts!**
