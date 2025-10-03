@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package todo.v1;
+
+option go_package = "example.com/todo/v1;v1";
+option java_package = "com.example.todo.v1";
+option java_multiple_files = true;
+option csharp_namespace = "Example.Todo.V1";
+
+// ---- Imports para anotaciones HTTP (opcionales) ----
+// Si no vas a usar transcoding, puedes eliminar estas imports.
+// Manténlas si quieres exponer métodos gRPC también vía HTTP/JSON.
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+
+// ---- Mensajes ----
+message TodoItem {
+  string id = 1;             // UUID generado por el servidor
+  string title = 2;
+  string description = 3;
+  bool completed = 4;
+  int64 created_at = 5;      // unix epoch seconds
+  int64 updated_at = 6;      // unix epoch seconds
+}
+
+message CreateTodoRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CreateTodoResponse {
+  TodoItem item = 1;
+}
+
+message GetTodoRequest {
+  string id = 1;
+}
+
+message GetTodoResponse {
+  TodoItem item = 1;
+}
+
+message ListTodosRequest {
+  // Paginación simple
+  int32 page_size = 1;
+  string page_token = 2;
+  // Opcional: filtro por estado
+  bool only_completed = 3;
+}
+
+message ListTodosResponse {
+  repeated TodoItem items = 1;
+  string next_page_token = 2;
+}
+
+message UpdateTodoRequest {
+  string id = 1;
+  // Campos opcionales para patch (envía solo los que quieras actualizar)
+  google.protobuf.BoolValue completed = 2;
+  google.protobuf.StringValue title = 3;
+  google.protobuf.StringValue description = 4;
+}
+
+message UpdateTodoResponse {
+  TodoItem item = 1;
+}
+
+message DeleteTodoRequest {
+  string id = 1;
+}
+message DeleteTodoResponse {
+  bool success = 1;
+}
+
+message SubscribeTodoUpdatesRequest {
+  // Puedes filtrar por user, proyecto, etc. (ejemplo: todos los updates)
+  string filter = 1;
+}
+
+message TodoUpdate {
+  string event_type = 1; // "created","updated","deleted"
+  TodoItem item = 2;
+}
+
+// ---- Servicio ----
+service TodoService {
+  // Crear
+  rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse) {
+    option (google.api.http) = {
+      post: "/v1/todos"
+      body: "*"
+    };
+  }
+
+  // Obtener por id
+  rpc GetTodo(GetTodoRequest) returns (GetTodoResponse) {
+    option (google.api.http) = {
+      get: "/v1/todos/{id}"
+    };
+  }
+
+  // Listar con paginación
+  rpc ListTodos(ListTodosRequest) returns (ListTodosResponse) {
+    option (google.api.http) = {
+      get: "/v1/todos"
+    };
+  }
+
+  // Actualizar parcialmente (patch-like)
+  rpc UpdateTodo(UpdateTodoRequest) returns (UpdateTodoResponse) {
+    option (google.api.http) = {
+      patch: "/v1/todos/{id}"
+      body: "*"
+    };
+  }
+
+  // Borrar
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse) {
+    option (google.api.http) = {
+      delete: "/v1/todos/{id}"
+    };
+  }
+
+  // Streaming: el servidor envía actualizaciones en tiempo real
+  rpc SubscribeTodoUpdates(SubscribeTodoUpdatesRequest) returns (stream TodoUpdate) {
+    // Nota: normalmente no se mapea a HTTP directamente.
+  }
+}

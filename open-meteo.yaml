@@ -1,0 +1,59 @@
+
+openapi: 3.0.3
+info:
+  title: Open-Meteo API
+  description: Free weather API without authentication. Provides forecasts, current weather and historical data.
+  version: "1.0.0"
+servers:
+  - url: https://api.open-meteo.com/v1
+paths:
+  /forecast:
+    get:
+      summary: Get weather forecast
+      description: |
+        Returns weather forecast for a given location. You must provide latitude and longitude.
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          schema:
+            type: number
+          example: 40.4168
+        - name: longitude
+          in: query
+          required: true
+          schema:
+            type: number
+          example: -3.7038
+        - name: hourly
+          in: query
+          required: false
+          schema:
+            type: string
+            example: temperature_2m,relativehumidity_2m
+        - name: daily
+          in: query
+          required: false
+          schema:
+            type: string
+            example: temperature_2m_max,temperature_2m_min
+        - name: timezone
+          in: query
+          required: false
+          schema:
+            type: string
+            example: Europe/Madrid
+      responses:
+        '200':
+          description: Successful forecast response
+          content:
+            application/json:
+              example:
+                latitude: 40.4168
+                longitude: -3.7038
+                timezone: Europe/Madrid
+                hourly:
+                  temperature_2m: [20.3, 19.5, 18.9]
+                daily:
+                  temperature_2m_max: [25.0, 24.5]
+                  temperature_2m_min: [15.2, 14.9]

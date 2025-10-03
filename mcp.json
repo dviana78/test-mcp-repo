@@ -1,0 +1,14 @@
+{
+  "servers": {
+
+    "azure-apim-mcp-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["dist/index.js"]
+    }
+
+  }
+}
+  
+  
+  
