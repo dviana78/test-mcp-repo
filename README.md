@@ -13,15 +13,39 @@ This project is a professional Node.js/TypeScript implementation of the Model Co
 - **API Versioning**: Support for segment, query, and header-based versioning
 - **Policy Configuration**: Automatic policy setup for backend service routing
 
-### 🛠️ Available Tools
-- `create_api_from_yaml`: Create APIs with versioning from YAML contracts
-- `create_grpc_api_from_proto`: Generate gRPC APIs from Protobuf definitions
-- `list_apis`: Enumerate all APIs in Azure APIM
-- `get_api`: Get detailed API information
-- `get_api_operations`: List all operations for a specific API
-- `list_backends`: List all backend services
-- `create_api_version`: Create new API versions
-- `create_api_revision`: Create API revisions
+### 🛠️ Available Tools (18 Total)
+
+#### **API Management (3 tools)**
+- `list_apis`: List all APIs in Azure API Management with filtering options
+- `get_api`: Get detailed information about a specific API by ID
+- `create_api_from_yaml`: Create APIs with versioning from OpenAPI/YAML contracts
+
+#### **API Versioning (4 tools)**
+- `create_api_version`: Create new versions of existing APIs
+- `list_api_versions`: List all versions of a specific API
+- `create_api_revision`: Create new revisions of existing APIs
+- `list_api_revisions`: List all revisions of a specific API
+
+#### **gRPC Support (1 tool)**
+- `create_grpc_api_from_proto`: Generate gRPC APIs from Protobuf definitions with HTTP transcoding
+
+#### **Products Management (5 tools)**
+- `list_products`: List all products in Azure API Management
+- `get_product`: Get detailed information about a specific product
+- `create_product`: Create new products in Azure APIM
+- `get_api_products`: Get all products that include a specific API
+- `add_api_to_product`: Associate APIs with products
+
+#### **Subscriptions Management (3 tools)**
+- `list_subscriptions`: List all subscriptions in Azure API Management
+- `create_subscription`: Create new subscriptions for products
+- `get_subscription`: Get detailed information about a specific subscription
+
+#### **API Operations (1 tool)**
+- `get_api_operations`: List all operations/endpoints for a specific API
+
+#### **Backend Services (1 tool)**
+- `list_backends`: List all backend services in Azure APIM
 
 ## Getting Started
 

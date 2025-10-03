@@ -26,7 +26,10 @@
     "apim:test": "node scripts/apim/test-apim-apis.js",
     "tools:list": "node scripts/tools/list-tools.js",
     "tools:detailed": "node scripts/tools/list-tools-detailed.js",
-    "organize": "node organize-repository.js"
+    "tools:list-all": "node scripts/tools/list-all-tools.js",
+    "test:subscriptions": "node scripts/test/test-subscription-tools.js",
+    "organize": "node scripts/utils/organize-repository.js",
+    "utils:credentials": "bash scripts/utils/get-azure-credentials.sh"
   },
   "keywords": ["mcp", "azure", "apim", "api-management", "typescript"],
   "author": "dviana78",

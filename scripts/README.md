@@ -1,109 +1,109 @@
 # 📁 Scripts Directory
 
-This directory contains all the utility scripts organized by functionality.
+This directory contains all scripts organized by categories for the Azure APIM MCP Server.
 
-## 📂 Directory Structure
+## 📂 Organized Structure
 
-### 🌟 **starwars/**
-Scripts related to Star Wars API (SWAPI) functionality:
-- `get-starwars-characters.js` - Get all Star Wars characters
-- `get-starwars-planets.js` - Get all Star Wars planets  
-- `analyze-starwars-genders.js` - Analyze character gender distribution
-- `get-starwars-operations.js` - Get Star Wars API operations
-- `create-starwars-subscription.js` - Create APIM subscription for Star Wars API
-- `verify-starwars-api.js` - Verify Star Wars API configuration
-- `analyze-star-wars-api.js` - Detailed API analysis
-- `get-all-starwars-characters.js` - Complete character retrieval
-- `get-starwars-info.js` - Get Star Wars API information
+### 🌟 **starwars/** - Star Wars API Scripts
+- `get-starwars-characters.js` - Get Star Wars characters
+- `get-starwars-planets.js` - Get Star Wars planets  
+- `analyze-starwars-genders.js` - Analyze character genders
+- `create-starwars-subscription.js` - Create subscription for Star Wars API
 
-### ☁️ **apim/**
-Azure API Management related scripts:
-- `apim-analyzer.js` - Complete APIM analysis tool
-- `test-apim-apis.js` - Test APIM API functionality
-- `test-apim-direct.js` - Direct APIM access testing
-- `debug-apis.js` - API debugging utilities
-- `simulate-apim-apis.js` - APIM simulation scripts
+### 🔧 **apim/** - Azure API Management Scripts
+- `apim-analyzer.js` - APIM APIs analyzer
+- `test-apim-apis.js` - Azure APIM API tests
 
-### 🌤️ **openmeteo/**
-OpenMeteo weather API scripts:
-- `create-open-meteo-api.js` - Create OpenMeteo API
-- `create-openmeteo-final.js` - Final OpenMeteo setup
-- `check-openmeteo-operations.js` - Check OpenMeteo operations
-- `verify-weather-apis.js` - Verify weather API functionality
-- Plus various other OpenMeteo utility scripts
+### 🌤️ **openmeteo/** - OpenMeteo API Scripts
+- `open-meteo.yaml` - OpenAPI specification for Weather API
+- Scripts related to weather and meteorology
 
-### 🔧 **grpc/**
-gRPC related functionality:
-- `check-grpc-apis.js` - Check gRPC API status
-- `simple-grpc-test.js` - Basic gRPC testing
-- `test-grpc-api-creation.js` - Test gRPC API creation
-- `quick-grpc-search.js` - Quick gRPC search utility
-- `search-grpc-simple.js` - Simple gRPC search
+### 🔌 **grpc/** - gRPC Scripts and Files
+- `todo.proto` - Protobuf definition for gRPC services
+- Scripts for gRPC API tests
 
-### 🧪 **test/**
-Testing and verification scripts:
-- `test-list-apis.js` - Test API listing functionality
-- `test-server.js` - Server testing utilities
-- `test-swapi-direct.js` - Direct SWAPI testing
-- `check-backend-direct.js` - Backend verification
-- Plus various other testing utilities
+### 🧪 **test/** - Test Scripts
+- `test-subscription-tools.js` - Subscription tools tests
+- Testing and validation scripts
 
-### 🛠️ **tools/**
-MCP tools and utilities:
-- `list-tools.js` - List available MCP tools
-- `list-tools-detailed.js` - Detailed tool information
-- `configure-mcp.js` - MCP configuration
-- `petstore-details.js` - Petstore API details
+### 🔧 **tools/** - Tool Scripts
+- `list-tools.js` - List basic MCP tools
+- `list-tools-detailed.js` - List detailed MCP tools
+- `list-all-tools.js` - List all tools with categorization
 
-### 🔧 **utils/**
-Utility and maintenance scripts:
-- `translate-repository.js` - Repository translation utilities
-- `debug-yaml-import.js` - YAML import debugging
-- `create-version-v2.js` - Version management
+### 🛠️ **utils/** - Utility Scripts
+- `organize-repository.js` - Automatic repository organizer
+- `get-azure-credentials.sh` - Script to get Azure credentials
 
-#### 💾 **utils/backups/**
-Backup files from translations and modifications
+## 🚀 Available NPM Scripts
 
-## 🚀 Usage Examples
-
-### Run Star Wars character analysis:
+### Star Wars API
 ```bash
-node scripts/starwars/get-starwars-characters.js
+npm run starwars:characters    # Get characters
+npm run starwars:planets       # Get planets  
+npm run starwars:genders       # Gender analysis
+npm run starwars:subscription  # Create subscription
 ```
 
-### Test APIM functionality:
+### Azure APIM
 ```bash
-node scripts/apim/apim-analyzer.js
+npm run apim:analyze          # API analysis
+npm run apim:test            # API tests
 ```
 
-### List available MCP tools:
+### MCP Tools
 ```bash
-node scripts/tools/list-tools.js
+npm run tools:list           # Basic tools list
+npm run tools:detailed       # Detailed tools list
+npm run tools:list-all       # Complete categorized list
 ```
 
-### Check weather API:
+### Testing
 ```bash
-node scripts/openmeteo/verify-weather-apis.js
+npm run test:subscriptions   # Test subscription tools
 ```
 
-## 📝 Notes
+### Utilities
+```bash
+npm run organize            # Reorganize repository files
+npm run utils:credentials   # Configure Azure credentials
+```
 
-- All scripts are self-contained and can be run independently
-- Scripts maintain their original functionality after organization
-- Backup files are preserved in `utils/backups/`
-- Documentation and configuration files remain in the project root
+## 📊 Directory Statistics
 
-## 🎯 Quick Access
+- **📁 Total categories**: 7
+- **📜 Total scripts**: 20+
+- **🔧 NPM scripts**: 15+
+- **🎯 Coverage**: REST APIs, gRPC, Testing, Utilities
 
-For frequently used scripts, consider adding npm scripts to `package.json`:
+## 🏗️ Professional Architecture
 
-```json
-{
-  "scripts": {
-    "starwars:characters": "node scripts/starwars/get-starwars-characters.js",
-    "starwars:planets": "node scripts/starwars/get-starwars-planets.js",
-    "apim:analyze": "node scripts/apim/apim-analyzer.js",
-    "tools:list": "node scripts/tools/list-tools.js"
-  }
-}
+All scripts are organized following:
+- ✅ **Separation of responsibilities**
+- ✅ **Consistent nomenclature**
+- ✅ **Easy access via NPM scripts**
+- ✅ **Complete documentation**
+- ✅ **Integration with TypeScript interfaces**
+
+## 🎯 Recently Organized Files
+
+The following files have been moved from the root to their appropriate locations:
+
+- `list-all-tools.js` → `scripts/tools/list-all-tools.js`
+- `test-subscription-tools.js` → `scripts/test/test-subscription-tools.js`
+- `organize-repository.js` → `scripts/utils/organize-repository.js`
+- `get-azure-credentials.sh` → `scripts/utils/get-azure-credentials.sh`
+- `open-meteo.yaml` → `scripts/openmeteo/open-meteo.yaml`
+- `todo.proto` → `scripts/grpc/todo.proto`
+
+## 🔧 Quick Usage
+
+To run any script, use NPM commands or execute directly:
+
+```bash
+# Via NPM (recommended)
+npm run tools:list-all
+
+# Direct execution
+node scripts/tools/list-all-tools.js
 ```

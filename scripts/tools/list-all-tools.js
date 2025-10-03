@@ -1,7 +1,7 @@
-const { ToolsHandler } = require('./dist/handlers/tools');
-const { ApimService } = require('./dist/services/apim-service');
-const { AzureClient } = require('./dist/services/azure-client');
-const { Logger } = require('./dist/utils/logger');
+const { ToolsHandler } = require('../../dist/handlers/tools');
+const { ApimService } = require('../../dist/services/apim-service');
+const { AzureClient } = require('../../dist/services/azure-client');
+const { Logger } = require('../../dist/utils/logger');
 
 console.log('🔧 **HERRAMIENTAS MCP DISPONIBLES EN EL AZURE APIM SERVER**\n');
 

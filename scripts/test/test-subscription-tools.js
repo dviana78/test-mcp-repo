@@ -10,10 +10,10 @@ async function testSubscriptionTools() {
   return new Promise((resolve, reject) => {
     console.log('🔍 Testing subscription tools availability in MCP Server...\n');
     
-    const serverPath = path.join(__dirname, 'dist', 'index.js');
+    const serverPath = path.join(__dirname, '../../dist', 'index.js');
     const child = spawn('node', [serverPath], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      cwd: __dirname
+      cwd: path.join(__dirname, '../..')
     });
 
     let stdout = '';
