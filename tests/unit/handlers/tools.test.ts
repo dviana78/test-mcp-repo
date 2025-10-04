@@ -1,42 +1,113 @@
-import { Request, Response } from 'express';
-import { handleToolRequest } from '../../src/handlers/tools';
+import { ToolsHandler } from '../../../src/handlers/tools';
+import { ApiManagementService } from '../../../src/services/api-management.service';
+import { ApiVersioningService } from '../../../src/services/api-versioning.service';
+import { GrpcService } from '../../../src/services/grpc.service';
+import { ProductsManagementService } from '../../../src/services/products-management.service';
+import { SubscriptionsManagementService } from '../../../src/services/subscriptions-management.service';
+import { ApiOperationsService } from '../../../src/services/api-operations.service';
+import { BackendServicesService } from '../../../src/services/backend-services.service';
 
-describe('Tool Handlers', () => {
-    it('should handle tool request successfully', async () => {
-        const req = {
-            body: {
-                // Mock request body
-            },
-        } as Request;
+describe('ToolsHandler', () => {
+    let toolsHandler: ToolsHandler;
+    let mockApiManagementService: jest.Mocked<ApiManagementService>;
+    let mockApiVersioningService: jest.Mocked<ApiVersioningService>;
+    let mockGrpcService: jest.Mocked<GrpcService>;
+    let mockProductsManagementService: jest.Mocked<ProductsManagementService>;
+    let mockSubscriptionsManagementService: jest.Mocked<SubscriptionsManagementService>;
+    let mockApiOperationsService: jest.Mocked<ApiOperationsService>;
+    let mockBackendServicesService: jest.Mocked<BackendServicesService>;
 
-        const res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn(),
-        } as unknown as Response;
+    beforeEach(() => {
+        // Create mock services
+        mockApiManagementService = {
+            listApis: jest.fn(),
+            getApi: jest.fn(),
+            createApiFromYaml: jest.fn(),
+        } as any;
 
-        await handleToolRequest(req, res);
+        mockApiVersioningService = {
+            createApiVersion: jest.fn(),
+            createApiRevision: jest.fn(),
+            listApiVersions: jest.fn(),
+            listApiRevisions: jest.fn(),
+        } as any;
 
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith(expect.any(Object)); // Adjust based on expected response
+        mockGrpcService = {
+            createGrpcApiFromProto: jest.fn(),
+        } as any;
+
+        mockProductsManagementService = {
+            listProducts: jest.fn(),
+            getProduct: jest.fn(),
+            createProduct: jest.fn(),
+            getApiProducts: jest.fn(),
+            addApiToProduct: jest.fn(),
+        } as any;
+
+        mockSubscriptionsManagementService = {
+            listSubscriptions: jest.fn(),
+            getSubscription: jest.fn(),
+            createSubscription: jest.fn(),
+        } as any;
+
+        mockApiOperationsService = {
+            getApiOperations: jest.fn(),
+        } as any;
+
+        mockBackendServicesService = {
+            listBackends: jest.fn(),
+        } as any;
+
+        toolsHandler = new ToolsHandler(
+            mockApiManagementService,
+            mockApiVersioningService,
+            mockGrpcService,
+            mockProductsManagementService,
+            mockSubscriptionsManagementService,
+            mockApiOperationsService,
+            mockBackendServicesService
+        );
     });
 
-    it('should handle tool request with validation error', async () => {
-        const req = {
-            body: {
-                // Mock invalid request body
-            },
-        } as Request;
+    it('should create an instance of ToolsHandler', () => {
+        expect(toolsHandler).toBeInstanceOf(ToolsHandler);
+    });
 
-        const res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn(),
-        } as unknown as Response;
+    it('should have all available tools', () => {
+        const tools = toolsHandler.getAvailableTools();
+        expect(tools).toBeDefined();
+        expect(Array.isArray(tools)).toBe(true);
+        expect(tools.length).toBeGreaterThan(0);
+        
+        // Check that some expected tools exist
+        const toolNames = tools.map(tool => tool.name);
+        expect(toolNames).toContain('list_apis');
+        expect(toolNames).toContain('create_product');
+        expect(toolNames).toContain('list_subscriptions');
+    });
 
-        await handleToolRequest(req, res);
+    it('should execute list_apis tool successfully', async () => {
+        mockApiManagementService.listApis.mockResolvedValue([]);
 
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({
-            error: 'Validation error message', // Adjust based on actual error handling
+        const result = await toolsHandler.executeTool({
+            name: 'list_apis',
+            arguments: {}
         });
+
+        expect(result).toBeDefined();
+        expect(result.content).toBeDefined();
+        expect(mockApiManagementService.listApis).toHaveBeenCalled();
+    });
+
+    it('should handle invalid tool name', async () => {
+        const result = await toolsHandler.executeTool({
+            name: 'invalid_tool',
+            arguments: {}
+        });
+
+        expect(result).toBeDefined();
+        expect(result.isError).toBe(true);
+        expect(result.content).toBeDefined();
+        expect(result.content[0].text).toContain('Unknown tool: invalid_tool');
     });
 });

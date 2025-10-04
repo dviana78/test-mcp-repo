@@ -3,8 +3,17 @@
  * This module exports all interface definitions for dependency injection and type safety
  */
 
+// Core interfaces
 export type { ILogger, ILoggerFactory } from './ILogger';
-export type { IApimService, IApimServiceConfig, IApimServiceFactory } from './IApimService';
+
+// Specialized service interfaces
+export type { IApiManagementService } from './IApiManagementService';
+export type { IApiVersioningService } from './IApiVersioningService';
+export type { IGrpcService } from './IGrpcService';
+export type { IProductsManagementService } from './IProductsManagementService';
+export type { ISubscriptionsManagementService } from './ISubscriptionsManagementService';
+export type { IApiOperationsService } from './IApiOperationsService';
+export type { IBackendServicesService } from './IBackendServicesService';
 
 // Re-export commonly used types
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';

@@ -3,14 +3,21 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import {
   CallToolRequestSchema,
   ErrorCode,
-  ListResourcesRequestSchema,
   ListToolsRequestSchema,
   McpError,
-  ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
-import { AzureClient, ApimService } from './services';
-import { ToolsHandler, ResourcesHandler } from './handlers';
+import { 
+  AzureClient,
+  ApiManagementService,
+  ApiVersioningService,
+  GrpcService,
+  ProductsManagementService,
+  SubscriptionsManagementService,
+  ApiOperationsService,
+  BackendServicesService
+} from './services';
+import { ToolsHandler } from './handlers';
 import { getAzureConfig } from './config/azure';
 import { Logger } from './utils/logger';
 import { createErrorResponse } from './utils/errors';
@@ -18,23 +25,25 @@ import { createErrorResponse } from './utils/errors';
 export class McpServer {
   private server: Server;
   private azureClient!: AzureClient;
-  private apimService!: ApimService;
+  
+  // Specialized services
+  private apiManagementService!: ApiManagementService;
+  private apiVersioningService!: ApiVersioningService;
+  private grpcService!: GrpcService;
+  private productsManagementService!: ProductsManagementService;
+  private subscriptionsManagementService!: SubscriptionsManagementService;
+  private apiOperationsService!: ApiOperationsService;
+  private backendServicesService!: BackendServicesService;
+  
   private toolsHandler!: ToolsHandler;
-  private resourcesHandler!: ResourcesHandler;
   private logger: Logger;
 
   constructor() {
     this.logger = new Logger('McpServer');
-    this.server = new Server(
-      {
-        name: 'azure-apim-mcp-server',
-        version: '1.0.0',
-        capabilities: {
-          resources: {},
-          tools: {},
-        },
-      }
-    );
+    this.server = new Server({
+      name: 'azure-apim-mcp-server',
+      version: '1.0.0',
+    });
 
     this.setupHandlers();
   }
@@ -43,13 +52,33 @@ export class McpServer {
     try {
       const azureConfig = getAzureConfig();
       this.azureClient = new AzureClient(azureConfig);
-      this.apimService = new ApimService(this.azureClient);
-      this.toolsHandler = new ToolsHandler(this.apimService);
-      this.resourcesHandler = new ResourcesHandler(this.apimService);
+      
+      // Initialize specialized services
+      const logger = new Logger('SpecializedServices');
+      this.apiManagementService = new ApiManagementService(this.azureClient, logger);
+      this.apiVersioningService = new ApiVersioningService(this.azureClient, logger);
+      this.grpcService = new GrpcService(this.azureClient, logger);
+      this.productsManagementService = new ProductsManagementService(this.azureClient, logger);
+      this.subscriptionsManagementService = new SubscriptionsManagementService(this.azureClient, logger);
+      this.apiOperationsService = new ApiOperationsService(this.azureClient, logger);
+      this.backendServicesService = new BackendServicesService(this.azureClient, logger);
+      
+      // Initialize handlers with direct service injection
+      this.toolsHandler = new ToolsHandler(
+        this.apiManagementService,
+        this.apiVersioningService,
+        this.grpcService,
+        this.productsManagementService,
+        this.subscriptionsManagementService,
+        this.apiOperationsService,
+        this.backendServicesService
+      );
+      // Note: ResourcesHandler removed as it depended on the coordinator service
+      // If needed, it should be refactored to use specialized services directly
 
       // Test Azure connection
       await this.azureClient.testConnection();
-      this.logger.info('Services initialized successfully');
+      this.logger.info('Services initialized successfully with direct service injection');
     } catch (error) {
       this.logger.error('Failed to initialize services', error as Error);
       throw error;
@@ -57,31 +86,6 @@ export class McpServer {
   }
 
   private setupHandlers(): void {
-    this.server.setRequestHandler(ListResourcesRequestSchema, async () => {
-      if (!this.resourcesHandler) {
-        await this.initializeServices();
-      }
-      
-      return {
-        resources: this.resourcesHandler.getAvailableResources(),
-      };
-    });
-
-    this.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-      if (!this.resourcesHandler) {
-        await this.initializeServices();
-      }
-
-      try {
-        const result = await this.resourcesHandler.getResource({ uri: request.params.uri });
-        return result as any;
-      } catch (error: any) {
-        this.logger.error('Failed to read resource', error);
-        const errorResponse = createErrorResponse(error);
-        throw new McpError(ErrorCode.InternalError, errorResponse.message);
-      }
-    });
-
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
       if (!this.toolsHandler) {
         await this.initializeServices();

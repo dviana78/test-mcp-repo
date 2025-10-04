@@ -7,7 +7,9 @@ module.exports = {
     '**/?(*.)+(spec|test).ts'
   ],
   transform: {
-    '^.+\\.ts$': 'ts-jest'
+    '^.+\\.ts$': ['ts-jest', {
+      useESM: true
+    }]
   },
   collectCoverageFrom: [
     'src/**/*.{ts,js}',
@@ -16,9 +18,13 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   testTimeout: 30000,
-  testPathIgnorePatterns: ['/node_modules/', '/dist/']
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  extensionsToTreatAsEsm: ['.ts'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@modelcontextprotocol)/)'
+  ]
 };

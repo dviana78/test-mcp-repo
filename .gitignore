@@ -53,6 +53,7 @@ Thumbs.db
 
 # Testing
 coverage/
+coverage-temp/
 .nyc_output
 junit.xml
 test-results/

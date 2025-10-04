@@ -1,15 +1,43 @@
 import { McpToolDefinition, McpToolRequest, McpToolResponse } from '../types';
-import { ApimService } from '../services';
+import { 
+  IApiManagementService,
+  IApiVersioningService,
+  IGrpcService,
+  IProductsManagementService,
+  ISubscriptionsManagementService,
+  IApiOperationsService,
+  IBackendServicesService
+} from '../interfaces';
 import { Logger } from '../utils/logger';
 import { ValidationError, createErrorResponse } from '../utils/errors';
 import { validateMcpToolRequest } from '../utils/validation';
 
 export class ToolsHandler {
-  private apimService: ApimService;
+  private apiManagementService: IApiManagementService;
+  private apiVersioningService: IApiVersioningService;
+  private grpcService: IGrpcService;
+  private productsManagementService: IProductsManagementService;
+  private subscriptionsManagementService: ISubscriptionsManagementService;
+  private apiOperationsService: IApiOperationsService;
+  private backendServicesService: IBackendServicesService;
   private logger: Logger;
 
-  constructor(apimService: ApimService) {
-    this.apimService = apimService;
+  constructor(
+    apiManagementService: IApiManagementService,
+    apiVersioningService: IApiVersioningService,
+    grpcService: IGrpcService,
+    productsManagementService: IProductsManagementService,
+    subscriptionsManagementService: ISubscriptionsManagementService,
+    apiOperationsService: IApiOperationsService,
+    backendServicesService: IBackendServicesService
+  ) {
+    this.apiManagementService = apiManagementService;
+    this.apiVersioningService = apiVersioningService;
+    this.grpcService = grpcService;
+    this.productsManagementService = productsManagementService;
+    this.subscriptionsManagementService = subscriptionsManagementService;
+    this.apiOperationsService = apiOperationsService;
+    this.backendServicesService = backendServicesService;
     this.logger = new Logger('ToolsHandler');
   }
 
@@ -597,7 +625,7 @@ export class ToolsHandler {
   }
 
   private async handleListApis(args: any): Promise<McpToolResponse> {
-    const apis = await this.apimService.listApis({
+    const apis = await this.apiManagementService.listApis({
       filter: args.filter,
       top: args.top,
       skip: args.skip
@@ -608,7 +636,7 @@ export class ToolsHandler {
         type: 'text',
         text: JSON.stringify({
           message: `Found ${apis.length} APIs`,
-          apis: apis.map(api => ({
+          apis: apis.map((api: any) => ({
             id: api.id,
             name: api.name,
             displayName: api.displayName,
@@ -628,7 +656,7 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const api = await this.apimService.getApi(args.apiId);
+    const api = await this.apiManagementService.getApi(args.apiId);
     
     return {
       content: [{
@@ -660,7 +688,7 @@ export class ToolsHandler {
       }
     }
 
-    const version = await this.apimService.createApiVersion({
+    const version = await this.apiVersioningService.createApiVersion({
       apiId: args.apiId,
       versionId: args.versionId,
       displayName: args.displayName,
@@ -693,14 +721,14 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const versions = await this.apimService.listApiVersions(args.apiId);
+    const versions = await this.apiVersioningService.listApiVersions(args.apiId);
     
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           message: `Found ${versions.length} versions for API ${args.apiId}`,
-          versions: versions.map(version => ({
+          versions: versions.map((version: any) => ({
             id: version.id,
             name: version.name,
             displayName: version.displayName,
@@ -717,7 +745,7 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const revision = await this.apimService.createApiRevision({
+    const revision = await this.apiVersioningService.createApiRevision({
       apiId: args.apiId,
       apiRevision: args.apiRevision,
       description: args.description,
@@ -748,14 +776,14 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const revisions = await this.apimService.listApiRevisions(args.apiId);
+    const revisions = await this.apiVersioningService.listApiRevisions(args.apiId);
     
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           message: `Found ${revisions.length} revisions for API ${args.apiId}`,
-          revisions: revisions.map(revision => ({
+          revisions: revisions.map((revision: any) => ({
             id: revision.id,
             apiRevision: revision.apiRevision,
             description: revision.description,
@@ -774,14 +802,14 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const operations = await this.apimService.getApiOperations(args.apiId);
+    const operations = await this.apiOperationsService.getApiOperations(args.apiId);
     
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           message: `Found ${operations.length} operations for API ${args.apiId}`,
-          operations: operations.map(op => ({
+          operations: operations.map((op: any) => ({
             id: op.id,
             name: op.name,
             displayName: op.displayName,
@@ -799,14 +827,14 @@ export class ToolsHandler {
       throw new ValidationError('apiId is required');
     }
 
-    const products = await this.apimService.getApiProducts(args.apiId);
+    const products = await this.productsManagementService.getApiProducts(args.apiId);
     
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           message: `Found ${products.length} products for API ${args.apiId}`,
-          products: products.map(product => ({
+          products: products.map((product: any) => ({
             id: product.id,
             name: product.name,
             displayName: product.displayName,
@@ -821,7 +849,7 @@ export class ToolsHandler {
   }
 
   private async handleListBackends(args: any): Promise<McpToolResponse> {
-    const backends = await this.apimService.listBackends({
+    const backends = await this.backendServicesService.listBackends({
       filter: args.filter,
       top: args.top,
       skip: args.skip
@@ -832,7 +860,7 @@ export class ToolsHandler {
         type: 'text',
         text: JSON.stringify({
           message: `Found ${backends.length} backend services`,
-          backends: backends.map(backend => ({
+          backends: backends.map((backend: any) => ({
             id: backend.id,
             title: backend.title,
             description: backend.description,
@@ -853,7 +881,7 @@ export class ToolsHandler {
     }
 
     try {
-      const api = await this.apimService.createApiFromYamlWithVersioning({
+      const api = await this.apiManagementService.createApiFromYaml({
         apiId: args.apiId,
         displayName: args.displayName,
         description: args.description,
@@ -907,7 +935,7 @@ export class ToolsHandler {
     }
 
     try {
-      const api = await this.apimService.createGrpcApiFromProtoWithVersioning({
+      const api = await this.grpcService.createGrpcApiFromProto({
         apiId: args.apiId,
         displayName: args.displayName,
         description: args.description,
@@ -954,7 +982,7 @@ export class ToolsHandler {
   }
 
   private async handleListProducts(args: any): Promise<McpToolResponse> {
-    const products = await this.apimService.listProducts(args.filter, args.top, args.skip);
+    const products = await this.productsManagementService.listProducts(args.filter, args.top, args.skip);
     
     return {
       content: [{
@@ -972,7 +1000,7 @@ export class ToolsHandler {
       throw new ValidationError('productId is required');
     }
 
-    const product = await this.apimService.getProduct(args.productId);
+    const product = await this.productsManagementService.getProduct(args.productId);
     
     return {
       content: [{
@@ -993,7 +1021,7 @@ export class ToolsHandler {
       }
     }
 
-    const product = await this.apimService.createProduct({
+    const product = await this.productsManagementService.createProduct({
       productId: args.productId,
       displayName: args.displayName,
       description: args.description,
@@ -1029,7 +1057,7 @@ export class ToolsHandler {
       }
     }
 
-    await this.apimService.addApiToProduct(args.productId, args.apiId);
+    await this.productsManagementService.addApiToProduct(args.productId, args.apiId);
 
     return {
       content: [{
@@ -1042,7 +1070,7 @@ export class ToolsHandler {
   }
 
   private async handleListSubscriptions(args: any): Promise<McpToolResponse> {
-    const subscriptions = await this.apimService.listSubscriptions(args.filter, args.top, args.skip);
+    const subscriptions = await this.subscriptionsManagementService.listSubscriptions(args.filter, args.top, args.skip);
     
     return {
       content: [{
@@ -1063,7 +1091,7 @@ export class ToolsHandler {
       }
     }
 
-    const subscription = await this.apimService.createSubscription({
+    const subscription = await this.subscriptionsManagementService.createSubscription({
       subscriptionId: args.subscriptionId,
       displayName: args.displayName,
       productId: args.productId,
@@ -1097,7 +1125,7 @@ export class ToolsHandler {
       throw new ValidationError('subscriptionId is required');
     }
 
-    const subscription = await this.apimService.getSubscription(args.subscriptionId);
+    const subscription = await this.subscriptionsManagementService.getSubscription(args.subscriptionId);
     
     return {
       content: [{
