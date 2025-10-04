@@ -3,8 +3,8 @@
  * Test script for gRPC API creation tool with Protobuf definitions and versioning
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 // Sample Protobuf definition for testing
 const sampleProtoDefinition = `

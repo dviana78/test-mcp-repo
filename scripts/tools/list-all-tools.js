@@ -1,7 +1,5 @@
-const { ToolsHandler } = require('../../dist/handlers/tools');
-const { ApimService } = require('../../dist/services/apim-service');
-const { AzureClient } = require('../../dist/services/azure-client');
-const { Logger } = require('../../dist/utils/logger');
+import { ToolsHandler } from '../../dist/handlers/tools.js';
+import { Logger } from '../../dist/utils/logger.js';
 
 console.log('🔧 **HERRAMIENTAS MCP DISPONIBLES EN EL AZURE APIM SERVER**\n');
 
@@ -13,7 +11,7 @@ try {
   
   const tools = toolHandler.getAvailableTools();
   
-  console.log(`📋 **Total de herramientas disponibles: ${tools.length}**\n`);
+  console.log(`📋 **Total de tools disponibles: ${tools.length}**\n`);
   
   // Group tools by category
   const categories = {
@@ -61,10 +59,10 @@ try {
           const optionalProps = props.filter(p => !required.includes(p));
           
           if (requiredProps.length > 0) {
-            console.log(`   🔴 Parámetros requeridos: ${requiredProps.join(', ')}`);
+            console.log(`   🔴 Required parameters: ${requiredProps.join(', ')}`);
           }
           if (optionalProps.length > 0) {
-            console.log(`   🔵 Parámetros opcionales: ${optionalProps.join(', ')}`);
+            console.log(`   🔵 Optional parameters: ${optionalProps.join(', ')}`);
           }
         }
       });
@@ -72,7 +70,7 @@ try {
   });
   
   // Summary
-  console.log('\n\n📊 **RESUMEN POR CATEGORÍA:**');
+  console.log('\n\n📊 **SUMMARY BY CATEGORY:**');
   console.log('═'.repeat(50));
   Object.entries(categories).forEach(([category, categoryTools]) => {
     if (categoryTools.length > 0) {
@@ -80,16 +78,16 @@ try {
     }
   });
   
-  console.log('\n🎯 **CAPACIDADES PRINCIPALES:**');
-  console.log('• ✅ Gestión completa de APIs REST');
-  console.log('• ✅ Soporte para APIs gRPC con Protobuf');
-  console.log('• ✅ Control de versiones y revisiones');
-  console.log('• ✅ Gestión de productos y subscripciones');
-  console.log('• ✅ Administración de servicios backend');
-  console.log('• ✅ Operaciones y endpoints de APIs');
-  console.log('• ✅ Creación desde especificaciones OpenAPI/YAML');
-  console.log('• ✅ Integración completa con Azure APIM');
+  console.log('\n🎯 **MAIN CAPABILITIES:**');
+  console.log('• ✅ Complete REST API management');
+  console.log('• ✅ gRPC API support with Protobuf');
+  console.log('• ✅ Version control and revisions');
+  console.log('• ✅ Product and subscription management');
+  console.log('• ✅ Backend service administration');
+  console.log('• ✅ API operations and endpoints');
+  console.log('• ✅ Creation from OpenAPI/YAML specifications');
+  console.log('• ✅ Complete Azure APIM integration');
   
 } catch (error) {
-  console.error('❌ Error al listar las herramientas:', error.message);
+  console.error('❌ Error listing tools:', error.message);
 }

@@ -1,15 +1,15 @@
-#!/usr/bin/env Node
+#!/usr/bin/env node
 
 /**
- * Test completo de Azure APIM - Verify service y APIs
+ * Test complete de Azure APIM - Verify service y APIs
  */
 
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🔍 Complete Azure APIM Analysis');
 console.log('==================================\n');
 
-const server = spawn('Node', ['dist/index.js'], {
+const server = spawn('node', ['dist/index.js'], {
   stdio: ['pipe', 'pipe', 'pipe']
 });
 
@@ -95,7 +95,7 @@ function handleResponse(response) {
                 console.log('   This is Normal for a new Azure APIM instance');
               }
             } catch (e) {
-              console.log(`   Respuesta: ${content.text}`);
+              console.log(`   Response: ${content.text}`);
             }
           }
         });
@@ -113,7 +113,7 @@ function handleResponse(response) {
               const serviceInfo = JSON.parse(content.text);
               console.log(`   service: ${serviceInfo.name || 'N/A'}`);
               console.log(`   Grupo de recursos: ${serviceInfo.resourceGroup || 'N/A'}`);
-              console.log(`   Ubicación: ${serviceInfo.location || 'N/A'}`);
+              console.log(`   Location: ${serviceInfo.location || 'N/A'}`);
               console.log(`   Tier: ${serviceInfo.sku || 'N/A'}`);
             } catch (e) {
               console.log(`   Info: ${content.text}`);
@@ -159,7 +159,7 @@ setTimeout(() => {
 }, 3500);
 
 setTimeout(() => {
-  console.log('4️⃣ Listando APIs...');
+  console.log('4️⃣ Listing APIs...');
   sendRequest('tools/call', {
     name: 'list_apis',
     arguments: {}

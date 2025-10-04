@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // Test script para Azure APIM MCP Server
-const { spawn } = require('child_process');
-const readline = require('readline');
+import { spawn } from 'child_process';
+import readline from 'readline';
 
 console.log('🚀 Testing Azure APIM MCP Server...\n');
 

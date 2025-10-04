@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🔧 Detailed Analysis of Star Wars API in APIM');
 console.log('=================================================');
@@ -65,7 +65,7 @@ async function sendMcpCommand(method, params = {}) {
 
 async function analyzeApi() {
     try {
-        console.log('📡 Getting lista completa de APIs...');
+        console.log('📡 Getting lista complete de APIs...');
         const listResponse = await sendMcpCommand('tools/call', {
             name: 'mcp_azure-apim_list_apis'
         });
@@ -85,7 +85,7 @@ async function analyzeApi() {
             });
         }
 
-        console.log('\n🔍 Getting detalles específicos de Star Wars API...');
+        console.log('\n🔍 Getting details specific de Star Wars API...');
         const apiResponse = await sendMcpCommand('tools/call', {
             name: 'mcp_azure-apim_get_api',
             arguments: { apiId: 'star-wars-api' }
@@ -116,7 +116,7 @@ async function analyzeApi() {
 
         const operations = opsResponse.find(r => r.result?.content);
         if (operations) {
-            console.log('⚙️ Operaciones configuradas:');
+            console.log('⚙️ Operations configuradas:');
             const ops = JSON.parse(operations.result.content[0].text);
             ops.value.forEach((op, index) => {
                 console.log(`   ${index + 1}. ${op.method} ${op.urlTemplate}`);
@@ -125,11 +125,11 @@ async function analyzeApi() {
             });
         }
 
-        console.log('\n💡 Análisis del Problema:');
+        console.log('\n💡 Analysis del Problema:');
         console.log('========================');
         console.log('Basado en la Information obtenida, el problema puede ser:');
         console.log('1. La Configuration del Service URL en APIM');
-        console.log('2. Las rewrite policies de URL No están configuradas');
+        console.log('2. Las rewrite policies de URL Not configured');
         console.log('3. El backend service puede estar configurado incorrectamente');
         console.log('4. Falta la Configuration de CORS o headers');
 

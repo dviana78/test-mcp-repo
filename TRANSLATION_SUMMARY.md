@@ -48,17 +48,17 @@ All other JavaScript files were already in English or didn't require translation
 ### 📋 **Key Translation Categories:**
 
 #### **Console Messages:**
-- `Obteniendo` → `Getting`
-- `Verificando` → `Verifying` 
+- `Getting` → `Getting`
+- `Verifying` → `Verifying` 
 - `Éxito` → `Success`
 - `Error` → `Error`
-- `Análisis completo` → `Complete analysis`
+- `Analysis complete` → `Complete analysis`
 
 #### **API Terminology:**
-- `personajes` → `characters`
-- `Configuración de la API` → `API Configuration`
-- `Suscripción requerida` → `Subscription required`
-- `Detalles de la API` → `API Details`
+- `characters` → `characters`
+- `Configuration de la API` → `API Configuration`
+- `Subscription requerida` → `Subscription required`
+- `Details de la API` → `API Details`
 
 #### **Character Analysis:**
 - `Género` → `Gender`
@@ -68,10 +68,10 @@ All other JavaScript files were already in English or didn't require translation
 - `Apariciones` → `Appearances`
 
 #### **Process Terms:**
-- `Proceso completado` → `Process completed`
+- `Proceso completed` → `Process completed`
 - `Límite de seguridad` → `Safety limit`
-- `Página` → `Page`
-- `Más` → `More`
+- `Page` → `Page`
+- `More` → `More`
 
 ### 🎯 **Quality Assurance:**
 
@@ -124,7 +124,7 @@ node analyze-starwars-genders.js
 npm run build
 
 # Check for any remaining Spanish text
-grep -r "Obteniendo\|Verificando\|Éxito" *.js
+grep -r "Getting\|Verifying\|Éxito" *.js
 ```
 
 ---

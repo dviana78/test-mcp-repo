@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🌟 Verifying API de Star Wars y Getting characters');
 console.log('====================================================\n');
@@ -21,7 +21,7 @@ function sendRequest(method, params = {}) {
   
   console.log(`📤 Sending: ${method}`);
   if (Object.keys(params).length > 0) {
-    console.log(`   Parámetros:`, JSON.stringify(params, null, 2));
+    console.log(`   Parameters:`, JSON.stringify(params, null, 2));
   }
   
   server.stdin.write(JSON.stringify(request) + '\n');
@@ -69,7 +69,7 @@ server.stdout.on('data', (data) => {
         } else if (response.Error) {
           console.log(`❌ Error: ${response.Error.message}`);
           if (response.Error.data) {
-            console.log('   Detalles:', JSON.stringify(response.Error.data, null, 2));
+            console.log('   Details:', JSON.stringify(response.Error.data, null, 2));
           }
         }
       } catch (e) {
@@ -84,9 +84,9 @@ server.stderr.on('data', (data) => {
 });
 
 server.on('close', (code) => {
-  console.log(`\n📊 Resumen de la API de Star Wars:`);
+  console.log(`\n📊 Summary de la API de Star Wars:`);
   console.log(`===============================`);
-  console.log(`🎬 La API incluye 6 endpoints principales:`);
+  console.log(`🎬 La API incluye 6 endpoints main:`);
   console.log(`   👥 /people - characters (Luke, Leia, Han Solo, etc.)`);
   console.log(`   🌍 /planets - Planets (Tatooine, Alderaan, etc.)`);
   console.log(`   🎭 /films - Movies (Episodes I-VI)`);
@@ -94,11 +94,11 @@ server.on('close', (code) => {
   console.log(`   🚀 /starships - Naves espaciales`);
   console.log(`   👽 /species - Alien species`);
   console.log(`\n💡 Para obtener los datos reales:`);
-  console.log(`   1. Verify que la API esté activa en Azure APIM`);
-  console.log(`   2. Check si requiere suscripción o clave API`);
+  console.log(`   1. Verify that the API is active en Azure APIM`);
+  console.log(`   2. Check if it requires subscription o API key`);
   console.log(`   3. Use el portal de Azure APIM para probar endpoints`);
-  console.log(`   4. O use herramientas como Postman con las credenciales correctas`);
-  console.log(`\n🔚 Process finished con código: ${code}`);
+  console.log(`   4. O use tools como Postman con las credentials correctas`);
+  console.log(`\n🔚 Process finished con code: ${code}`);
 });
 
 // Secuencia de comandos

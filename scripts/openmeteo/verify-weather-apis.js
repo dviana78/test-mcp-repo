@@ -1,8 +1,9 @@
 // Verify weather-openmeteo-v1 API operations with retry
+import { spawn } from 'child_process';
+
 console.log('🔍 Verifying Weather OpenMeteo v1 API operations...\n');
 
 async function checkOperationsWithRetry(apiId, maxRetries = 3) {
-    const { spawn } = require('child_process');
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         console.log(`📋 Attempt ${attempt}/${maxRetries}: Checking operations for ${apiId}`);

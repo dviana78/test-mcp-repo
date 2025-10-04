@@ -5,9 +5,9 @@
  * This script helps configure and test MCP server integration with VS Code
  */
 
-const fs = require('fs');
-const path = require('path');
-const { spawn } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { spawn } from 'child_process';
 
 console.log('🔧 MCP Server Configuration Helper');
 console.log('===================================\n');

@@ -1,9 +1,9 @@
-const https = require('https');
+import https from 'https';
 
 console.log('🔍 Testing Access through APIM');
 console.log('===================================');
 
-// Usando la clave que obtuvimos anteriormente
+// Usando la clave than obtuvimos anteriormente
 const subscriptionKey = 'd5fde29d155f4f0194e259d07818ec61';
 
 const options = {
@@ -22,7 +22,7 @@ console.log(`🌐 URL: https://${options.hostname}${options.path}`);
 
 const req = https.request(options, (res) => {
     console.log(`📡 Status de APIM: ${res.statusCode}`);
-    console.log(`📋 Headers de respuesta:`);
+    console.log(`📋 Headers de response:`);
     Object.keys(res.headers).forEach(key => {
         console.log(`   ${key}: ${res.headers[key]}`);
     });
@@ -43,12 +43,12 @@ const req = https.request(options, (res) => {
                     console.log(`   ${index + 1}. ${character.name}`);
                 });
             } catch (Error) {
-                console.log(`❌ Error parsing respuesta: ${Error.message}`);
-                console.log(`📄 Respuesta cruda:`, data.substring(0, 500));
+                console.log(`❌ Error parsing response: ${Error.message}`);
+                console.log(`📄 Response cruda:`, data.substring(0, 500));
             }
         } else {
             console.log(`❌ Error ${res.statusCode}: ${res.statusMessage}`);
-            console.log(`📄 Respuesta:`, data);
+            console.log(`📄 Response:`, data);
         }
     });
 });

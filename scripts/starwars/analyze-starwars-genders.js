@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 console.log('⚧️ Star Wars Gender Analysis');
 console.log('===================================');
@@ -105,14 +105,14 @@ function displayResults(genderStats, totalCharacters) {
     console.log(`👥 Total characters analizados: ${totalCharacters}`);
     console.log('');
 
-    // Statistics principales
+    // Statistics main
     const maleCount = genderStats.male.length;
     const femaleCount = genderStats.female.length;
     const naCount = genderStats['n/a'].length;
     const otherCount = genderStats.hermaphrodite.length + genderStats.None.length + genderStats.unkNown.length;
 
-    console.log(`👨 characters masculiNos: ${maleCount} (${((maleCount/totalCharacters)*100).toFixed(1)}%)`);
-    console.log(`👩 characters femeniNos: ${femaleCount} (${((femaleCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`👨 male characters: ${maleCount} (${((maleCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`👩 female characters: ${femaleCount} (${((femaleCount/totalCharacters)*100).toFixed(1)}%)`);
     console.log(`🤖 Droids/N/A: ${naCount} (${((naCount/totalCharacters)*100).toFixed(1)}%)`);
     console.log(`❓ Otros/UnkNowns: ${otherCount} (${((otherCount/totalCharacters)*100).toFixed(1)}%)`);
 
@@ -152,15 +152,15 @@ function displayResults(genderStats, totalCharacters) {
 
     console.log('\n📈 Statistical Summary:');
     console.log('=======================');
-    console.log(`• La saga tiene una proporción de ${maleCount}:${femaleCount} entre characters masculiNos y femeniNos`);
+    console.log(`• The saga has una proportion of ${maleCount}:${femaleCount} entre male characters y femeniNos`);
     console.log(`• Los Droids representan el ${((naCount/totalCharacters)*100).toFixed(1)}% de los characters`);
-    console.log(`• Hay ${maleCount > femaleCount ? 'más' : 'meNos'} characters masculiNos que femeniNos`);
+    console.log(`• There are ${maleCount > femaleCount ? 'more' : 'fewer'} male characters than femeniNos`);
     console.log(`• Diferencia: ${Math.abs(maleCount - femaleCount)} characters`);
 }
 
 async function main() {
     try {
-        console.log('🚀 Starting analysis completo...\n');
+        console.log('🚀 Starting analysis complete...\n');
         
         const allCharacters = await getAllCharacters();
         console.log(`\n✅ Total characters obtenidos: ${allCharacters.length}`);
@@ -169,7 +169,7 @@ async function main() {
         displayResults(genderStats, allCharacters.length);
         
     } catch (Error) {
-        console.Error('❌ Error en el análisis:', Error.message);
+        console.Error('❌ Error en el analysis:', Error.message);
     }
 }
 

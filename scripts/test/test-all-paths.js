@@ -72,12 +72,12 @@ async function testAllPaths() {
         results.push(result);
     }
     
-    console.log('\n📊 Resumen de Resultados:');
+    console.log('\n📊 Summary de Resultados:');
     console.log('=========================');
     
     const successful = results.filter(r => r.success);
     if (successful.length > 0) {
-        console.log('✅ Paths que funcionan:');
+        console.log('✅ Paths than funcionan:');
         successful.forEach(r => {
             console.log(`   - ${r.path}`);
         });

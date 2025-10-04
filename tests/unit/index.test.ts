@@ -65,9 +65,9 @@ describe('Index Module', () => {
             expect(mockLogger).toHaveBeenCalledWith('Main');
         });
 
-        it('should load dotenv configuration', () => {
+        it('should load dotenv configuration', async () => {
             // Import should load dotenv
-            require('../../src/index');
+            await import('../../src/index.js');
             
             // If we get here without errors, dotenv was loaded successfully
             expect(true).toBe(true);

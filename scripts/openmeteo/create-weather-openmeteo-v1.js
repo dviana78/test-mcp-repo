@@ -1,6 +1,6 @@
-const { spawn } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 // Test the create_api_from_yaml tool with proper format settings
 async function testCreateWeatherOpenMeteoAPI() {

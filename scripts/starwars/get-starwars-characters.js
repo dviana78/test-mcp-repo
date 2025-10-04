@@ -1,5 +1,5 @@
-const { exec } = require('child_process');
-const util = require('util');
+import { exec } from 'child_process';
+import util from 'util';
 const execPromise = util.promisify(exec);
 
 console.log('🌟 Getting Star Wars Characters');
@@ -62,7 +62,7 @@ async function getStarWarsCharacters() {
         console.log('🔄 Trying Alternative method...');
         
         // Alternative method usando Node.js
-        const https = require('https');
+        const https = await import('https');
         
         return new Promise((resolve, reject) => {
             const options = {

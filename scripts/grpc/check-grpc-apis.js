@@ -3,12 +3,12 @@
  * Script to check gRPC APIs specifically in Azure APIM
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 async function runMCPCommand(request) {
   return new Promise((resolve, reject) => {
-    const serverPath = path.join(__dirname, 'dist', 'index.js');
+    const serverPath = path.join(process.cwd(), 'dist', 'index.js');
     const child = spawn('node', [serverPath], {
       stdio: ['pipe', 'pipe', 'pipe']
     });

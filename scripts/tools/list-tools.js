@@ -3,8 +3,8 @@
  * Script to list all available tools in the MCP Server
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 async function listTools() {
   return new Promise((resolve, reject) => {
@@ -128,6 +128,6 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }

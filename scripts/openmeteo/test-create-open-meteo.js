@@ -3,9 +3,9 @@
  * Test creating Open-Meteo API using the working debug pattern
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+import { spawn } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 
 // Read YAML content
 const yamlContent = fs.readFileSync('open-meteo.yaml', 'utf8');

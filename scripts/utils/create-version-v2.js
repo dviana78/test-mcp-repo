@@ -3,8 +3,8 @@
  * Create version v2 of the existing Open-Meteo API (not a new API)
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 console.log('🔄 Creating Version v2 of existing Open-Meteo API');
 console.log('===============================================\n');

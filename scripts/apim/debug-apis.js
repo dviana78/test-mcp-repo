@@ -4,7 +4,7 @@
  * Detailed debugging test for Azure APIM APIs
  */
 
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🔬 Detailed debugging test for Azure APIM');
 console.log('==============================================\n');

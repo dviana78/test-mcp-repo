@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 console.log('\n👥 Star Wars Characters:');
 console.log('============================================\n');
@@ -6,7 +6,7 @@ console.log('============================================\n');
 // API Configuration
 const APIM_BASE_URL = 'apim-dviana78-dev.azure-api.net';
 const API_PATH = '/swapi/v1/people';
-const SUBSCRIPTION_KEY = 'd5fde29d155f4f0194e259d07818ec61'; // Key obtained de la suscripción
+const SUBSCRIPTION_KEY = 'd5fde29d155f4f0194e259d07818ec61'; // Key obtained de la subscription
 
 function makeRequest(path, page = 1) {
   return new Promise((resolve, reject) => {
@@ -72,9 +72,9 @@ async function getAllCharacters() {
         console.log(`✅ page ${currentPage}: ${response.results.length} characters found`);
         console.log(`📊 Total hasta ahora: ${allCharacters.length} characters`);
         
-        // Verify si hay más pages
+        // Verify si there are more pages
         hasNextPage = !!response.next;
-        console.log(`🔄 ¿Hay más pages? ${hasNextPage ? 'Yes' : 'No'}`);
+        console.log(`🔄 ¿There are more pages? ${hasNextPage ? 'Yes' : 'No'}`);
         
         if (response.count) {
           console.log(`🎯 Total esperado: ${response.count} characters\n`);
@@ -82,7 +82,7 @@ async function getAllCharacters() {
         
         currentPage++;
       } else {
-        console.log('❌ No se encontraron resultados en la respuesta');
+        console.log('❌ No se encontraron resultados en la response');
         hasNextPage = false;
       }
       
@@ -108,13 +108,13 @@ async function getAllCharacters() {
       console.log(`   🎂 Birth: ${character.birth_year === 'unkNown' ? 'Unknown' : character.birth_year}`);
       console.log(`   ⚧️  Gender: ${character.gender === 'unkNown' ? 'Unknown' : character.gender}`);
       
-      // Extraer ID del Planet desde la URL
+      // Extraer ID del Planet from la URL
       if (character.homeworld) {
         const planetId = character.homeworld.split('/').filter(x => x).pop();
         console.log(`   🌍 Planet: ID ${planetId}`);
       }
       
-      // Movies en las que aparece
+      // Movies en las than aparece
       if (character.films && character.films.length > 0) {
         console.log(`   🎬 Movies: ${character.films.length} Appearances`);
       }
@@ -140,11 +140,11 @@ async function getAllCharacters() {
     console.log('\n❌ Error al obtener characters:', Error.message);
     
     if (Error.message.includes('401')) {
-      console.log('🔑 Authentication error. Verifica la Subscription key.');
+      console.log('🔑 Authentication error. Verify la Subscription key.');
     } else if (Error.message.includes('403')) {
-      console.log('🚫 Acceso denegado. Verifica los permisos de la suscripción.');
+      console.log('🚫 Access denied. Verify los permissions de la subscription.');
     } else if (Error.message.includes('404')) {
-      console.log('🔍 endpoint No encontrado. Verifica la URL de la API.');
+      console.log('🔍 endpoint No encontrado. Verify la URL de la API.');
     }
   }
 }

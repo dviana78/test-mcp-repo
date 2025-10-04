@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-// Script para probar la conexión a Azure APIM y listar APIs
-const { spawn } = require('child_process');
+// Script para probar la connection a Azure APIM y list APIs
+import { spawn } from 'child_process';
 
-console.log('🔍 Testing conexión a Azure APIM...\n');
+console.log('🔍 Testing connection to Azure APIM...\n');
 
 // Iniciar el server MCP
 const server = spawn('node', ['dist/index.js'], {
@@ -35,10 +35,10 @@ server.stdout.on('data', (data) => {
     if (response.includes('"jsonrpc"')) {
       try {
         const parsed = JSON.parse(response);
-        console.log('📥 Respuesta:', JSON.stringify(parsed, null, 2));
+        console.log('📥 Response:', JSON.stringify(parsed, null, 2));
         
         if (parsed.method === undefined && parsed.result && serverReady) {
-          // Es una respuesta a nuestro request
+          // Es una response a nuestro request
           if (parsed.result.content) {
             console.log('\n🎯 Resultado de la API:');
             parsed.result.content.forEach(content => {
@@ -54,11 +54,11 @@ server.stdout.on('data', (data) => {
           }, 1000);
         }
       } catch (e) {
-        // Ignorar respuestas que no son JSON válido
+        // Ignorar respuestas than no son JSON válido
       }
     } else if (response.includes('started successfully')) {
       serverReady = true;
-      // Enviar solicitud para listar APIs
+      // Enviar solicitud para list APIs
       setTimeout(() => {
         console.log('\n2️⃣ Solicitando lista de APIs...');
         sendMessage('tools/call', {
@@ -78,13 +78,13 @@ server.stderr.on('data', (data) => {
 });
 
 server.on('close', (code) => {
-  console.log(`\n🔚 Process finished con código ${code}`);
+  console.log(`\n🔚 Process finished with code ${code}`);
   if (code !== 0) {
-    console.log('\n❌ Error de conexión. Verifica:');
-    console.log('   - Credenciales de Azure en .env');
-    console.log('   - Conexión a internet');
-    console.log('   - Permisos del Service Principal');
-    console.log('   - Que la suscripción y APIM existan');
+    console.log('\n❌ Connection error. Check:');
+    console.log('   - Azure credentials in .env');
+    console.log('   - Internet connection');
+    console.log('   - Service Principal permissions');
+    console.log('   - That subscription and APIM exist');
   }
 });
 

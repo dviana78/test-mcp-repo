@@ -3,8 +3,8 @@
  * Quick gRPC API search using the working debug method
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 // Test with a simple filter for gRPC
 const testGrpcFilter = {

@@ -1,13 +1,13 @@
 #!/usr/bin/env Node
 
 /**
- * Test directo para listar APIs usando MCP Server
+ * Test directo para list APIs usando MCP Server
  */
 
-const { spawn } = require('child_process');
-const readline = require('readline');
+import { spawn } from 'child_process';
+import readline from 'readline';
 
-console.log('🔍 Testing herramienta list_apis...\n');
+console.log('🔍 Testing tool list_apis...\n');
 
 // Crear server MCP
 const server = spawn('Node', ['dist/index.js'], {
@@ -41,7 +41,7 @@ server.stdout.on('data', (data) => {
     if (line.includes('"jsonrpc"')) {
       try {
         const response = JSON.parse(line);
-        console.log('\n📥 Respuesta recibida:');
+        console.log('\n📥 Response recibida:');
         
         if (response.result) {
           if (response.result.content && response.result.content.length > 0) {
@@ -71,7 +71,7 @@ server.stdout.on('data', (data) => {
           }
         } else if (response.Error) {
           console.log(`❌ Error: ${response.Error.message}`);
-          console.log(`   Código: ${response.Error.code}`);
+          console.log(`   Code: ${response.Error.code}`);
         }
         
         responseReceived = true;
@@ -91,7 +91,7 @@ server.stderr.on('data', (data) => {
 });
 
 server.on('close', (code) => {
-  console.log(`\n🔚 server cerrado con código: ${code}`);
+  console.log(`\n🔚 server closed con code: ${code}`);
 });
 
 // Secuencia de prueba
@@ -123,7 +123,7 @@ setTimeout(() => {
 // Timeout de seguridad
 setTimeout(() => {
   if (!responseReceived) {
-    console.log('\n⏰ Timeout - No se recibió respuesta');
+    console.log('\n⏰ Timeout - No se recibió response');
   }
   server.kill('SIGTERM');
 }, 15000);

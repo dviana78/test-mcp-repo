@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🔍 Verifying Star Wars API Configuration');
 console.log('==================================================\n');
@@ -52,12 +52,12 @@ server.stdout.on('data', (data) => {
                     console.log(`   Protocolos: ${data.api.protocols?.join(', ')}`);
                     console.log(`   Subscription required: ${data.api.subscriptionRequired ? 'Yes' : 'No'}`);
                     
-                    // Construir URL completa
+                    // Construir URL complete
                     const baseUrl = `https://apim-dviana78-dev.azure-api.net`;
                     const fullPath = data.api.path ? `/${data.api.path}` : '';
                     console.log(`   🌐 URL Base: ${baseUrl}${fullPath}`);
                   } else if (data.operations) {
-                    console.log('\n🔧 Operaciones disponibles:');
+                    console.log('\n🔧 Operations disponibles:');
                     data.operations.forEach((op, index) => {
                       console.log(`   ${index + 1}. ${op.method} ${op.urlTemplate || op.path}`);
                       console.log(`      Nombre: ${op.displayName || op.name}`);
@@ -69,7 +69,7 @@ server.stdout.on('data', (data) => {
                     console.log(`   Clave primaria: ${data.subscription.primaryKey || 'No visible'}`);
                   }
                 } catch (e) {
-                  console.log('📝 Respuesta:', content.text);
+                  console.log('📝 Response:', content.text);
                 }
               }
             });
@@ -89,16 +89,16 @@ server.stderr.on('data', (data) => {
 });
 
 server.on('close', (code) => {
-  console.log(`\n💡 Information para acceder a la API:`);
+  console.log(`\n💡 Information to access a la API:`);
   console.log('=====================================');
   console.log('1. URL Base: https://apim-dviana78-dev.azure-api.net/swapi/v1');
   console.log('2. Header: Ocp-Apim-Subscription-Key: [tu-clave]');
   console.log('3. endpoints: /people, /planets, /films, etc.');
-  console.log('\n🔍 Si el endpoint No funciona, es posible que:');
+  console.log('\n🔍 Si el endpoint No funciona, es posible than:');
   console.log('   - La API is configured incorrectly');
-  console.log('   - El service backend No esté respondiendo');
+  console.log('   - The backend service No is responding');
   console.log('   - Se necesite una Configuration adicional en APIM');
-  console.log(`\n🔚 Process completed con código: ${code}`);
+  console.log(`\n🔚 Process completed con code: ${code}`);
 });
 
 // Verification sequence
@@ -131,7 +131,7 @@ setTimeout(() => {
 }, 6000);
 
 setTimeout(() => {
-  console.log('\n🔑 Verifying suscripción...');
+  console.log('\n🔑 Verifying subscription...');
   sendRequest('tools/call', {
     name: 'get_subscription',
     arguments: {

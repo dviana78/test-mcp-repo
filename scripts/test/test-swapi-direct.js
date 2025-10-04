@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 // Test direct connection to SWAPI through Azure APIM
 const options = {

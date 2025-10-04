@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 console.log('🔧 Enhanced English Translation Script');
 console.log('======================================');
@@ -20,7 +20,7 @@ const preciseTranslations = [
     replacement: "console.log('\\n👥 Star Wars Characters:')"
   },
   {
-    pattern: /console\.log\('([^']*Más characters[^']*)'\)/g,
+    pattern: /console\.log\('([^']*More characters[^']*)'\)/g,
     replacement: "console.log('\\n👥 More Characters:')"
   },
   {
@@ -36,7 +36,7 @@ const preciseTranslations = [
     replacement: "console.log('🔄 Trying alternative method...')"
   },
   {
-    pattern: /console\.log\('([^']*Getting más characters[^']*)'\)/g,
+    pattern: /console\.log\('([^']*Getting more characters[^']*)'\)/g,
     replacement: "console.log('📄 Getting more characters...')"
   },
   {
@@ -56,26 +56,26 @@ const preciseTranslations = [
     replacement: "console.log('2. Configure URL rewrite policies')"
   },
   {
-    pattern: /console\.log\('([^']*Asegurar que los endpoints[^']*)'\)/g,
+    pattern: /console\.log\('([^']*Asegurar than los endpoints[^']*)'\)/g,
     replacement: "console.log('3. Ensure endpoints are mapped correctly')"
   }
 ];
 
 // Simple word replacements
 const wordReplacements = {
-  'personajes': 'characters',
-  'Personajes': 'Characters',
+  'characters': 'characters',
+  'Characters': 'Characters',
   'Encontrados': 'Found',
   'Éxito': 'Success',
   'Error': 'Error',
   'Método': 'Method',
-  'Acceso directo': 'Direct access',
+  'Access directo': 'Direct access',
   'backend original': 'original backend',
   'Planet': 'Planet',
   'Eye color': 'Eye color',
   'Gender': 'Gender',
   'Desconocido': 'Unknown',
-  'Más': 'More',
+  'More': 'More',
   'Getting': 'Getting',
   'Intentando': 'Trying',
   'método alternativo': 'alternative method',
@@ -89,19 +89,19 @@ const wordReplacements = {
 // Spanish comments to English
 const commentTranslations = {
   '// Usar curl para obtener datos directamente del backend': '// Use curl to get data directly from the backend',
-  '// Si hay más páginas, obtener algunos characters adicionales': '// If there are more pages, get some additional characters',
+  '// Si there are more pages, obtener algunos characters adicionales': '// If there are more pages, get some additional characters',
   '// Método alternativo usando Node.js': '// Alternative method using Node.js',
   '// Mostrar los primeros characters': '// Show the first characters',
-  '// Ignorar líneas que no son JSON válidas': '// Ignore lines that are not valid JSON',
-  '// No es JSON válido, probablemente es log del servidor': '// Not valid JSON, probably server log',
+  '// Ignorar líneas than no son JSON válidas': '// Ignore lines that are not valid JSON',
+  '// No es JSON válido, probablemente es log del server': '// Not valid JSON, probably server log',
   '// Límite de seguridad': '// Safety limit',
-  '// Configuración de la API': '// API Configuration',
-  '// Clave obtenida de la suscripción': '// Key obtained from subscription',
-  '// Verificar si hay más páginas': '// Check if there are more pages',
+  '// Configuration de la API': '// API Configuration',
+  '// Clave obtenida de la subscription': '// Key obtained from subscription',
+  '// Verificar si there are more pages': '// Check if there are more pages',
   '// Pequeña pausa entre requests': '// Small pause between requests',
-  '// Estadísticas principales': '// Main statistics',
+  '// Estadísticas main': '// Main statistics',
   '// Estadísticas adicionales': '// Additional statistics',
-  '// Películas en las que aparece': '// Movies where character appears'
+  '// Películas en las than aparece': '// Movies where character appears'
 };
 
 function translateFileContent(content) {

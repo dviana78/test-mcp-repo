@@ -1,6 +1,5 @@
 // Create Weather Open-Meteo API with correct YAML import
-const { ApimService } = require('./dist/services/apim-service.js');
-const fs = require('fs');
+import fs from 'fs';
 
 async function createWeatherOpenMeteoWithOperations() {
     console.log('🌤️ Creating Weather Open-Meteo API v1 with operations...\n');

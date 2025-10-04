@@ -3,14 +3,14 @@
  * Simple script to search for gRPC APIs
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 async function searchGrpcApis() {
   return new Promise((resolve, reject) => {
     console.log('🔍 Searching for gRPC APIs...\n');
     
-    const serverPath = path.join(__dirname, 'dist', 'index.js');
+    const serverPath = path.join(process.cwd(), 'dist', 'index.js');
     const child = spawn('node', [serverPath], {
       stdio: ['pipe', 'pipe', 'pipe']
     });

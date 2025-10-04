@@ -33,8 +33,8 @@ const req = https.request(options, (res) => {
                 console.log(`   ${index + 1}. ${character.name}`);
             });
         } catch (Error) {
-            console.log(`❌ Error parsing respuesta: ${Error.message}`);
-            console.log(`📄 Respuesta cruda:`, data.substring(0, 500));
+            console.log(`❌ Error parsing response: ${Error.message}`);
+            console.log(`📄 Response cruda:`, data.substring(0, 500));
         }
     });
 });

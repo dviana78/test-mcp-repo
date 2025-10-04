@@ -3,8 +3,8 @@
  * Simple test for gRPC API creation to debug the issue
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 // Simple Protobuf for testing
 const simpleProto = `

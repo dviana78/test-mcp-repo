@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 console.log('🪐 Getting All Star Wars Planets');
 console.log('================================');

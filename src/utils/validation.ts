@@ -160,7 +160,7 @@ export function isValidRevisionId(revisionId: string): boolean {
 }
 
 export function sanitizeApiPath(path: string): string {
-  // Asegurar que el path comience con /
+  // Asegurar than el path comience con /
   if (!path.startsWith('/')) {
     path = '/' + path;
   }

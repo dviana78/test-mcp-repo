@@ -81,6 +81,14 @@ For detailed information on the Model Context Protocol, refer to:
 - [Official MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [Model Context Protocol Specification](https://modelcontextprotocol.io/specification/)
 
+## 🌐 Internationalization
+This project follows English-only standards for all code, documentation, scripts, and comments:
+- **Code & Comments**: All variable names, function names, and code comments are in English
+- **Documentation**: README, API docs, and inline documentation in English
+- **Scripts & Tools**: All utility scripts and tools use English messages and descriptions
+- **Error Messages**: All error messages and logging output in English
+- **Consistency**: Ensures universal accessibility and professional standards
+
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
 

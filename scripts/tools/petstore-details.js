@@ -4,7 +4,7 @@
  * Get detailed information about the Swagger Petstore API
  */
 
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('🐾 Swagger Petstore API Details');
 console.log('===============================\n');

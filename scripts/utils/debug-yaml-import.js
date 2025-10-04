@@ -1,5 +1,5 @@
 // Debug YAML import issue by checking Azure service logs
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 async function createTestApiAndCheckLogs() {
     console.log('🔍 Creating test API and checking for import issues...\n');

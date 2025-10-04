@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+import { spawn } from 'child_process';
 
 console.log('⭐ Creating Subscription for Star Wars API');
 console.log('=============================================\n');
@@ -21,7 +21,7 @@ function sendRequest(method, params = {}) {
   
   console.log(`📤 Sending: ${method}`);
   if (Object.keys(params).length > 0) {
-    console.log(`   Parámetros:`, JSON.stringify(params, null, 2));
+    console.log(`   Parameters:`, JSON.stringify(params, null, 2));
   }
   
   server.stdin.write(JSON.stringify(request) + '\n');
@@ -42,7 +42,7 @@ server.stdout.on('data', (data) => {
           if (response.result.serverInfo) {
             console.log('✅ server MCP inicializado\n');
           } else if (response.result.content) {
-            console.log('\n📋 Respuesta:\n');
+            console.log('\n📋 Response:\n');
             
             response.result.content.forEach(content => {
               if (content.text) {
@@ -58,7 +58,7 @@ server.stdout.on('data', (data) => {
         } else if (response.Error) {
           console.log(`❌ Error: ${response.Error.message}`);
           if (response.Error.data) {
-            console.log('   Detalles:', JSON.stringify(response.Error.data, null, 2));
+            console.log('   Details:', JSON.stringify(response.Error.data, null, 2));
           }
         }
       } catch (e) {
@@ -73,15 +73,15 @@ server.stderr.on('data', (data) => {
 });
 
 server.on('close', (code) => {
-  console.log(`\n🔚 Process completed con código: ${code}`);
-  console.log('\n📊 Resumen de lo que hemos hecho:');
-  console.log('1. ✅ Creado producto "Star Wars" para organizar las APIs');
-  console.log('2. ✅ Agregado la API de Star Wars al producto');
-  console.log('3. ✅ Creado suscripción para acceder a la API');
+  console.log(`\n🔚 Process completed con code: ${code}`);
+  console.log('\n📊 Summary de lo than hemos hecho:');
+  console.log('1. ✅ Created product "Star Wars" para organizar las APIs');
+  console.log('2. ✅ Agregado la API de Star Wars al product');
+  console.log('3. ✅ Created subscription to access a la API');
   console.log('\n💡 Next steps:');
   console.log('   - Use la Subscription key para hacer requests a la API');
   console.log('   - Probar endpoints como: /people, /planets, /films');
-  console.log('   - Configure políticas de rate limiting si es necesario');
+  console.log('   - Configure policies de rate limiting if necessary');
 });
 
 // Secuencia de comandos
@@ -94,13 +94,13 @@ setTimeout(() => {
 }, 500);
 
 setTimeout(() => {
-  console.log('🏗️  Paso 1: Creating producto "Star Wars"...');
+  console.log('🏗️  Step 1: Creating product "Star Wars"...');
   sendRequest('tools/call', {
     name: 'create_product',
     arguments: {
       productId: 'star-wars-product',
       displayName: 'Star Wars Product',
-      description: 'Producto que incluye todas las APIs relacionadas con Star Wars',
+      description: 'Product than incluye todas las APIs relacionadas con Star Wars',
       subscriptionRequired: true,
       approvalRequired: false,
       state: 'published'
@@ -109,7 +109,7 @@ setTimeout(() => {
 }, 3000);
 
 setTimeout(() => {
-  console.log('\n🔗 Paso 2: Agregando API de Star Wars al producto...');
+  console.log('\n🔗 Step 2: Agregando API de Star Wars al product...');
   sendRequest('tools/call', {
     name: 'add_api_to_product',
     arguments: {
@@ -120,7 +120,7 @@ setTimeout(() => {
 }, 6000);
 
 setTimeout(() => {
-  console.log('\n🔑 Paso 3: Creating suscripción para acceder a la API...');
+  console.log('\n🔑 Step 3: Creating subscription to access a la API...');
   sendRequest('tools/call', {
     name: 'create_subscription',
     arguments: {
@@ -132,7 +132,7 @@ setTimeout(() => {
 }, 9000);
 
 setTimeout(() => {
-  console.log('\n📋 Paso 4: Verifying suscripción creada...');
+  console.log('\n📋 Step 4: Verifying subscription creada...');
   sendRequest('tools/call', {
     name: 'get_subscription',
     arguments: {

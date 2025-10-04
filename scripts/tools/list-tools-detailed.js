@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 
-console.log('🔧 Listado de Tools Disponibles en MCP Server');
+console.log('🔧 Listing de Tools Disponibles en MCP Server');
 console.log('==============================================\n');
 
 const server = spawn('Node', ['dist/index.js'], {
@@ -22,21 +22,21 @@ server.stdout.on('data', (data) => {
         const response = JSON.parse(line);
         
         if (response.result && response.result.tools) {
-          console.log(`✅ Total de herramientas encontradas: ${response.result.tools.length}\n`);
+          console.log(`✅ Total de tools encontradas: ${response.result.tools.length}\n`);
           
           response.result.tools.forEach((tool, index) => {
             console.log(`${index + 1}. 🛠️  ${tool.name}`);
-            console.log(`   📝 Descripción: ${tool.description}`);
+            console.log(`   📝 Description: ${tool.description}`);
             
             if (tool.inputSchema && tool.inputSchema.properties) {
               const required = tool.inputSchema.required || [];
               const optional = Object.keys(tool.inputSchema.properties).filter(p => !required.includes(p));
               
               if (required.length > 0) {
-                console.log(`   ✅ Parámetros requeridos: ${required.join(', ')}`);
+                console.log(`   ✅ Required parameters: ${required.join(', ')}`);
               }
               if (optional.length > 0) {
-                console.log(`   📋 Parámetros opcionales: ${optional.join(', ')}`);
+                console.log(`   📋 Optional parameters: ${optional.join(', ')}`);
               }
             }
             console.log('');

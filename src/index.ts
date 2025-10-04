@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
-import { McpServer, setupGracefulShutdown } from './server';
-import { Logger } from './utils/logger';
+import { McpServer, setupGracefulShutdown } from './server.js';
+import { Logger } from './utils/logger.js';
 
 async function main(): Promise<void> {
   const logger = new Logger('Main');
@@ -21,7 +21,7 @@ async function main(): Promise<void> {
 }
 
 // Only run if this file is executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
     console.error('Fatal error:', error);
     process.exit(1);
