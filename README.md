@@ -3,6 +3,72 @@
 ## Overview
 This project is a professional Node.js/TypeScript implementation of the Model Context Protocol (MCP) server designed for integration with Azure API Management. It follows enterprise-grade architecture patterns, ensuring a clean separation of concerns, comprehensive error handling, and adherence to TypeScript best practices.
 
+## APIM MCP Server Overview
+
+### 🏗️ **Architecture & Technology Stack**
+This is a comprehensive **Azure API Management MCP Server** that bridges Azure cloud services with the Model Context Protocol, providing a robust foundation for enterprise API management automation.
+
+**Core Technologies:**
+- **Runtime**: Node.js ≥18.0.0 with ES Modules
+- **Language**: TypeScript 5.x with strict type checking
+- **Protocol**: Model Context Protocol (MCP) SDK v0.4.0
+- **Cloud Integration**: Azure API Management via ARM client
+- **Authentication**: Azure DefaultAzureCredential with service principal support
+
+### 🎯 **Primary Purpose & Use Cases**
+The server acts as an intelligent intermediary that exposes Azure API Management capabilities through the standardized MCP protocol, enabling:
+
+1. **Automated API Lifecycle Management**: Complete CRUD operations for APIs, products, and subscriptions
+2. **Multi-Protocol API Support**: REST, gRPC, OpenAPI, and custom protocol integration
+3. **Enterprise API Governance**: Centralized management of API products, subscriptions, and access control
+4. **Development Workflow Integration**: Seamless integration with development tools via MCP clients
+5. **Cross-Platform API Testing**: Comprehensive testing framework for multiple API types
+
+### 📊 **Current Deployment Status**
+- **Azure APIM Service**: `apim-dviana78-dev` (active in production)
+- **Configured APIs**: 8 active APIs including Swagger Petstore, Star Wars API, OpenMeteo
+- **Active Products**: 2 products (Star Wars Product, Store) with full subscription management
+- **Live Subscriptions**: 3 active subscriptions with generated authentication keys
+- **Test Coverage**: 409 passing tests with 77% code coverage
+- **MCP Tools**: 18 available tools for comprehensive API management
+
+### 🔧 **Advanced Features**
+
+#### **Multi-API Integration**
+- **REST APIs**: Swagger Petstore, JSONPlaceholder, OpenMeteo Weather
+- **Public APIs**: Star Wars (SWAPI), Rick and Morty, Pokemon
+- **gRPC Services**: Protocol buffer support with HTTP transcoding
+- **Custom Backends**: Flexible backend service configuration
+
+#### **Enterprise-Grade Capabilities**
+- **Subscription Management**: Automated key generation and lifecycle management
+- **Product Association**: Dynamic API-to-product mapping with access control
+- **Authentication & Security**: Azure AD integration with subscription-key authentication
+- **Monitoring & Analytics**: Built-in logging and error tracking
+- **Version Control**: API versioning with segment, query, and header strategies
+
+#### **Development & Operations**
+- **Hot Reload Development**: TSX watch mode for rapid development cycles
+- **Comprehensive Testing**: Jest framework with integration and unit tests
+- **Script Automation**: 30+ utility scripts for common operations
+- **CI/CD Ready**: TypeScript compilation and automated deployment support
+
+### 🚀 **Operational Excellence**
+The server demonstrates production-ready characteristics:
+- **High Availability**: Designed for enterprise deployment scenarios
+- **Error Resilience**: Comprehensive error handling and graceful degradation
+- **Performance Optimized**: Efficient Azure SDK usage with connection pooling
+- **Scalability**: Modular architecture supporting horizontal scaling
+- **Observability**: Structured logging with Winston and Azure integration
+
+### 📈 **Business Value**
+This MCP server provides significant business value through:
+- **Reduced Integration Time**: Standardized MCP interface for all API operations
+- **Operational Efficiency**: Automated API management reducing manual overhead
+- **Developer Productivity**: Rich toolset for rapid API development and testing
+- **Enterprise Compliance**: Centralized governance and security management
+- **Cost Optimization**: Efficient resource utilization and automated workflows
+
 ## Features
 
 ### 🚀 Core Capabilities
