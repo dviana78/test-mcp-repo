@@ -16,14 +16,14 @@ import {
   SubscriptionsManagementService,
   ApiOperationsService,
   BackendServicesService
-} from './services';
-import { ToolsHandler } from './handlers';
+} from './services/index';
+import { ToolsHandler } from './handlers/index';
 import { getAzureConfig } from './config/azure';
 import { Logger } from './utils/logger';
 import { createErrorResponse } from './utils/errors';
 
 export class McpServer {
-  private server: Server;
+  private readonly server: Server;
   private azureClient!: AzureClient;
   
   // Specialized services
@@ -36,7 +36,7 @@ export class McpServer {
   private backendServicesService!: BackendServicesService;
   
   private toolsHandler!: ToolsHandler;
-  private logger: Logger;
+  private readonly logger: Logger;
 
   constructor() {
     this.logger = new Logger('McpServer');

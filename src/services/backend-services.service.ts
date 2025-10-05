@@ -9,8 +9,8 @@ import { ILogger, IBackendServicesService } from '../interfaces';
  * Handles backend services management: listing backend services in Azure APIM
  */
 export class BackendServicesService implements IBackendServicesService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -45,11 +45,11 @@ export class BackendServicesService implements IBackendServicesService {
       
       for await (const backend of result) {
         backends.push({
-          id: backend.name || '',
-          title: backend.title || '',
+          id: backend.name ?? '',
+          title: backend.title ?? '',
           description: backend.description,
-          url: backend.url || '',
-          protocol: backend.protocol || '',
+          url: backend.url ?? '',
+          protocol: backend.protocol ?? '',
           resourceId: backend.resourceId,
           properties: backend.properties
         });

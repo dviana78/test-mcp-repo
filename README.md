@@ -128,6 +128,75 @@ npm run build
 npm start
 ```
 
+## 🔍 Code Quality & Analysis
+
+### SonarQube Integration
+This project includes comprehensive SonarQube integration for automated code quality analysis. SonarQube analysis can be triggered through multiple methods:
+
+#### 🛠️ **MCP Tool Integration** 
+Use the `run_sonar_analysis` tool through the MCP server:
+```typescript
+// Example MCP tool usage
+{
+  "name": "run_sonar_analysis",
+  "arguments": {
+    "includeCoverage": true,
+    "waitForQualityGate": false,
+    "projectPath": "/path/to/project"
+  }
+}
+```
+
+#### 📦 **NPM Scripts**
+- `npm run sonar:scan` - Run SonarQube analysis only
+- `npm run sonar:scan:coverage` - Run tests with coverage + SonarQube analysis
+- `npm run build:analyze` - Build project + run SonarQube analysis
+
+#### 🖥️ **Standalone Script**
+```bash
+# Basic analysis
+node scripts/sonar/run-analysis.js
+
+# With coverage
+node scripts/sonar/run-analysis.js --coverage
+
+# With quality gate waiting
+node scripts/sonar/run-analysis.js --coverage --wait-quality-gate --verbose
+```
+
+#### ⚙️ **Configuration**
+1. **Environment Variables** (add to your `.env` file):
+   ```bash
+   SONAR_HOST_URL=http://localhost:9000  # or https://sonarcloud.io
+   SONAR_TOKEN=your-sonar-token-here
+   ```
+
+2. **SonarQube Properties** (`sonar-project.properties`):
+   - Pre-configured for TypeScript projects
+   - Includes test coverage integration
+   - Configured exclusions for optimal analysis
+
+#### 🚀 **Automated Analysis**
+SonarQube analysis runs automatically when:
+- Using `npm run build:analyze` command
+- Calling the `run_sonar_analysis` MCP tool
+- Running the standalone analysis script
+
+#### 📊 **Quality Metrics**
+The integration provides:
+- **Code Coverage**: Jest coverage reports integration
+- **Technical Debt**: Automatic debt ratio calculation
+- **Security**: Security hotspot detection
+- **Maintainability**: Code complexity analysis
+- **Reliability**: Bug detection and classification
+
+#### 🎯 **Quality Gates**
+- Configurable quality gate thresholds
+- Optional blocking on quality gate failures
+- Detailed reporting on code quality metrics
+
+For detailed SonarQube setup instructions, refer to the [SonarQube Documentation](https://docs.sonarqube.org/).
+
 ## Documentation
 For detailed information on the Model Context Protocol, refer to:
 - [Official MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)

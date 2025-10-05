@@ -1,7 +1,7 @@
 import winston from 'winston';
 import { ILogger, ILoggerFactory } from '../interfaces';
 
-const logLevel = process.env.LOG_LEVEL || 'info';
+const logLevel = process.env.LOG_LEVEL ?? 'info';
 
 const logger = winston.createLogger({
   level: logLevel,
@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export class Logger implements ILogger {
-  private context: string;
+  private readonly context: string;
 
   constructor(context: string) {
     this.context = context;

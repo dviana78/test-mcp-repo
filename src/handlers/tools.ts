@@ -13,14 +13,14 @@ import { ValidationError, createErrorResponse } from '../utils/errors';
 import { validateMcpToolRequest } from '../utils/validation';
 
 export class ToolsHandler {
-  private apiManagementService: IApiManagementService;
-  private apiVersioningService: IApiVersioningService;
-  private grpcService: IGrpcService;
-  private productsManagementService: IProductsManagementService;
-  private subscriptionsManagementService: ISubscriptionsManagementService;
-  private apiOperationsService: IApiOperationsService;
-  private backendServicesService: IBackendServicesService;
-  private logger: Logger;
+  private readonly apiManagementService: IApiManagementService;
+  private readonly apiVersioningService: IApiVersioningService;
+  private readonly grpcService: IGrpcService;
+  private readonly productsManagementService: IProductsManagementService;
+  private readonly subscriptionsManagementService: ISubscriptionsManagementService;
+  private readonly apiOperationsService: IApiOperationsService;
+  private readonly backendServicesService: IBackendServicesService;
+  private readonly logger: Logger;
 
   constructor(
     apiManagementService: IApiManagementService,
@@ -538,6 +538,37 @@ export class ToolsHandler {
           },
           required: ['subscriptionId']
         }
+      },
+      {
+        name: 'run_sonar_analysis',
+        description: 'Run SonarQube analysis on the current project after compilation',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            projectPath: {
+              type: 'string',
+              description: 'Path to the project root directory (optional, defaults to current directory)'
+            },
+            sonarUrl: {
+              type: 'string',
+              description: 'SonarQube server URL (optional, uses environment variable or localhost:9000)'
+            },
+            sonarToken: {
+              type: 'string',
+              description: 'SonarQube authentication token (optional, uses environment variable)'
+            },
+            includeCoverage: {
+              type: 'boolean',
+              description: 'Include test coverage in analysis',
+              default: true
+            },
+            waitForQualityGate: {
+              type: 'boolean',
+              description: 'Wait for quality gate result',
+              default: false
+            }
+          }
+        }
       }
     ];
   }
@@ -606,6 +637,9 @@ export class ToolsHandler {
         
         case 'get_subscription':
           return await this.handleGetSubscription(request.arguments);
+        
+        case 'run_sonar_analysis':
+          return await this.handleRunSonarAnalysis(request.arguments);
         
         default:
           throw new ValidationError(`Unknown tool: ${request.name}`);
@@ -1136,5 +1170,190 @@ export class ToolsHandler {
         }, null, 2)
       }]
     };
+  }
+
+  private async handleRunSonarAnalysis(args: any): Promise<McpToolResponse> {
+    const { spawn } = await import('child_process');
+    const { promisify } = await import('util');
+    const { access, constants } = await import('fs');
+    const path = await import('path');
+    
+    try {
+      // Set default values
+      const projectPath = args.projectPath || process.cwd();
+      const includeCoverage = args.includeCoverage !== false;
+      const waitForQualityGate = args.waitForQualityGate === true;
+      
+      // Environment variables for SonarQube
+      const sonarUrl = args.sonarUrl || process.env.SONAR_HOST_URL;
+      const sonarToken = args.sonarToken || process.env.SONAR_TOKEN;
+      
+      // Validate required SonarQube configuration
+      if (!sonarUrl) {
+        throw new ValidationError('SonarQube URL is required. Set SONAR_HOST_URL environment variable or pass sonarUrl parameter.');
+      }
+      
+      if (!sonarToken) {
+        throw new ValidationError('SonarQube token is required. Set SONAR_TOKEN environment variable or pass sonarToken parameter.');
+      }
+      
+      this.logger.info('Starting SonarQube analysis', { 
+        projectPath, 
+        includeCoverage, 
+        waitForQualityGate,
+        sonarUrl: sonarUrl.replace(/\/+$/, '') // Remove trailing slashes
+      });
+
+      // Check if sonar-project.properties exists
+      const sonarPropsPath = path.join(projectPath, 'sonar-project.properties');
+      try {
+        await promisify(access)(sonarPropsPath, constants.F_OK);
+      } catch {
+        throw new ValidationError('sonar-project.properties file not found in project root');
+      }
+
+      // Run test coverage if requested
+      if (includeCoverage) {
+        this.logger.info('Running test coverage before SonarQube analysis');
+        const coverageProcess = spawn('npm', ['run', 'test:coverage'], {
+          cwd: projectPath,
+          stdio: 'pipe'
+        });
+
+        await new Promise((resolve, reject) => {
+          let stdout = '';
+          let stderr = '';
+          
+          coverageProcess.stdout?.on('data', (data) => {
+            stdout += data.toString();
+          });
+          
+          coverageProcess.stderr?.on('data', (data) => {
+            stderr += data.toString();
+          });
+          
+          coverageProcess.on('close', (code) => {
+            if (code === 0) {
+              this.logger.info('Test coverage completed successfully');
+              resolve(void 0);
+            } else {
+              this.logger.warn('Test coverage failed, continuing with SonarQube analysis', { stderr });
+              resolve(void 0); // Continue even if tests fail
+            }
+          });
+          
+          coverageProcess.on('error', (error) => {
+            this.logger.warn('Test coverage process error, continuing with SonarQube analysis', error);
+            resolve(void 0); // Continue even if tests fail
+          });
+        });
+      }
+
+      // Prepare SonarQube scanner command
+      const sonarCommand = process.platform === 'win32' ? 'sonar-scanner.bat' : 'sonar-scanner';
+      const sonarArgs = [
+        `-Dsonar.host.url=${sonarUrl}`,
+        `-Dsonar.projectBaseDir=${projectPath}`
+      ];
+
+      if (sonarToken) {
+        sonarArgs.push(`-Dsonar.login=${sonarToken}`);
+      }
+
+      if (waitForQualityGate) {
+        sonarArgs.push('-Dsonar.qualitygate.wait=true');
+      }
+
+      this.logger.info('Executing SonarQube scanner', { command: sonarCommand, args: sonarArgs });
+
+      // Run SonarQube scanner
+      const sonarProcess = spawn(sonarCommand, sonarArgs, {
+        cwd: projectPath,
+        stdio: 'pipe',
+        env: {
+          ...process.env,
+          SONAR_HOST_URL: sonarUrl,
+          ...(sonarToken && { SONAR_TOKEN: sonarToken })
+        }
+      });
+
+      const result = await new Promise<{stdout: string, stderr: string, code: number}>((resolve, reject) => {
+        let stdout = '';
+        let stderr = '';
+        
+        sonarProcess.stdout?.on('data', (data) => {
+          const output = data.toString();
+          stdout += output;
+          this.logger.debug('SonarQube scanner output', { output: output.trim() });
+        });
+        
+        sonarProcess.stderr?.on('data', (data) => {
+          const output = data.toString();
+          stderr += output;
+          this.logger.debug('SonarQube scanner error output', { output: output.trim() });
+        });
+        
+        sonarProcess.on('close', (code) => {
+          resolve({ stdout, stderr, code: code ?? 0 });
+        });
+        
+        sonarProcess.on('error', (error) => {
+          reject(new Error(`SonarQube scanner process error: ${error.message}`));
+        });
+      });
+
+      if (result.code === 0) {
+        this.logger.info('SonarQube analysis completed successfully');
+        
+        // Extract key information from output
+        const lines = result.stdout.split('\n');
+        const dashboardUrl = lines.find(line => line.includes('ANALYSIS SUCCESSFUL'))?.match(/https?:\/\/[^\s]+/) || ['Dashboard URL not found'];
+        const qualityGateStatus = lines.find(line => line.includes('Quality Gate'))?.trim() ?? 'Quality Gate status not available';
+        
+        return {
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              message: 'SonarQube analysis completed successfully',
+              status: 'success',
+              projectPath,
+              sonarUrl,
+              includedCoverage: includeCoverage,
+              qualityGateWaited: waitForQualityGate,
+              dashboardUrl: dashboardUrl[0],
+              qualityGateStatus,
+              summary: {
+                exitCode: result.code,
+                outputLines: result.stdout.split('\n').length,
+                errorLines: result.stderr.split('\n').filter(line => line.trim()).length
+              }
+            }, null, 2)
+          }]
+        };
+      } else {
+        this.logger.error('SonarQube analysis failed', { 
+          exitCode: result.code, 
+          stderr: result.stderr,
+          stdout: result.stdout 
+        });
+        
+        return {
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              message: 'SonarQube analysis failed',
+              status: 'failed',
+              exitCode: result.code,
+              error: result.stderr,
+              output: result.stdout
+            }, null, 2)
+          }]
+        };
+      }
+      
+    } catch (error: any) {
+      this.logger.error('SonarQube analysis error', error);
+      throw new ValidationError(`SonarQube analysis failed: ${error.message}`);
+    }
   }
 }

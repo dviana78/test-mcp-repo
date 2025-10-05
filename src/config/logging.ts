@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-const logLevel = process.env.LOG_LEVEL || 'info';
+const logLevel = process.env.LOG_LEVEL ?? 'info';
 
 export const logger = winston.createLogger({
   level: logLevel,
@@ -36,9 +36,9 @@ export function createLoggerTransports(): winston.transport[] {
         winston.format.colorize({ all: true }),
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.printf(({ timestamp, level, message, service, context, ...meta }) => {
-          let output = `${timestamp} [${service || 'azure-apim-mcp'}] ${level}: ${message}`;
+          let output = `${timestamp} [${service?.toString() ?? 'azure-apim-mcp'}] ${level}: ${message}`;
           if (context) {
-            output += ` [${context}]`;
+            output += ` [${JSON.stringify(context)}]`;
           }
           if (Object.keys(meta).length > 0) {
             output += ` ${JSON.stringify(meta)}`;

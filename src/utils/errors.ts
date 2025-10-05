@@ -81,7 +81,7 @@ export function createErrorResponse(error: unknown): {
     return {
       code: error.code,
       message: error.message,
-      statusCode: error.statusCode || 500,
+      statusCode: error.statusCode ?? 500,
       details: error.details
     };
   }

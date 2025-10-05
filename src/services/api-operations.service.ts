@@ -11,8 +11,8 @@ import { isValidApiId } from '../utils/validation';
  * Handles API operations management: getting operations/endpoints for specific APIs
  */
 export class ApiOperationsService implements IApiOperationsService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -41,11 +41,11 @@ export class ApiOperationsService implements IApiOperationsService {
       
       for await (const operation of result) {
         operations.push({
-          id: operation.name || '',
-          name: operation.name || '',
-          displayName: operation.displayName || '',
-          method: operation.method || '',
-          urlTemplate: operation.urlTemplate || '',
+          id: operation.name ?? '',
+          name: operation.name ?? '',
+          displayName: operation.displayName ?? '',
+          method: operation.method ?? '',
+          urlTemplate: operation.urlTemplate ?? '',
           description: operation.description,
           policies: operation.policies
         });

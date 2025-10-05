@@ -14,8 +14,8 @@ import {
  * Handles gRPC API creation from Protobuf definitions with HTTP transcoding
  */
 export class GrpcService implements IGrpcService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -116,7 +116,7 @@ export class GrpcService implements IGrpcService {
         const versionSetParams = {
           displayName: `${params.displayName} Version Set`,
           description: `Version set for gRPC API ${params.displayName}`,
-          versioningScheme: params.versioningScheme || 'Segment',
+          versioningScheme: params.versioningScheme ?? 'Segment',
           versionQueryName: params.versionQueryName,
           versionHeaderName: params.versionHeaderName
         };
@@ -149,10 +149,10 @@ export class GrpcService implements IGrpcService {
       
       const apiCreateParams: any = {
         displayName: params.displayName,
-        description: `${params.description || 'gRPC API created from Protobuf definition with Application Gateway integration'}\n\n**Native gRPC Support via Azure Application Gateway**\n\n**Service**: ${grpcServiceInfo.serviceName}\n**Methods**: ${grpcServiceInfo.methods.join(', ')}\n\n**Protobuf Definition:**\n\`\`\`proto\n${params.protoDefinition}\n\`\`\``,
-        path: sanitizeApiPath(params.path || `grpc/${params.apiId}`),
+        description: `${params.description ?? 'gRPC API created from Protobuf definition with Application Gateway integration'}\n\n**Native gRPC Support via Azure Application Gateway**\n\n**Service**: ${grpcServiceInfo.serviceName}\n**Methods**: ${grpcServiceInfo.methods.join(', ')}\n\n**Protobuf Definition:**\n\`\`\`proto\n${params.protoDefinition}\n\`\`\``,
+        path: sanitizeApiPath(params.path ?? `grpc/${params.apiId}`),
         protocols: grpcProtocols,
-        serviceUrl: backendUrl || params.serviceUrl || `https://appgw.${params.apiId}.com`,
+        serviceUrl: backendUrl ?? params.serviceUrl ?? `https://appgw.${params.apiId}.com`,
         subscriptionRequired: params.subscriptionRequired !== false,
         // Create as HTTP API with gRPC transcoding
         apiType: 'http' as const,
@@ -169,7 +169,7 @@ export class GrpcService implements IGrpcService {
         
         // Adjust path for versioned gRPC API if using Segment versioning
         if (params.versioningScheme === 'Segment' || !params.versioningScheme) {
-          const basePath = sanitizeApiPath(params.path || `grpc/${params.apiId}`);
+          const basePath = sanitizeApiPath(params.path ?? `grpc/${params.apiId}`);
           apiCreateParams.path = `${basePath}/${params.initialVersion}`;
         }
       }
@@ -409,8 +409,8 @@ export class GrpcService implements IGrpcService {
     const httpMatches = protoContent.match(/rpc\s+(\w+)[^}]*option\s*\(google\.api\.http\)\s*=\s*\{([^}]+)\}/gs) || [];
     
     httpMatches.forEach(match => {
-      const methodMatch = match.match(/rpc\s+(\w+)/);
-      const httpMatch = match.match(/(get|post|put|patch|delete):\s*"([^"]+)"/i);
+      const methodMatch = /rpc\s+(\w+)/.exec(match);
+      const httpMatch = /(get|post|put|patch|delete):\s*"([^"]+)"/i.exec(match);
       
       if (methodMatch && httpMatch) {
         const methodName = methodMatch[1];

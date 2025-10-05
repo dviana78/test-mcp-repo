@@ -5,9 +5,9 @@ import { Logger } from '../utils/logger';
 import { AzureApiError, AuthenticationError } from '../utils/errors';
 
 export class AzureClient {
-  private client: ApiManagementClient;
-  private config: AzureConfig;
-  private logger: Logger;
+  private readonly client: ApiManagementClient;
+  private readonly config: AzureConfig;
+  private readonly logger: Logger;
 
   constructor(config: AzureConfig) {
     this.config = config;
