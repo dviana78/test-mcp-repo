@@ -1197,11 +1197,14 @@ export class ToolsHandler {
         throw new ValidationError('SonarQube token is required. Set SONAR_TOKEN environment variable or pass sonarToken parameter.');
       }
       
+      // Safe URL cleaning without regex vulnerabilities
+      const cleanSonarUrl = sonarUrl.endsWith('/') ? sonarUrl.slice(0, -1) : sonarUrl;
+      
       this.logger.info('Starting SonarQube analysis', { 
         projectPath, 
         includeCoverage, 
         waitForQualityGate,
-        sonarUrl: sonarUrl.replace(/\/+$/, '') // Remove trailing slashes
+        sonarUrl: cleanSonarUrl
       });
 
       // Check if sonar-project.properties exists
@@ -1307,7 +1310,21 @@ export class ToolsHandler {
         
         // Extract key information from output
         const lines = result.stdout.split('\n');
-        const dashboardUrl = lines.find(line => line.includes('ANALYSIS SUCCESSFUL'))?.match(/https?:\/\/[^\s]+/) || ['Dashboard URL not found'];
+        
+        // Safe URL extraction without vulnerable regex
+        const analysisLine = lines.find(line => line.includes('ANALYSIS SUCCESSFUL'));
+        let dashboardUrl = 'Dashboard URL not found';
+        if (analysisLine) {
+          const httpIndex = analysisLine.indexOf('http');
+          if (httpIndex !== -1) {
+            const urlPart = analysisLine.substring(httpIndex);
+            const spaceIndex = urlPart.indexOf(' ');
+            dashboardUrl = spaceIndex !== -1 ? urlPart.substring(0, spaceIndex) : urlPart;
+            // Limit URL length for safety
+            dashboardUrl = dashboardUrl.substring(0, 500);
+          }
+        }
+        
         const qualityGateStatus = lines.find(line => line.includes('Quality Gate'))?.trim() ?? 'Quality Gate status not available';
         
         return {
@@ -1320,7 +1337,7 @@ export class ToolsHandler {
               sonarUrl,
               includedCoverage: includeCoverage,
               qualityGateWaited: waitForQualityGate,
-              dashboardUrl: dashboardUrl[0],
+              dashboardUrl: dashboardUrl,
               qualityGateStatus,
               summary: {
                 exitCode: result.code,

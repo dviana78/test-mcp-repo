@@ -1,12 +1,12 @@
+import { AzureClient } from './azure-client';
+import { ILogger, IApiVersioningService } from '../interfaces';
+import { ValidationError } from '../utils/errors';
 import { 
   ApiVersion, 
   ApiRevision, 
   CreateApiVersionRequest, 
   CreateApiRevisionRequest
 } from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IApiVersioningService } from '../interfaces';
-import { ValidationError, NotFoundError } from '../utils/errors';
 import { 
   validateCreateApiVersion, 
   validateCreateApiRevision, 
@@ -77,25 +77,11 @@ export class ApiVersioningService implements IApiVersioningService {
         }
       }
 
-      // Get the source API to copy from
-      const sourceApi = await client.api.get(
-        process.env.AZURE_APIM_RESOURCE_GROUP!,
-        process.env.AZURE_APIM_SERVICE_NAME!,
-        request.sourceApiId ?? request.apiId
-      );
+      // Note: API version creation would require copying from source API
+      // const sourceApi = await client.api.get(...) would be used for actual implementation
       
-      const versionedApiId = `${request.apiId}-${request.versionId}`;
-      const apiContract: any = {
-        displayName: request.displayName,
-        description: request.description,
-        path: sourceApi.path,
-        protocols: sourceApi.protocols,
-        serviceUrl: sourceApi.serviceUrl,
-        subscriptionRequired: sourceApi.subscriptionRequired,
-        apiVersion: request.versionId,
-        apiVersionSetId: versionSetId,
-        sourceApiId: request.sourceApiId ?? request.apiId
-      };
+//       const versionedApiId = `${request.apiId}-${request.versionId}`;
+ // AUTO-FIX: Removed unused assignment
 
       // API version creation logic would go here
       // const result = await client.api.beginCreateOrUpdateAndWait(...);
