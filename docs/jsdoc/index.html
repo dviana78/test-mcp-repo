@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Azure API Management MCP Server</h1>
+<h2>Overview</h2>
+<p>This project is a professional Node.js/TypeScript implementation of the Model Context Protocol (MCP) server designed for integration with Azure API Management. It follows enterprise-grade architecture patterns, ensuring a clean separation of concerns, comprehensive error handling, and adherence to TypeScript best practices.</p>
+<h2>APIM MCP Server Overview</h2>
+<h3>🏗️ <strong>Architecture &amp; Technology Stack</strong></h3>
+<p>This is a comprehensive <strong>Azure API Management MCP Server</strong> that bridges Azure cloud services with the Model Context Protocol, providing a robust foundation for enterprise API management automation.</p>
+<p><strong>Core Technologies:</strong></p>
+<ul>
+<li><strong>Runtime</strong>: Node.js ≥18.0.0 with ES Modules</li>
+<li><strong>Language</strong>: TypeScript 5.x with strict type checking</li>
+<li><strong>Protocol</strong>: Model Context Protocol (MCP) SDK v0.4.0</li>
+<li><strong>Cloud Integration</strong>: Azure API Management via ARM client</li>
+<li><strong>Authentication</strong>: Azure DefaultAzureCredential with service principal support</li>
+</ul>
+<h3>🎯 <strong>Primary Purpose &amp; Use Cases</strong></h3>
+<p>The server acts as an intelligent intermediary that exposes Azure API Management capabilities through the standardized MCP protocol, enabling:</p>
+<ol>
+<li><strong>Automated API Lifecycle Management</strong>: Complete CRUD operations for APIs, products, and subscriptions</li>
+<li><strong>Multi-Protocol API Support</strong>: REST, gRPC, OpenAPI, and custom protocol integration</li>
+<li><strong>Enterprise API Governance</strong>: Centralized management of API products, subscriptions, and access control</li>
+<li><strong>Development Workflow Integration</strong>: Seamless integration with development tools via MCP clients</li>
+<li><strong>Cross-Platform API Testing</strong>: Comprehensive testing framework for multiple API types</li>
+</ol>
+<h4><strong>Enterprise-Grade Capabilities</strong></h4>
+<ul>
+<li><strong>Subscription Management</strong>: Automated key generation and lifecycle management</li>
+<li><strong>Product Association</strong>: Dynamic API-to-product mapping with access control</li>
+<li><strong>Authentication &amp; Security</strong>: Azure AD integration with subscription-key authentication</li>
+<li><strong>Monitoring &amp; Analytics</strong>: Built-in logging and error tracking</li>
+<li><strong>Version Control</strong>: API versioning with segment, query, and header strategies</li>
+</ul>
+<h4><strong>Development &amp; Operations</strong></h4>
+<ul>
+<li><strong>Hot Reload Development</strong>: TSX watch mode for rapid development cycles</li>
+<li><strong>Comprehensive Testing</strong>: Jest framework with integration and unit tests</li>
+<li><strong>Script Automation</strong>: 30+ utility scripts for common operations</li>
+<li><strong>CI/CD Ready</strong>: TypeScript compilation and automated deployment support</li>
+</ul>
+<h3>🚀 <strong>Operational Excellence</strong></h3>
+<p>The server demonstrates production-ready characteristics:</p>
+<ul>
+<li><strong>High Availability</strong>: Designed for enterprise deployment scenarios</li>
+<li><strong>Error Resilience</strong>: Comprehensive error handling and graceful degradation</li>
+<li><strong>Performance Optimized</strong>: Efficient Azure SDK usage with connection pooling</li>
+<li><strong>Scalability</strong>: Modular architecture supporting horizontal scaling</li>
+<li><strong>Observability</strong>: Structured logging with Winston and Azure integration</li>
+</ul>
+<h3>📈 <strong>Business Value</strong></h3>
+<p>This MCP server provides significant business value through:</p>
+<ul>
+<li><strong>Reduced Integration Time</strong>: Standardized MCP interface for all API operations</li>
+<li><strong>Operational Efficiency</strong>: Automated API management reducing manual overhead</li>
+<li><strong>Developer Productivity</strong>: Rich toolset for rapid API development and testing</li>
+<li><strong>Enterprise Compliance</strong>: Centralized governance and security management</li>
+<li><strong>Cost Optimization</strong>: Efficient resource utilization and automated workflows</li>
+</ul>
+<h2>Features</h2>
+<h3>🚀 Core Capabilities</h3>
+<ul>
+<li><strong>Azure API Management Integration</strong>: Full CRUD operations for APIs, backends, and operations</li>
+<li><strong>YAML Contract Processing</strong>: Create APIs from OpenAPI/YAML specifications</li>
+<li><strong>Backend Service Management</strong>: Automatic backend creation from YAML server URLs</li>
+<li><strong>gRPC Support</strong>: Protobuf parsing and HTTP transcoding for gRPC services</li>
+<li><strong>API Versioning</strong>: Support for segment, query, and header-based versioning</li>
+<li><strong>Policy Configuration</strong>: Automatic policy setup for backend service routing</li>
+</ul>
+<h3>🛠️ Available Tools (18 Total)</h3>
+<h4><strong>API Management (3 tools)</strong></h4>
+<ul>
+<li><code>list_apis</code>: List all APIs in Azure API Management with filtering options</li>
+<li><code>get_api</code>: Get detailed information about a specific API by ID</li>
+<li><code>create_api_from_yaml</code>: Create APIs with versioning from OpenAPI/YAML contracts</li>
+</ul>
+<h4><strong>API Versioning (4 tools)</strong></h4>
+<ul>
+<li><code>create_api_version</code>: Create new versions of existing APIs</li>
+<li><code>list_api_versions</code>: List all versions of a specific API</li>
+<li><code>create_api_revision</code>: Create new revisions of existing APIs</li>
+<li><code>list_api_revisions</code>: List all revisions of a specific API</li>
+</ul>
+<h4><strong>gRPC Support (1 tool)</strong></h4>
+<ul>
+<li><code>create_grpc_api_from_proto</code>: Generate gRPC APIs from Protobuf definitions with HTTP transcoding</li>
+</ul>
+<h4><strong>Products Management (5 tools)</strong></h4>
+<ul>
+<li><code>list_products</code>: List all products in Azure API Management</li>
+<li><code>get_product</code>: Get detailed information about a specific product</li>
+<li><code>create_product</code>: Create new products in Azure APIM</li>
+<li><code>get_api_products</code>: Get all products that include a specific API</li>
+<li><code>add_api_to_product</code>: Associate APIs with products</li>
+</ul>
+<h4><strong>Subscriptions Management (3 tools)</strong></h4>
+<ul>
+<li><code>list_subscriptions</code>: List all subscriptions in Azure API Management</li>
+<li><code>create_subscription</code>: Create new subscriptions for products</li>
+<li><code>get_subscription</code>: Get detailed information about a specific subscription</li>
+</ul>
+<h4><strong>API Operations (1 tool)</strong></h4>
+<ul>
+<li><code>get_api_operations</code>: List all operations/endpoints for a specific API</li>
+</ul>
+<h4><strong>Backend Services (1 tool)</strong></h4>
+<ul>
+<li><code>list_backends</code>: List all backend services in Azure APIM</li>
+</ul>
+<h2>Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js (version &gt;= 18.0.0)</li>
+<li>TypeScript (version &gt;= 5.x)</li>
+<li>Azure account with API Management service</li>
+<li>Azure service principal with APIM permissions</li>
+</ul>
+<h3>Installation</h3>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<pre class="prettyprint source lang-bash"><code>git clone https://github.com/dviana78/test-mcp-repo.git
+cd test-mcp-repo
+</code></pre>
+</li>
+<li>
+<p>Install dependencies:</p>
+<pre class="prettyprint source lang-bash"><code>npm install
+</code></pre>
+</li>
+<li>
+<p>Configure environment variables:
+Copy the <code>.env.example</code> to <code>.env</code> and fill in the required values</p>
+</li>
+</ol>
+<h3>Running the Application</h3>
+<pre class="prettyprint source lang-bash"><code>npm run build
+npm start
+</code></pre>
+<h2>🔍 Code Quality &amp; Analysis</h2>
+<h3>SonarQube Integration</h3>
+<p>This project includes comprehensive SonarQube integration for automated code quality analysis. SonarQube analysis can be triggered through multiple methods:</p>
+<h4>🛠️ <strong>MCP Tool Integration</strong></h4>
+<p>Use the <code>run_sonar_analysis</code> tool through the MCP server:</p>
+<pre class="prettyprint source lang-typescript"><code>// Example MCP tool usage
+{
+  &quot;name&quot;: &quot;run_sonar_analysis&quot;,
+  &quot;arguments&quot;: {
+    &quot;includeCoverage&quot;: true,
+    &quot;waitForQualityGate&quot;: false,
+    &quot;projectPath&quot;: &quot;/path/to/project&quot;
+  }
+}
+</code></pre>
+<h4>📦 <strong>NPM Scripts</strong></h4>
+<ul>
+<li><code>npm run sonar:scan</code> - Run SonarQube analysis only</li>
+<li><code>npm run sonar:scan:coverage</code> - Run tests with coverage + SonarQube analysis</li>
+<li><code>npm run build:analyze</code> - Build project + run SonarQube analysis</li>
+</ul>
+<h4>🖥️ <strong>Standalone Script</strong></h4>
+<pre class="prettyprint source lang-bash"><code># Basic analysis
+node scripts/sonar/run-analysis.js
+
+# With coverage
+node scripts/sonar/run-analysis.js --coverage
+
+# With quality gate waiting
+node scripts/sonar/run-analysis.js --coverage --wait-quality-gate --verbose
+</code></pre>
+<h4>⚙️ <strong>Configuration</strong></h4>
+<ol>
+<li>
+<p><strong>Environment Variables</strong> (add to your <code>.env</code> file):</p>
+<pre class="prettyprint source lang-bash"><code>SONAR_HOST_URL=http://localhost:9000  # or https://sonarcloud.io
+SONAR_TOKEN=your-sonar-token-here
+</code></pre>
+</li>
+<li>
+<p><strong>SonarQube Properties</strong> (<code>sonar-project.properties</code>):</p>
+<ul>
+<li>Pre-configured for TypeScript projects</li>
+<li>Includes test coverage integration</li>
+<li>Configured exclusions for optimal analysis</li>
+</ul>
+</li>
+</ol>
+<h4>🚀 <strong>Automated Analysis</strong></h4>
+<p>SonarQube analysis runs automatically when:</p>
+<ul>
+<li>Using <code>npm run build:analyze</code> command</li>
+<li>Calling the <code>run_sonar_analysis</code> MCP tool</li>
+<li>Running the standalone analysis script</li>
+</ul>
+<h4>📊 <strong>Quality Metrics</strong></h4>
+<p>The integration provides:</p>
+<ul>
+<li><strong>Code Coverage</strong>: Jest coverage reports integration</li>
+<li><strong>Technical Debt</strong>: Automatic debt ratio calculation</li>
+<li><strong>Security</strong>: Security hotspot detection</li>
+<li><strong>Maintainability</strong>: Code complexity analysis</li>
+<li><strong>Reliability</strong>: Bug detection and classification</li>
+</ul>
+<h4>🎯 <strong>Quality Gates</strong></h4>
+<ul>
+<li>Configurable quality gate thresholds</li>
+<li>Optional blocking on quality gate failures</li>
+<li>Detailed reporting on code quality metrics</li>
+</ul>
+<p>For detailed SonarQube setup instructions, refer to the <a href="https://docs.sonarqube.org/">SonarQube Documentation</a>.</p>
+<h2>Documentation</h2>
+<p>For detailed information on the Model Context Protocol, refer to:</p>
+<ul>
+<li><a href="https://github.com/modelcontextprotocol/typescript-sdk">Official MCP SDK</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/">Model Context Protocol Specification</a></li>
+</ul>
+<h2>🌐 Internationalization</h2>
+<p>This project follows English-only standards for all code, documentation, scripts, and comments:</p>
+<ul>
+<li><strong>Code &amp; Comments</strong>: All variable names, function names, and code comments are in English</li>
+<li><strong>Documentation</strong>: README, API docs, and inline documentation in English</li>
+<li><strong>Scripts &amp; Tools</strong>: All utility scripts and tools use English messages and descriptions</li>
+<li><strong>Error Messages</strong>: All error messages and logging output in English</li>
+<li><strong>Consistency</strong>: Ensures universal accessibility and professional standards</li>
+</ul>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT License.</p>
+<hr>
+<p><strong>Built with ❤️ using TypeScript and Azure API Management</strong></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Oct 05 2025 21:00:31 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

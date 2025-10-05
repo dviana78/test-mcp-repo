@@ -141,7 +141,7 @@ export class ApiManagementService implements IApiManagementService {
                 break;
               }
               // Stop if we hit another section
-              if (/^\w[\w]*:/.exec(urlLine)) {
+              if (/^[a-zA-Z0-9_][a-zA-Z0-9_]*:/.exec(urlLine)) {
                 break;
               }
             }

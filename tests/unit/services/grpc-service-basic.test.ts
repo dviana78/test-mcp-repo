@@ -444,9 +444,10 @@ service ComplexService {
       
       const result = extractMethod(sampleProtoWithHttpAnnotations);
 
-      // The current implementation only extracts CreateUser due to regex pattern matching
+      // After refactoring, the implementation now correctly extracts both methods
       expect(result).toEqual({
-        CreateUser: { method: 'POST', path: '/v1/users' }
+        CreateUser: { method: 'POST', path: '/v1/users' },
+        GetUser: { method: 'GET', path: '/v1/users/{user_id}' }
       });
     });
 
