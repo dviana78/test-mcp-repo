@@ -287,7 +287,9 @@ export class GrpcService implements IGrpcService {
    * Parse Protobuf definition to extract gRPC service information
    */
   private parseProtobufForGrpcService(protoContent: string): { serviceName: string; methods: string[] } {
-    const serviceMatch = protoContent.match(/service\s+(\w+)\s*\{([^}]+)\}/s);
+    // Use RegExp.exec() for safer pattern matching
+    const serviceRegex = /service\s+(\w+)\s*\{([^}]{1,10000})\}/s;
+    const serviceMatch = serviceRegex.exec(protoContent);
     if (!serviceMatch) {
       return { serviceName: 'UnknownService', methods: [] };
     }
@@ -295,9 +297,13 @@ export class GrpcService implements IGrpcService {
     const serviceName = serviceMatch[1];
     const serviceBody = serviceMatch[2];
     
-    // Extract RPC methods
-    const methodMatches = serviceBody.match(/rpc\s+(\w+)/g) || [];
-    const methods = methodMatches.map(match => match.replace('rpc ', ''));
+    // Extract RPC methods using RegExp.exec()
+    const methods: string[] = [];
+    const methodRegex = /rpc\s+(\w+)/g;
+    let methodMatch;
+    while ((methodMatch = methodRegex.exec(serviceBody)) !== null) {
+      methods.push(methodMatch[1]);
+    }
 
     return { serviceName, methods };
   }
@@ -405,26 +411,73 @@ export class GrpcService implements IGrpcService {
   private extractHttpAnnotations(protoContent: string): { [method: string]: { method: string; path: string } } {
     const annotations: { [method: string]: { method: string; path: string } } = {};
     
-    // Look for google.api.http annotations
-    const httpMatches = protoContent.match(/rpc\s+(\w+)[^}]*option\s*\(google\.api\.http\)\s*=\s*\{([^}]+)\}/gs) || [];
+    // Use a safer approach to find google.api.http annotations
+    // Split content into sections and process each RPC method individually
+    const rpcSections = this.extractRpcSections(protoContent);
     
-    httpMatches.forEach(match => {
-      const methodMatch = /rpc\s+(\w+)/.exec(match);
-      const httpMatch = /(get|post|put|patch|delete):\s*"([^"]+)"/i.exec(match);
-      
-      if (methodMatch && httpMatch) {
+    rpcSections.forEach(section => {
+      const methodMatch = /rpc\s+(\w+)/.exec(section);
+      if (methodMatch && section.includes('google.api.http')) {
         const methodName = methodMatch[1];
-        const httpMethod = httpMatch[1].toUpperCase();
-        const httpPath = httpMatch[2];
+        const httpMatch = /(get|post|put|patch|delete):\s*"([^"]{1,200})"/i.exec(section);
         
-        annotations[methodName] = {
-          method: httpMethod,
-          path: httpPath
-        };
+        if (httpMatch) {
+          const httpMethod = httpMatch[1].toUpperCase();
+          const httpPath = httpMatch[2];
+          
+          annotations[methodName] = {
+            method: httpMethod,
+            path: httpPath
+          };
+        }
       }
     });
 
     return annotations;
+  }
+
+  /**
+   * Safely extract RPC sections from protobuf content
+   */
+  private extractRpcSections(protoContent: string): string[] {
+    const sections: string[] = [];
+    const lines = protoContent.split('\n');
+    let currentSection = '';
+    let inRpc = false;
+    let braceCount = 0;
+
+    for (const line of lines) {
+      if (line.trim().startsWith('rpc ')) {
+        if (currentSection && inRpc) {
+          sections.push(currentSection);
+        }
+        currentSection = line + '\n';
+        inRpc = true;
+        braceCount = 0;
+      } else if (inRpc) {
+        currentSection += line + '\n';
+        
+        // Count braces to know when RPC definition ends
+        for (const char of line) {
+          if (char === '{') braceCount++;
+          if (char === '}') braceCount--;
+        }
+        
+        // If braces are balanced and we see a semicolon or closing brace, end this RPC
+        if (braceCount <= 0 && (line.includes(';') || line.includes('}'))) {
+          sections.push(currentSection);
+          currentSection = '';
+          inRpc = false;
+        }
+      }
+    }
+    
+    // Add last section if it exists
+    if (currentSection && inRpc) {
+      sections.push(currentSection);
+    }
+
+    return sections;
   }
 
   /**

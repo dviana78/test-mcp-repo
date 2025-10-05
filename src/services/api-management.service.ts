@@ -3,7 +3,7 @@ import {
 } from '../types';
 import { AzureClient } from './azure-client';
 import { ILogger, IApiManagementService } from '../interfaces';
-import { AzureApiError, ValidationError, NotFoundError } from '../utils/errors';
+import { ValidationError, NotFoundError } from '../utils/errors';
 import { 
   isValidApiId,
   sanitizeApiPath
@@ -134,14 +134,14 @@ export class ApiManagementService implements IApiManagementService {
             // Look for the first URL in servers section
             for (let j = i + 1; j < yamlLines.length; j++) {
               const urlLine = yamlLines[j];
-              const urlMatch = /^\s*-\s*url:\s*(.+)$/.exec(urlLine);
+              const urlMatch = /^\s*-\s*url:\s*([^\s]+(?:\s+[^\s]+)*)\s*$/.exec(urlLine);
               if (urlMatch) {
                 backendUrl = urlMatch[1].trim();
                 this.logger.info('Extracted backend URL from YAML contract', { backendUrl });
                 break;
               }
               // Stop if we hit another section
-              if (/^\w+:/.exec(urlLine)) {
+              if (/^\w[\w]*:/.exec(urlLine)) {
                 break;
               }
             }
@@ -161,7 +161,7 @@ export class ApiManagementService implements IApiManagementService {
             title: `${params.displayName} Backend`,
             description: `Backend service for ${params.displayName}`,
             url: backendUrl,
-            protocol: backendUrl.startsWith('https://') ? 'http' : 'http', // Azure APIM uses 'http' for both
+            protocol: 'http', // Azure APIM backend protocol is always 'http'
             properties: {
               serviceFabricCluster: undefined,
               skipCertificateChainValidation: false,
