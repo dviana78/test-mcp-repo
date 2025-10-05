@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hierarchical Documentation - Azure APIM MCP Server</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f8f9fa; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            background: white; 
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+        }
+        .sidebar {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin: 8px 0;
+        }
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .sidebar a:hover {
+            background: #34495e;
+            color: #3498db;
+        }
+        .content {
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .back-link { 
+            background: #95a5a6; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 30px; 
+        }
+        .back-link:hover { 
+            background: #7f8c8d; 
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            font-size: 2.5em;
+        }
+        h2 {
+            border-bottom: 2px solid #95a5a6;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #27ae60;
+            margin-top: 30px;
+        }
+        h4 {
+            color: #8e44ad;
+            margin-top: 20px;
+        }
+        .method-card {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .method-header {
+            background: #34495e;
+            color: white;
+            padding: 15px 20px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 0 6px 0 0;
+        }
+        .method-signature {
+            font-family: 'Courier New', monospace;
+            background: #2c3e50;
+            color: #f1c40f;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .service-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .flow-diagram {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-family: monospace;
+            text-align: center;
+        }
+        .flow-step {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 8px 15px;
+            background: #27ae60;
+            color: white;
+            border-radius: 4px;
+        }
+        .flow-arrow {
+            color: #27ae60;
+            font-size: 1.2em;
+            margin: 0 5px;
+        }
+        ul.method-list {
+            background: white;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2c3e50;
+            color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>📚 Navigation</h2>
+            <ul>
+                <li><a href="#mcpserver">🎯 McpServer</a></li>
+                <li><a href="#toolshandler">🔄 ToolsHandler</a></li>
+                <li><a href="#azureclient">☁️ AzureClient</a></li>
+            </ul>
+            
+            <h3>🎛️ Services</h3>
+            <ul>
+                <li><a href="#apimanagement">📊 API Management</a></li>
+                <li><a href="#versioning">📝 API Versioning</a></li>
+                <li><a href="#grpc">🔌 gRPC Service</a></li>
+                <li><a href="#products">📦 Products</a></li>
+                <li><a href="#subscriptions">🎫 Subscriptions</a></li>
+                <li><a href="#operations">⚙️ Operations</a></li>
+                <li><a href="#backend">🔗 Backend</a></li>
+            </ul>
+            
+            <h3>🔄 Flows</h3>
+            <ul>
+                <li><a href="#execution-flow">📊 Execution Flow</a></li>
+                <li><a href="#example-flow">🎯 Practical Example</a></li>
+            </ul>
+        </nav>
+        
+        <main class="content">
+            <a href="../index.html" class="back-link">← Back to Documentation Hub</a>
+            
+            <h1>🏗️ Hierarchical Documentation</h1>
+            <p class="highlight">
+                <strong>🎯 Hierarchical Approach:</strong> This documentation is organized from the highest class (McpServer) 
+                downward, explaining what each method does in each class in hierarchical order.
+            </p>
+            
+            <section id="mcpserver" class="service-section">
+                <h2>🎯 McpServer - Main System Class</h2>
+                <p><strong>Location:</strong> <code>src/server.ts</code></p>
+                <p><strong>Purpose:</strong> Orchestrates the entire MCP server. It's the brain that coordinates all services.</p>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>constructor()</h4>
+                    </div>
+                    <p><strong>Function:</strong> Initializes the main MCP server</p>
+                    <div class="method-signature">constructor()</div>
+                    <p><strong>Process:</strong></p>
+                    <ol>
+                        <li>Creates a logger instance for the server</li>
+                        <li>Configures the MCP server with name and version</li>
+                        <li>Calls <code>setupHandlers()</code> to configure handlers</li>
+                    </ol>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>initializeServices(): Promise&lt;void&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Initializes all system services in hierarchical order</p>
+                    <div class="method-signature">async initializeServices(): Promise&lt;void&gt;</div>
+                    <p><strong>Detailed process:</strong></p>
+                    <ol>
+                        <li><strong>Configuration:</strong> Gets Azure configuration with <code>getAzureConfig()</code></li>
+                        <li><strong>Base Client:</strong> Creates <code>AzureClient</code> for all connections</li>
+                        <li><strong>Core Services:</strong> Initializes services in dependency order:
+                            <ul>
+                                <li>ApiManagementService (basic API management)</li>
+                                <li>ApiVersioningService (API versions)</li>
+                                <li>GrpcService (specific gRPC APIs)</li>
+                                <li>ProductsManagementService (products and groupings)</li>
+                                <li>SubscriptionsManagementService (user subscriptions)</li>
+                                <li>ApiOperationsService (operations within APIs)</li>
+                                <li>BackendServicesService (backend services)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Handler:</strong> Creates ToolsHandler with injection of all services</li>
+                        <li><strong>Validation:</strong> Tests Azure connection to ensure functionality</li>
+                    </ol>
+                    <p><strong>Returns:</strong> Promise that resolves when everything is ready</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>setupHandlers(): void</h4>
+                    </div>
+                    <p><strong>Function:</strong> Configures MCP protocol handlers</p>
+                    <div class="method-signature">setupHandlers(): void</div>
+                    <p><strong>Configures two main handlers:</strong></p>
+                    <ul>
+                        <li><strong>ListToolsRequest:</strong> Responds with list of available tools</li>
+                        <li><strong>CallToolRequest:</strong> Executes specific tools</li>
+                    </ul>
+                    <p><strong>Ensures:</strong> Services are initialized before processing requests</p>
+                </div>
+            </section>
+            
+            <section id="toolshandler" class="service-section">
+                <h2>🔄 ToolsHandler - Smart Intermediary</h2>
+                <p><strong>Location:</strong> <code>src/handlers/tools.ts</code></p>
+                <p><strong>Purpose:</strong> Translates MCP requests into specific service calls</p>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>constructor(services...)</h4>
+                    </div>
+                    <p><strong>Function:</strong> Receives and injects all service dependencies</p>
+                    <p><strong>Receives:</strong> Instances of all 7 specialized services</p>
+                    <p><strong>Stores:</strong> References to delegate operations appropriately</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>getAvailableTools(): ToolDefinition[]</h4>
+                    </div>
+                    <p><strong>Function:</strong> Collects all available tools from the system</p>
+                    <p><strong>Process:</strong> Iterates through all services and collects their tool definitions</p>
+                    <p><strong>Returns:</strong> Complete array of ToolDefinition for MCP protocol</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>handleToolCall(name, arguments): Promise&lt;any&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Smart router that delegates execution to the correct service</p>
+                    <p><strong>Process:</strong></p>
+                    <ol>
+                        <li>Analyzes the tool name</li>
+                        <li>Identifies which service should handle it</li>
+                        <li>Delegates execution to the appropriate service</li>
+                        <li>Formats and returns the result</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="azureclient" class="service-section">
+                <h2>☁️ AzureClient - Azure Connection</h2>
+                <p><strong>Location:</strong> <code>src/services/azure-client.ts</code></p>
+                <p><strong>Purpose:</strong> Abstracts all low-level operations with Azure API Management</p>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>testConnection(): Promise&lt;void&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Verifies connectivity and credentials with Azure</p>
+                    <p><strong>Performs:</strong> Test request to validate everything works</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>getApiManagementClient(): ApiManagementClient</h4>
+                    </div>
+                    <p><strong>Function:</strong> Provides access to official Azure SDK</p>
+                    <p><strong>Returns:</strong> Configured client for complex operations</p>
+                </div>
+            </section>
+            
+            <section id="apimanagement" class="service-section">
+                <h2>📊 ApiManagementService - Main API Management</h2>
+                <p><strong>Location:</strong> <code>src/services/api-management.service.ts</code></p>
+                <p><strong>Purpose:</strong> Core API management operations</p>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>listApis(): Promise&lt;ApiInfo[]&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Gets complete list of APIs in Azure APIM</p>
+                    <div class="method-signature">async listApis(): Promise&lt;ApiInfo[]&gt;</div>
+                    <p><strong>Detailed process:</strong></p>
+                    <ol>
+                        <li>Connects to Azure API Management via AzureClient</li>
+                        <li>Executes query to get all APIs</li>
+                        <li>Extracts relevant information (ID, name, description, version)</li>
+                        <li>Filters active and valid APIs</li>
+                        <li>Formats response into ApiInfo objects</li>
+                    </ol>
+                    <p><strong>Returns:</strong> Array of ApiInfo with basic information for each API</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>getApiDetails(apiId): Promise&lt;DetailedApiInfo&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Gets complete information for a specific API</p>
+                    <div class="method-signature">async getApiDetails(apiId: string): Promise&lt;DetailedApiInfo&gt;</div>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>apiId</code> - Unique identifier of the API in Azure</li>
+                    </ul>
+                    <p><strong>Process:</strong></p>
+                    <ol>
+                        <li>Validates that apiId is in valid format</li>
+                        <li>Searches for the API in Azure APIM</li>
+                        <li>Gets complete configuration (endpoints, policies, schemas)</li>
+                        <li>Collects usage metrics and status</li>
+                        <li>Compiles information into DetailedApiInfo</li>
+                    </ol>
+                    <p><strong>Error handling:</strong> Throws NotFoundError if API doesn't exist</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-header">
+                        <h4>createApiFromYaml(yamlContent, apiId): Promise&lt;ApiInfo&gt;</h4>
+                    </div>
+                    <p><strong>Function:</strong> Creates new API from YAML/OpenAPI specification</p>
+                    <div class="method-signature">async createApiFromYaml(yamlContent: string, apiId: string): Promise&lt;ApiInfo&gt;</div>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>yamlContent</code> - OpenAPI specification in YAML format</li>
+                        <li><code>apiId</code> - Unique ID for the new API</li>
+                    </ul>
+                    <p><strong>Complete process:</strong></p>
+                    <ol>
+                        <li>Validates YAML file syntax</li>
+                        <li>Parses OpenAPI specification</li>
+                        <li>Extracts endpoints, operations and data models</li>
+                        <li>Creates the API in Azure APIM</li>
+                        <li>Configures endpoints and routes automatically</li>
+                        <li>Applies default policies</li>
+                        <li>Generates automatic documentation</li>
+                    </ol>
+                    <p><strong>Validations:</strong> ValidationError if YAML is invalid or malformed</p>
+                </div>
+            </section>
+            
+            <div id="execution-flow" class="flow-diagram">
+                <h3>🔄 Hierarchical Execution Flow</h3>
+                <div style="margin: 20px 0;">
+                    <span class="flow-step">MCP Client</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">McpServer</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">ToolsHandler</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">Specialized Service</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">AzureClient</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">Azure APIM</span>
+                </div>
+                <p>The response returns through the same path back to the client</p>
+            </div>
+            
+            <div id="example-flow" class="highlight">
+                <h3>🎯 Practical Example: "List APIs"</h3>
+                <pre>
+1. MCP Client sends: listApis()
+2. McpServer receives the MCP request
+3. ToolsHandler identifies: ApiManagementService.listApis()
+4. ApiManagementService executes the business logic
+5. AzureClient makes HTTP request to Azure APIM
+6. Azure APIM returns JSON with list of APIs
+7. Response goes up level by level to the client
+                </pre>
+            </div>
+            
+            <section class="service-section">
+                <h2>📝 Complete Documentation</h2>
+                <p>This is a simplified view of the hierarchical documentation. To see all services and methods:</p>
+                <ul class="method-list">
+                    <li><a href="hierarchical-documentation.md">📖 View Complete Documentation in Markdown</a></li>
+                    <li><a href="../analysis.html">📊 Complete Project Analysis</a></li>
+                    <li><a href="../index.html">🏠 Main Documentation Hub</a></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

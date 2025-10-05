@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts Directory - Azure APIM MCP Server</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f8f9fa; 
+            line-height: 1.6; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .back-link { 
+            background: #95a5a6; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 20px; 
+        }
+        .back-link:hover { 
+            background: #7f8c8d; 
+        }
+        .notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .script-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .script-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .script-item {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation Hub</a>
+        
+        <h1>🎯 Scripts Directory</h1>
+        
+        <div class="notice">
+            <h3>📁 Scripts Access</h3>
+            <p>The scripts directory is not served by the documentation server for security reasons. To access the script files, please navigate to the project directory: <code>./scripts/</code></p>
+        </div>
+        
+        <div class="script-category">
+            <h3>🔧 Available Script Categories</h3>
+            <div class="script-list">
+                <div class="script-item">
+                    <h4>📊 APIM Scripts</h4>
+                    <p>Azure API Management operations</p>
+                    <small>scripts/apim/</small>
+                </div>
+                <div class="script-item">
+                    <h4>🌟 Star Wars API</h4>
+                    <p>Star Wars API testing scripts</p>
+                    <small>scripts/starwars/</small>
+                </div>
+                <div class="script-item">
+                    <h4>🌤️ Weather Scripts</h4>
+                    <p>Weather forecasting tools</p>
+                    <small>scripts/weather/</small>
+                </div>
+                <div class="script-item">
+                    <h4>🔍 SonarQube</h4>
+                    <p>Code quality analysis</p>
+                    <small>scripts/sonar/</small>
+                </div>
+                <div class="script-item">
+                    <h4>📚 Documentation</h4>
+                    <p>Documentation generation</p>
+                    <small>scripts/docs/</small>
+                </div>
+                <div class="script-item">
+                    <h4>🛠️ Utilities</h4>
+                    <p>General utility scripts</p>
+                    <small>scripts/utils/</small>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <h3>🚀 Quick Commands</h3>
+            <p>Run these commands from the project root:</p>
+            <ul>
+                <li><code>npm run apim:analyze</code> - Analyze APIM services</li>
+                <li><code>npm run starwars:characters</code> - Get Star Wars characters</li>
+                <li><code>npm run docs:generate</code> - Generate documentation</li>
+                <li><code>npm run sonar:autofix</code> - Run SonarQube auto-fix</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <h3>🔗 Related Documentation</h3>
+            <ul>
+                <li><a href="index.html">Documentation Hub</a></li>
+                <li><a href="analysis.html">Project Analysis</a></li>
+                <li><a href="typedoc/index.html">TypeDoc API Documentation</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

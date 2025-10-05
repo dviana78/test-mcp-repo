@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src"
+  ],
+  "out": "./docs/typedoc",
+  "name": "Azure APIM MCP Server Documentation",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "readme": "./README.md",
+  "theme": "default",
+  "navigationLinks": {
+    "GitHub": "https://github.com/user/azure-apim-mcp-server"
+  },
+  "sidebarLinks": {
+    "Project Home": "./",
+    "API Reference": "./modules.html"
+  },
+  "plugin": [
+    "typedoc-plugin-markdown"
+  ],
+  "gitRevision": "main",
+  "categorizeByGroup": true,
+  "sort": [
+    "source-order"
+  ]
+}

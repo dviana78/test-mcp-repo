@@ -288,7 +288,7 @@ export class GrpcService implements IGrpcService {
    */
   private parseProtobufForGrpcService(protoContent: string): { serviceName: string; methods: string[] } {
     // Use RegExp.exec() for safer pattern matching
-    const serviceRegex = /service\s+(\w+)\s*\{([^}]{1,10000})\}/s;
+    const serviceRegex = /service\s+([a-zA-Z0-9_]+)\s*\{([^}]{1,10000})\}/s;
     const serviceMatch = serviceRegex.exec(protoContent);
     if (!serviceMatch) {
       return { serviceName: 'UnknownService', methods: [] };
@@ -299,7 +299,7 @@ export class GrpcService implements IGrpcService {
     
     // Extract RPC methods using RegExp.exec()
     const methods: string[] = [];
-    const methodRegex = /rpc\s+(\w+)/g;
+    const methodRegex = /rpc\s+([a-zA-Z0-9_]+)/g;
     let methodMatch;
     while ((methodMatch = methodRegex.exec(serviceBody)) !== null) {
       methods.push(methodMatch[1]);
@@ -416,24 +416,39 @@ export class GrpcService implements IGrpcService {
     const rpcSections = this.extractRpcSections(protoContent);
     
     rpcSections.forEach(section => {
-      const methodMatch = /rpc\s+(\w+)/.exec(section);
-      if (methodMatch && section.includes('google.api.http')) {
-        const methodName = methodMatch[1];
-        const httpMatch = /(get|post|put|patch|delete):\s*"([^"]{1,200})"/i.exec(section);
-        
-        if (httpMatch) {
-          const httpMethod = httpMatch[1].toUpperCase();
-          const httpPath = httpMatch[2];
-          
-          annotations[methodName] = {
-            method: httpMethod,
-            path: httpPath
-          };
-        }
+      const annotation = this.extractSingleHttpAnnotation(section);
+      if (annotation) {
+        annotations[annotation.methodName] = {
+          method: annotation.httpMethod,
+          path: annotation.httpPath
+        };
       }
     });
 
     return annotations;
+  }
+
+  /**
+   * Extract HTTP annotation from a single RPC section
+   */
+  private extractSingleHttpAnnotation(section: string): { methodName: string; httpMethod: string; httpPath: string } | null {
+    const methodMatch = /rpc\s+([a-zA-Z0-9_]+)/.exec(section);
+    if (!methodMatch || !section.includes('google.api.http')) {
+      return null;
+    }
+
+    const methodName = methodMatch[1];
+    const httpMatch = /(get|post|put|patch|delete):\s*"([^"]{1,200})"/i.exec(section);
+    
+    if (!httpMatch) {
+      return null;
+    }
+
+    return {
+      methodName,
+      httpMethod: httpMatch[1].toUpperCase(),
+      httpPath: httpMatch[2]
+    };
   }
 
   /**
