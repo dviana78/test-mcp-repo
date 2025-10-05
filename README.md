@@ -24,21 +24,7 @@ The server acts as an intelligent intermediary that exposes Azure API Management
 4. **Development Workflow Integration**: Seamless integration with development tools via MCP clients
 5. **Cross-Platform API Testing**: Comprehensive testing framework for multiple API types
 
-### 📊 **Current Deployment Status**
-- **Azure APIM Service**: `apim-dviana78-dev` (active in production)
-- **Configured APIs**: 8 active APIs including Swagger Petstore, Star Wars API, OpenMeteo
-- **Active Products**: 2 products (Star Wars Product, Store) with full subscription management
-- **Live Subscriptions**: 3 active subscriptions with generated authentication keys
-- **Test Coverage**: 409 passing tests with 77% code coverage
-- **MCP Tools**: 18 available tools for comprehensive API management
 
-### 🔧 **Advanced Features**
-
-#### **Multi-API Integration**
-- **REST APIs**: Swagger Petstore, JSONPlaceholder, OpenMeteo Weather
-- **Public APIs**: Star Wars (SWAPI), Rick and Morty, Pokemon
-- **gRPC Services**: Protocol buffer support with HTTP transcoding
-- **Custom Backends**: Flexible backend service configuration
 
 #### **Enterprise-Grade Capabilities**
 - **Subscription Management**: Automated key generation and lifecycle management
