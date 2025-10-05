@@ -11,8 +11,8 @@ import { isValidApiId } from '../utils/validation';
  * Handles product operations: listing, getting details, creating products, and managing API-product associations
  */
 export class ProductsManagementService implements IProductsManagementService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -42,13 +42,13 @@ export class ProductsManagementService implements IProductsManagementService {
       const products: ProductInfo[] = [];
       for await (const product of result) {
         products.push({
-          id: product.id || '',
-          name: product.name || '',
-          displayName: product.displayName || '',
-          description: product.description || '',
+          id: product.id ?? '',
+          name: product.name ?? '',
+          displayName: product.displayName ?? '',
+          description: product.description ?? '',
           subscriptionRequired: product.subscriptionRequired || false,
           approvalRequired: product.approvalRequired || false,
-          state: product.state || 'notPublished'
+          state: product.state ?? 'notPublished'
         });
       }
 
@@ -75,13 +75,13 @@ export class ProductsManagementService implements IProductsManagementService {
       );
 
       return {
-        id: result.id || '',
-        name: result.name || '',
-        displayName: result.displayName || '',
-        description: result.description || '',
+        id: result.id ?? '',
+        name: result.name ?? '',
+        displayName: result.displayName ?? '',
+        description: result.description ?? '',
         subscriptionRequired: result.subscriptionRequired || false,
         approvalRequired: result.approvalRequired || false,
-        state: result.state || 'notPublished'
+        state: result.state ?? 'notPublished'
       };
     } catch (error: any) {
       this.logger.error('Failed to get product', error);
@@ -123,13 +123,13 @@ export class ProductsManagementService implements IProductsManagementService {
       );
 
       return {
-        id: result.id || '',
-        name: result.name || '',
-        displayName: result.displayName || '',
-        description: result.description || '',
+        id: result.id ?? '',
+        name: result.name ?? '',
+        displayName: result.displayName ?? '',
+        description: result.description ?? '',
         subscriptionRequired: result.subscriptionRequired || false,
         approvalRequired: result.approvalRequired || false,
-        state: result.state || 'notPublished'
+        state: result.state ?? 'notPublished'
       };
     } catch (error: any) {
       this.logger.error('Failed to create product', error);
@@ -164,9 +164,9 @@ export class ProductsManagementService implements IProductsManagementService {
       
       for await (const product of result) {
         products.push({
-          id: product.name || '',
-          name: product.name || '',
-          displayName: product.displayName || '',
+          id: product.name ?? '',
+          name: product.name ?? '',
+          displayName: product.displayName ?? '',
           description: product.description,
           state: product.state as any || 'notPublished',
           subscriptionRequired: product.subscriptionRequired || false,

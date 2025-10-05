@@ -14,8 +14,8 @@ import {
  * Handles core API operations: listing, getting details, and creating APIs from YAML
  */
 export class ApiManagementService implements IApiManagementService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -134,14 +134,14 @@ export class ApiManagementService implements IApiManagementService {
             // Look for the first URL in servers section
             for (let j = i + 1; j < yamlLines.length; j++) {
               const urlLine = yamlLines[j];
-              const urlMatch = urlLine.match(/^\s*-\s*url:\s*(.+)$/);
+              const urlMatch = /^\s*-\s*url:\s*(.+)$/.exec(urlLine);
               if (urlMatch) {
                 backendUrl = urlMatch[1].trim();
                 this.logger.info('Extracted backend URL from YAML contract', { backendUrl });
                 break;
               }
               // Stop if we hit another section
-              if (urlLine.match(/^\w+:/)) {
+              if (/^\w+:/.exec(urlLine)) {
                 break;
               }
             }
@@ -192,7 +192,7 @@ export class ApiManagementService implements IApiManagementService {
         const versionSetParams = {
           displayName: `${params.displayName} Version Set`,
           description: `Version set for ${params.displayName}`,
-          versioningScheme: params.versioningScheme || 'Segment',
+          versioningScheme: params.versioningScheme ?? 'Segment',
           versionQueryName: params.versionQueryName,
           versionHeaderName: params.versionHeaderName
         };
@@ -219,10 +219,10 @@ export class ApiManagementService implements IApiManagementService {
       // Prepare API creation parameters with proper import settings
       const apiCreateParams: any = {
         displayName: params.displayName,
-        description: params.description || `API created from YAML contract`,
-        path: sanitizeApiPath(params.path || params.apiId),
+        description: params.description ?? `API created from YAML contract`,
+        path: sanitizeApiPath(params.path ?? params.apiId),
         protocols: params.protocols || ['https'],
-        serviceUrl: backendUrl || params.serviceUrl, // Use extracted URL or fallback
+        serviceUrl: backendUrl ?? params.serviceUrl, // Use extracted URL or fallback
         subscriptionRequired: params.subscriptionRequired !== false,
         // Import from YAML/OpenAPI specification
         value: params.yamlContract,
@@ -239,7 +239,7 @@ export class ApiManagementService implements IApiManagementService {
         
         // Adjust path for versioned API if using Segment versioning
         if (params.versioningScheme === 'Segment' || !params.versioningScheme) {
-          const basePath = sanitizeApiPath(params.path || params.apiId);
+          const basePath = sanitizeApiPath(params.path ?? params.apiId);
           apiCreateParams.path = `${basePath}/${params.initialVersion}`;
         }
       }

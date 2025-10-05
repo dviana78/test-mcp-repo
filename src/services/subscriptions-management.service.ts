@@ -7,8 +7,8 @@ import { ValidationError, NotFoundError } from '../utils/errors';
  * Handles subscription operations: listing, creating, and getting subscription details
  */
 export class SubscriptionsManagementService implements ISubscriptionsManagementService {
-  private azureClient: AzureClient;
-  private logger: ILogger;
+  private readonly azureClient: AzureClient;
+  private readonly logger: ILogger;
 
   constructor(azureClient: AzureClient, logger: ILogger) {
     this.azureClient = azureClient;
@@ -38,13 +38,13 @@ export class SubscriptionsManagementService implements ISubscriptionsManagementS
       const subscriptions: any[] = [];
       for await (const subscription of result) {
         subscriptions.push({
-          id: subscription.id || '',
-          name: subscription.name || '',
-          displayName: subscription.displayName || '',
-          productId: subscription.scope?.split('/').pop() || '',
-          state: subscription.state || 'submitted',
-          primaryKey: subscription.primaryKey || '',
-          secondaryKey: subscription.secondaryKey || '',
+          id: subscription.id ?? '',
+          name: subscription.name ?? '',
+          displayName: subscription.displayName ?? '',
+          productId: subscription.scope?.split('/').pop() ?? '',
+          state: subscription.state ?? 'submitted',
+          primaryKey: subscription.primaryKey ?? '',
+          secondaryKey: subscription.secondaryKey ?? '',
           createdDate: subscription.createdDate,
           startDate: subscription.startDate,
           expirationDate: subscription.expirationDate
@@ -88,18 +88,18 @@ export class SubscriptionsManagementService implements ISubscriptionsManagementS
           ownerId: params.userId ? `/users/${params.userId}` : '/users/1', // Default admin user
           primaryKey: params.primaryKey,
           secondaryKey: params.secondaryKey,
-          state: (params.state as any) || 'active'
+          state: (params.state as any) ?? 'active'
         }
       );
 
       return {
-        id: result.id || '',
-        name: result.name || '',
-        displayName: result.displayName || '',
+        id: result.id ?? '',
+        name: result.name ?? '',
+        displayName: result.displayName ?? '',
         productId: params.productId,
-        state: result.state || 'submitted',
-        primaryKey: result.primaryKey || '',
-        secondaryKey: result.secondaryKey || '',
+        state: result.state ?? 'submitted',
+        primaryKey: result.primaryKey ?? '',
+        secondaryKey: result.secondaryKey ?? '',
         createdDate: result.createdDate,
         startDate: result.startDate,
         expirationDate: result.expirationDate
@@ -134,13 +134,13 @@ export class SubscriptionsManagementService implements ISubscriptionsManagementS
       );
 
       return {
-        id: result.id || '',
-        name: result.name || '',
-        displayName: result.displayName || '',
-        productId: result.scope?.split('/').pop() || '',
-        state: result.state || 'submitted',
-        primaryKey: result.primaryKey || '',
-        secondaryKey: result.secondaryKey || '',
+        id: result.id ?? '',
+        name: result.name ?? '',
+        displayName: result.displayName ?? '',
+        productId: result.scope?.split('/').pop() ?? '',
+        state: result.state ?? 'submitted',
+        primaryKey: result.primaryKey ?? '',
+        secondaryKey: result.secondaryKey ?? '',
         createdDate: result.createdDate,
         startDate: result.startDate,
         expirationDate: result.expirationDate

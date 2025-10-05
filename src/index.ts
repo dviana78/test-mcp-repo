@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
-import { McpServer, setupGracefulShutdown } from './server.js';
-import { Logger } from './utils/logger.js';
+import { McpServer, setupGracefulShutdown } from './server';
+import { Logger } from './utils/logger';
 
 async function main(): Promise<void> {
   const logger = new Logger('Main');

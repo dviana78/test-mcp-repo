@@ -69,3 +69,8 @@ test-results/
 
 # Azure
 .azure/
+
+# SonarQube
+.scannerwork/
+.sonar/
+sonar-project.properties.bak
