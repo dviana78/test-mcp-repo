@@ -1,9 +1,9 @@
 const https = require('https');
 
-console.log('🔍 Verifying backend Service Direct');
+console.log('🔍 Verifying Backend Service Direct');
 console.log('====================================');
 
-// Verify el backend directo de Star Wars API
+// Verify the direct Star Wars API backend
 const options = {
     hostname: 'swapi.dev',
     port: 443,
@@ -15,7 +15,7 @@ const options = {
 };
 
 const req = https.request(options, (res) => {
-    console.log(`📡 Status del backend: ${res.statusCode}`);
+    console.log(`📡 Backend Status: ${res.statusCode}`);
     console.log(`📋 Headers:`, res.headers);
     
     let data = '';
@@ -26,21 +26,21 @@ const req = https.request(options, (res) => {
     res.on('end', () => {
         try {
             const jsonData = JSON.parse(data);
-            console.log(`✅ backend funciona correctamente`);
+            console.log(`✅ Backend working correctly`);
             console.log(`📊 Total characters: ${jsonData.count}`);
-            console.log(`👥 Primeros characters:`);
+            console.log(`👥 First characters:`);
             jsonData.results.slice(0, 3).forEach((character, index) => {
                 console.log(`   ${index + 1}. ${character.name}`);
             });
         } catch (Error) {
             console.log(`❌ Error parsing response: ${Error.message}`);
-            console.log(`📄 Response cruda:`, data.substring(0, 500));
+            console.log(`📄 Raw response:`, data.substring(0, 500));
         }
     });
 });
 
 req.on('Error', (Error) => {
-    console.log(`❌ Error Connecting al backend: ${Error.message}`);
+    console.log(`❌ Error connecting to backend: ${Error.message}`);
 });
 
 req.end();

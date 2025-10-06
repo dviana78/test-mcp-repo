@@ -62,7 +62,7 @@ async function getAllCharacters() {
   let hasNextPage = true;
   
   try {
-    console.log('🚀 Starting consulta a la API de Star Wars...\n');
+    console.log('🚀 Starting Star Wars API query...\n');
     
     while (hasNextPage && currentPage <= 10) { // Safety limit
       const response = await makeRequest(API_PATH, currentPage);
@@ -70,32 +70,32 @@ async function getAllCharacters() {
       if (response.results && Array.isArray(response.results)) {
         allCharacters = allCharacters.concat(response.results);
         console.log(`✅ page ${currentPage}: ${response.results.length} characters found`);
-        console.log(`📊 Total hasta ahora: ${allCharacters.length} characters`);
+        console.log(`📊 Total so far: ${allCharacters.length} characters`);
         
-        // Verify si there are more pages
+        // Check if there are more pages
         hasNextPage = !!response.next;
-        console.log(`🔄 ¿There are more pages? ${hasNextPage ? 'Yes' : 'No'}`);
+        console.log(`🔄 Are there more pages? ${hasNextPage ? 'Yes' : 'No'}`);
         
         if (response.count) {
-          console.log(`🎯 Total esperado: ${response.count} characters\n`);
+          console.log(`🎯 Total expected: ${response.count} characters\n`);
         }
         
         currentPage++;
       } else {
-        console.log('❌ No se encontraron resultados en la response');
+        console.log('❌ No results found in response');
         hasNextPage = false;
       }
       
-      // Pausa entre requests para ser respetuoso con la API
+      // Pause between requests to be respectful to the API
       if (hasNextPage) {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
     
-    console.log(`\n🎉 ¡Consulta completada!`);
-    console.log(`📋 Total characters obtenidos: ${allCharacters.length}\n`);
+    console.log(`\n🎉 Query completed!`);
+    console.log(`📋 Total characters obtained: ${allCharacters.length}\n`);
     console.log('=' * 60);
-    console.log('🌟 LISTA COMPLETA DE characters DE STAR WARS 🌟');
+    console.log('🌟 COMPLETE LIST OF STAR WARS CHARACTERS 🌟');
     console.log('=' * 60);
     
     allCharacters.forEach((character, index) => {

@@ -30,7 +30,7 @@ async function getAllCharacters() {
                 hasNextPage = false;
             }
         } catch (Error) {
-            console.log(`❌ Error en page ${currentPage}:`, Error.message);
+            console.log(`❌ Error on page ${currentPage}:`, Error.message);
             hasNextPage = false;
         }
     }
@@ -99,10 +99,10 @@ function analyzeGenders(characters) {
 }
 
 function displayResults(genderStats, totalCharacters) {
-    console.log('\n📊 Analysis Results de Genders:');
+    console.log('\n📊 Gender Analysis Results:');
     console.log('======================================');
     
-    console.log(`👥 Total characters analizados: ${totalCharacters}`);
+    console.log(`👥 Total characters analyzed: ${totalCharacters}`);
     console.log('');
 
     // Statistics main
@@ -114,15 +114,15 @@ function displayResults(genderStats, totalCharacters) {
     console.log(`👨 male characters: ${maleCount} (${((maleCount/totalCharacters)*100).toFixed(1)}%)`);
     console.log(`👩 female characters: ${femaleCount} (${((femaleCount/totalCharacters)*100).toFixed(1)}%)`);
     console.log(`🤖 Droids/N/A: ${naCount} (${((naCount/totalCharacters)*100).toFixed(1)}%)`);
-    console.log(`❓ Otros/UnkNowns: ${otherCount} (${((otherCount/totalCharacters)*100).toFixed(1)}%)`);
+    console.log(`❓ Others/Unknowns: ${otherCount} (${((otherCount/totalCharacters)*100).toFixed(1)}%)`);
 
-    console.log('\n👨 characters MasculiNos:');
+    console.log('\n👨 Male Characters:');
     console.log('=========================');
     genderStats.male.forEach((char, index) => {
         console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
     });
 
-    console.log('\n👩 characters FemeniNos:');
+    console.log('\n👩 Female Characters:');
     console.log('========================');
     genderStats.female.forEach((char, index) => {
         console.log(`${index + 1}. ${char.name} (${char.birth_year})`);
