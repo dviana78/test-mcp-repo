@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import 'dotenv/config';
-import { McpServer, setupGracefulShutdown } from './server';
-import { Logger } from './utils/logger';
+import { McpServer, setupGracefulShutdown } from './server.js';
+import { Logger } from './utils/logger.js';
 
 async function main(): Promise<void> {
   const logger = new Logger('Main');
@@ -21,15 +21,33 @@ async function main(): Promise<void> {
 }
 
 // Only run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Fixed condition for Windows compatibility
+const isMainModule = import.meta.url === `file://${process.argv[1]}` || 
+                     import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+                     process.argv[1]?.endsWith('index.js') ||
+                     process.argv[1]?.endsWith('dist/index.js');
+
+if (isMainModule) {
   main().catch((error) => {
-    console.error('Fatal error:', error);
+    // En modo MCP, escribir a stderr para no interferir con stdout
+    if (process.env.MCP_MODE === 'true') {
+      process.stderr.write(`Fatal error: ${error}\n`);
+    } else {
+      console.error('Fatal error:', error);
+    }
     process.exit(1);
   });
 }
 
-export { McpServer } from './server';
-export * from './types';
-export * from './services';
-export * from './handlers';
-export * from './config';
+export { McpServer } from './server.js';
+export * from './types/index.js';
+export * from './services/index.js';
+export * from './handlers/index.js';
+export * from './config/index.js';
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@ import {
   ApiRevision, 
   CreateApiVersionRequest, 
   CreateApiRevisionRequest
-} from '../types';
+} from '../types/index.js';
 
 /**
  * Interface for API Versioning Service
@@ -38,3 +38,10 @@ export interface IApiVersioningService {
    */
   listApiRevisions(apiId: string): Promise<ApiRevision[]>;
 }
+
+
+
+
+
+
+

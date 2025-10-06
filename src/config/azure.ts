@@ -1,5 +1,5 @@
-import { AzureConfig } from '../types';
-import { ConfigurationError } from '../utils/errors';
+import { AzureConfig } from '../types/index.js';
+import { ConfigurationError } from '../utils/errors.js';
 
 export function getAzureConfig(): AzureConfig {
   const requiredEnvVars = [
@@ -45,3 +45,10 @@ export function validateAzureConfig(config: AzureConfig): boolean {
 
   return true;
 }
+
+
+
+
+
+
+

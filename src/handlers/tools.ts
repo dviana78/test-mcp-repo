@@ -1,4 +1,4 @@
-import { McpToolDefinition, McpToolRequest, McpToolResponse } from '../types';
+import { McpToolDefinition, McpToolRequest, McpToolResponse } from '../types/index.js';
 import { 
   IApiManagementService,
   IApiVersioningService,
@@ -7,10 +7,10 @@ import {
   ISubscriptionsManagementService,
   IApiOperationsService,
   IBackendServicesService
-} from '../interfaces';
-import { Logger } from '../utils/logger';
-import { ValidationError, createErrorResponse } from '../utils/errors';
-import { validateMcpToolRequest } from '../utils/validation';
+} from '../interfaces/index.js';
+import { Logger } from '../utils/logger.js';
+import { ValidationError, createErrorResponse } from '../utils/errors.js';
+import { validateMcpToolRequest } from '../utils/validation.js';
 
 export class ToolsHandler {
   private readonly apiManagementService: IApiManagementService;
@@ -1223,13 +1223,8 @@ export class ToolsHandler {
           stdio: 'pipe'
         });
 
-        await new Promise((resolve, reject) => {
-          let stdout = '';
+        await new Promise((resolve) => {
           let stderr = '';
-          
-          coverageProcess.stdout?.on('data', (data) => {
-            stdout += data.toString();
-          });
           
           coverageProcess.stderr?.on('data', (data) => {
             stderr += data.toString();
@@ -1374,3 +1369,10 @@ export class ToolsHandler {
     }
   }
 }
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
-import { AzureClient } from './azure-client';
-import { ILogger, ISubscriptionsManagementService } from '../interfaces';
-import { ValidationError, NotFoundError } from '../utils/errors';
+import { AzureClient } from './azure-client.js';
+import { ILogger, ISubscriptionsManagementService } from '../interfaces/index.js';
+import { ValidationError, NotFoundError } from '../utils/errors.js';
 
 /**
  * Subscriptions Management Service
@@ -156,3 +156,10 @@ export class SubscriptionsManagementService implements ISubscriptionsManagementS
     }
   }
 }
+
+
+
+
+
+
+

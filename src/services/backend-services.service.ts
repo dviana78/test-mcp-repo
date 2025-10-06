@@ -1,8 +1,8 @@
 import { 
   BackendInfo
-} from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IBackendServicesService } from '../interfaces';
+} from '../types/index.js';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IBackendServicesService } from '../interfaces/index.js';
 
 /**
  * Backend Services Service
@@ -63,3 +63,10 @@ export class BackendServicesService implements IBackendServicesService {
     }
   }
 }
+
+
+
+
+
+
+

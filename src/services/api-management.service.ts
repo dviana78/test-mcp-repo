@@ -1,13 +1,13 @@
 import { 
   ApiInfo
-} from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IApiManagementService } from '../interfaces';
-import { ValidationError, NotFoundError } from '../utils/errors';
+} from '../types/index.js';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IApiManagementService } from '../interfaces/index.js';
+import { ValidationError, NotFoundError } from '../utils/errors.js';
 import { 
   isValidApiId,
   sanitizeApiPath
-} from '../utils/validation';
+} from '../utils/validation.js';
 
 /**
  * API Management Service
@@ -340,3 +340,10 @@ export class ApiManagementService implements IApiManagementService {
     };
   }
 }
+
+
+
+
+
+
+

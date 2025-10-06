@@ -1,8 +1,8 @@
 import { ApiManagementClient } from '@azure/arm-apimanagement';
 import { ClientSecretCredential } from '@azure/identity';
-import { AzureConfig } from '../types';
-import { Logger } from '../utils/logger';
-import { AzureApiError, AuthenticationError } from '../utils/errors';
+import { AzureConfig } from '../types/index.js';
+import { Logger } from '../utils/logger.js';
+import { AzureApiError, AuthenticationError } from '../utils/errors.js';
 
 export class AzureClient {
   private readonly client: ApiManagementClient;
@@ -156,3 +156,10 @@ export class AzureClient {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
+
+
+
+
+
+
+

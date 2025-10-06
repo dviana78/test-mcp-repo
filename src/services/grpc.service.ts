@@ -1,13 +1,13 @@
 import { 
   ApiInfo
-} from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IGrpcService } from '../interfaces';
-import { ValidationError } from '../utils/errors';
+} from '../types/index.js';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IGrpcService } from '../interfaces/index.js';
+import { ValidationError } from '../utils/errors.js';
 import { 
   isValidApiId,
   sanitizeApiPath
-} from '../utils/validation';
+} from '../utils/validation.js';
 
 /**
  * gRPC Service
@@ -67,8 +67,8 @@ export class GrpcService implements IGrpcService {
       // Extract gRPC service information from Protobuf
       const grpcServiceInfo = this.parseProtobufForGrpcService(params.protoDefinition);
       
-      // Extract backend URL if available (look for service endpoints in proto)
-      let backendUrl = params.serviceUrl;
+      // Extract backend URL from parameters or use service URL
+      const backendUrl = params.serviceUrl;
       
       // Create backend service for gRPC if we have a backend URL
       let backendId: string | undefined;
@@ -517,3 +517,10 @@ export class GrpcService implements IGrpcService {
     };
   }
 }
+
+
+
+
+
+
+

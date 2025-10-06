@@ -1,10 +1,10 @@
 import { 
   ProductInfo
-} from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IProductsManagementService } from '../interfaces';
-import { ValidationError, NotFoundError } from '../utils/errors';
-import { isValidApiId } from '../utils/validation';
+} from '../types/index.js';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IProductsManagementService } from '../interfaces/index.js';
+import { ValidationError, NotFoundError } from '../utils/errors.js';
+import { isValidApiId } from '../utils/validation.js';
 
 /**
  * Products Management Service
@@ -211,3 +211,10 @@ export class ProductsManagementService implements IProductsManagementService {
     }
   }
 }
+
+
+
+
+
+
+

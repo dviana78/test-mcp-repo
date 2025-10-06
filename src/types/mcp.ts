@@ -122,3 +122,10 @@ export interface MCPService {
     processRequest(request: MCPRequest): Promise<MCPResponse>;
     handleError(error: MCPError): void;
 }
+
+
+
+
+
+
+

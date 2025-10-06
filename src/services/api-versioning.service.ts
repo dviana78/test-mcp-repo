@@ -1,18 +1,18 @@
-import { AzureClient } from './azure-client';
-import { ILogger, IApiVersioningService } from '../interfaces';
-import { ValidationError } from '../utils/errors';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IApiVersioningService } from '../interfaces/index.js';
+import { ValidationError } from '../utils/errors.js';
 import { 
   ApiVersion, 
   ApiRevision, 
   CreateApiVersionRequest, 
   CreateApiRevisionRequest
-} from '../types';
+} from '../types/index.js';
 import { 
   validateCreateApiVersion, 
   validateCreateApiRevision, 
   isValidApiId,
   isValidVersionId
-} from '../utils/validation';
+} from '../utils/validation.js';
 
 /**
  * API Versioning Service
@@ -50,7 +50,7 @@ export class ApiVersioningService implements IApiVersioningService {
       const client = this.azureClient.getClient();
 
       // First, create or get the API version set
-      let versionSetId = `${request.apiId}-versions`;
+      const versionSetId = `${request.apiId}-versions`;
       
       try {
         await client.apiVersionSet.get(
@@ -281,3 +281,10 @@ export class ApiVersioningService implements IApiVersioningService {
     }
   }
 }
+
+
+
+
+
+
+

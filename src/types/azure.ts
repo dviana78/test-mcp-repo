@@ -156,3 +156,10 @@ export interface AzureCredentials {
     clientId: string;
     clientSecret: string;
 }
+
+
+
+
+
+
+

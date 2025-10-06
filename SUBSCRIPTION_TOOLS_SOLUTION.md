@@ -71,7 +71,7 @@ or
 Run this command to verify the server is responding:
 
 ```bash
-node test-subscription-tools.js
+node scripts/test/test-subscription-tools.js
 ```
 
 ## 🎯 **AVAILABLE SUBSCRIPTION TOOLS**
@@ -100,7 +100,7 @@ If after these steps the tools don't appear in Copilot:
 1. **Verify the MCP extension** is installed in VS Code
 2. **Check the logs** in VS Code (View → Output → MCP)
 3. **Restart the workspace** completely
-4. **Test in terminal** that the server responds with `node test-subscription-tools.js`
+4. **Test in terminal** that the server responds with `node scripts/test/test-subscription-tools.js`
 
 ## ✅ **FINAL CONFIRMATION**
 

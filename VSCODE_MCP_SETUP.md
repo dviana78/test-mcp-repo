@@ -140,7 +140,7 @@ In Copilot chat, try:
 ### Problem: Doesn't connect to Azure
 **Solution**:
 - Verify Azure credentials
-- Test the server independently with `node test-stdio-server.js`
+- Test the server independently with `node scripts/test/test-stdio-server.js`
 
 ## 📱 Available Commands Once Configured
 

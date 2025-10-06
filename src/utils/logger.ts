@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { ILogger, ILoggerFactory } from '../interfaces';
+import { ILogger, ILoggerFactory } from '../interfaces/index.js';
 
 const logLevel = process.env.LOG_LEVEL ?? 'info';
 
@@ -14,7 +14,9 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
     new winston.transports.File({ filename: 'logs/combined.log' }),
+    // Para MCP, solo usar stderr para no interferir con stdout que usa el protocolo JSON
     new winston.transports.Console({
+      stderrLevels: ['error', 'debug', 'info', 'warn'],
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple()
@@ -23,7 +25,8 @@ const logger = winston.createLogger({
   ]
 });
 
-if (process.env.NODE_ENV !== 'production') {
+// Solo en modo desarrollo, no en MCP
+if (process.env.NODE_ENV !== 'production' && process.env.MCP_MODE !== 'true') {
   logger.debug('Logging initialized');
 }
 
@@ -91,3 +94,10 @@ export const logDebug = (message: string, context?: Record<string, unknown>) => 
 };
 
 export default Logger;
+
+
+
+
+
+
+

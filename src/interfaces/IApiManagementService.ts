@@ -1,4 +1,4 @@
-import { ApiInfo } from '../types';
+import { ApiInfo } from '../types/index.js';
 
 /**
  * Interface for API Management Service
@@ -43,3 +43,10 @@ export interface IApiManagementService {
     versionHeaderName?: string;
   }): Promise<ApiInfo>;
 }
+
+
+
+
+
+
+

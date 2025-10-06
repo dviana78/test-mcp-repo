@@ -1,4 +1,4 @@
-import { BackendInfo } from '../types';
+import { BackendInfo } from '../types/index.js';
 
 /**
  * Interface for Backend Services Service
@@ -16,3 +16,10 @@ export interface IBackendServicesService {
     skip?: number;
   }): Promise<BackendInfo[]>;
 }
+
+
+
+
+
+
+

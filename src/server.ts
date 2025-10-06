@@ -16,11 +16,11 @@ import {
   SubscriptionsManagementService,
   ApiOperationsService,
   BackendServicesService
-} from './services/index';
-import { ToolsHandler } from './handlers/index';
-import { getAzureConfig } from './config/azure';
-import { Logger } from './utils/logger';
-import { createErrorResponse } from './utils/errors';
+} from './services/index.js';
+import { ToolsHandler } from './handlers/index.js';
+import { getAzureConfig } from './config/azure.js';
+import { Logger } from './utils/logger.js';
+import { createErrorResponse } from './utils/errors.js';
 
 export class McpServer {
   private readonly server: Server;
@@ -76,8 +76,10 @@ export class McpServer {
       // Note: ResourcesHandler removed as it depended on the coordinator service
       // If needed, it should be refactored to use specialized services directly
 
-      // Test Azure connection
-      await this.azureClient.testConnection();
+      // Test Azure connection solo si no estamos en modo MCP para evitar fallos en el startup
+      if (process.env.MCP_MODE !== 'true') {
+        await this.azureClient.testConnection();
+      }
       this.logger.info('Services initialized successfully with direct service injection');
     } catch (error) {
       this.logger.error('Failed to initialize services', error as Error);
@@ -143,7 +145,10 @@ export class McpServer {
 // Handle graceful shutdown
 function setupGracefulShutdown(server: McpServer): void {
   const handleShutdown = async (signal: string) => {
-    console.log(`\nReceived ${signal}. Gracefully shutting down...`);
+    // En modo MCP, no mostrar mensajes de shutdown para no interferir con stdout
+    if (process.env.MCP_MODE !== 'true') {
+      console.log(`\nReceived ${signal}. Gracefully shutting down...`);
+    }
     await server.stop();
     process.exit(0);
   };
@@ -154,14 +159,31 @@ function setupGracefulShutdown(server: McpServer): void {
 
   // Handle uncaught exceptions
   process.on('uncaughtException', (error) => {
-    console.error('Uncaught Exception:', error);
+    // En modo MCP, escribir a stderr para no interferir con stdout
+    if (process.env.MCP_MODE === 'true') {
+      process.stderr.write(`Uncaught Exception: ${error}\n`);
+    } else {
+      console.error('Uncaught Exception:', error);
+    }
     process.exit(1);
   });
 
   process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // En modo MCP, escribir a stderr para no interferir con stdout
+    if (process.env.MCP_MODE === 'true') {
+      process.stderr.write(`Unhandled Rejection: ${reason}\n`);
+    } else {
+      console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    }
     process.exit(1);
   });
 }
 
 export { setupGracefulShutdown };
+
+
+
+
+
+
+

@@ -4,16 +4,16 @@
  */
 
 // Core interfaces
-export type { ILogger, ILoggerFactory } from './ILogger';
+export type { ILogger, ILoggerFactory } from './ILogger.js';
 
 // Specialized service interfaces
-export type { IApiManagementService } from './IApiManagementService';
-export type { IApiVersioningService } from './IApiVersioningService';
-export type { IGrpcService } from './IGrpcService';
-export type { IProductsManagementService } from './IProductsManagementService';
-export type { ISubscriptionsManagementService } from './ISubscriptionsManagementService';
-export type { IApiOperationsService } from './IApiOperationsService';
-export type { IBackendServicesService } from './IBackendServicesService';
+export type { IApiManagementService } from './IApiManagementService.js';
+export type { IApiVersioningService } from './IApiVersioningService.js';
+export type { IGrpcService } from './IGrpcService.js';
+export type { IProductsManagementService } from './IProductsManagementService.js';
+export type { ISubscriptionsManagementService } from './ISubscriptionsManagementService.js';
+export type { IApiOperationsService } from './IApiOperationsService.js';
+export type { IBackendServicesService } from './IBackendServicesService.js';
 
 // Re-export commonly used types
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
@@ -48,3 +48,10 @@ export interface IServiceError {
   statusCode?: number;
   details?: any;
 }
+
+
+
+
+
+
+

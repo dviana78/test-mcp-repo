@@ -1,4 +1,4 @@
-import { ApiInfo } from '../types';
+import { ApiInfo } from '../types/index.js';
 
 /**
  * Interface for gRPC Service
@@ -25,3 +25,10 @@ export interface IGrpcService {
     versionHeaderName?: string;
   }): Promise<ApiInfo>;
 }
+
+
+
+
+
+
+

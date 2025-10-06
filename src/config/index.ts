@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
-export * from './azure';
-export * from './logging';
+export * from './azure.js';
+export * from './logging.js';
 
 export const AppConfig = {
   environment: process.env.NODE_ENV ?? 'development',
@@ -10,3 +10,10 @@ export const AppConfig = {
 };
 
 export default AppConfig;
+
+
+
+
+
+
+

@@ -1,10 +1,10 @@
 import { 
   ApiOperationInfo
-} from '../types';
-import { AzureClient } from './azure-client';
-import { ILogger, IApiOperationsService } from '../interfaces';
-import { ValidationError } from '../utils/errors';
-import { isValidApiId } from '../utils/validation';
+} from '../types/index.js';
+import { AzureClient } from './azure-client.js';
+import { ILogger, IApiOperationsService } from '../interfaces/index.js';
+import { ValidationError } from '../utils/errors.js';
+import { isValidApiId } from '../utils/validation.js';
 
 /**
  * API Operations Service
@@ -65,3 +65,10 @@ export class ApiOperationsService implements IApiOperationsService {
     }
   }
 }
+
+
+
+
+
+
+

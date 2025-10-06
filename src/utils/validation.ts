@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ValidationError } from './errors';
+import { ValidationError } from './errors.js';
 
 // Esquemas de validación para Azure APIM
 export const apiInfoSchema = z.object({
@@ -175,3 +175,10 @@ export function sanitizeApiPath(path: string): string {
   
   return path;
 }
+
+
+
+
+
+
+

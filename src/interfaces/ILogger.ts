@@ -50,3 +50,10 @@ export interface ILoggerFactory {
    */
   createLogger(context?: object): ILogger;
 }
+
+
+
+
+
+
+

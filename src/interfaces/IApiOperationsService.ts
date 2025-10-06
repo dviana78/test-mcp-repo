@@ -1,4 +1,4 @@
-import { ApiOperationInfo } from '../types';
+import { ApiOperationInfo } from '../types/index.js';
 
 /**
  * Interface for API Operations Service
@@ -12,3 +12,10 @@ export interface IApiOperationsService {
    */
   getApiOperations(apiId: string): Promise<ApiOperationInfo[]>;
 }
+
+
+
+
+
+
+

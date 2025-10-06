@@ -34,3 +34,10 @@ export interface ISubscriptionsManagementService {
    */
   getSubscription(subscriptionId: string): Promise<any>;
 }
+
+
+
+
+
+
+

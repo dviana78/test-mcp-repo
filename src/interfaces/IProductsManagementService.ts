@@ -1,4 +1,4 @@
-import { ProductInfo } from '../types';
+import { ProductInfo } from '../types/index.js';
 
 /**
  * Interface for Products Management Service
@@ -50,3 +50,10 @@ export interface IProductsManagementService {
    */
   addApiToProduct(productId: string, apiId: string): Promise<void>;
 }
+
+
+
+
+
+
+
